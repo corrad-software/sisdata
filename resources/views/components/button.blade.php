@@ -12,7 +12,7 @@ $tag = $href ? 'a' : 'button';
 @php
 $variants = [
     'primary' => 'bg-primary-600 text-white border border-primary-600 shadow-button hover:bg-primary-700 hover:border-primary-700 focus-visible:ring-fr-primary disabled:bg-bg-primary-disabled disabled:border-bg-primary-disabled',
-    'secondary' => 'bg-white text-txt-black-900 border border-otl-gray-300 shadow-button hover:bg-bg-washed focus-visible:ring-fr-primary disabled:opacity-50',
+    'secondary' => 'bg-bg-white text-txt-black-900 border border-otl-gray-300 shadow-button hover:bg-bg-washed focus-visible:ring-fr-primary disabled:opacity-50',
     'danger' => 'bg-danger-600 text-white border border-danger-600 shadow-button hover:bg-danger-700 hover:border-danger-700 focus-visible:ring-fr-danger disabled:opacity-50',
     'outline' => 'bg-transparent text-primary-600 border border-primary-600 hover:bg-primary-50 focus-visible:ring-fr-primary disabled:opacity-50',
 ];

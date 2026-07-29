@@ -14,7 +14,7 @@ class UserManagementTest extends TestCase
 
     public function test_guests_cannot_access_user_management(): void
     {
-        $this->get(route('users.index'))->assertRedirect(route('login'));
+        $this->get(route('admin.users.index'))->assertRedirect(route('login'));
     }
 
     public function test_it_lists_users(): void

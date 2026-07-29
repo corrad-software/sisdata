@@ -16,15 +16,16 @@ new class extends Component
     }
 }; ?>
 
-<nav x-data="{ open: false }" class="bg-white border-b border-otl-divider">
+<nav x-data="{ open: false }" class="bg-bg-white border-b border-otl-divider">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
+                    <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-2">
                         <x-application-logo class="block h-9 w-auto fill-current text-primary-600" />
+                        <span class="hidden sm:block text-body-sm font-semibold text-txt-black-900">MYDS-Laravel</span>
                     </a>
                 </div>
 
@@ -33,17 +34,23 @@ new class extends Component
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
-                        {{ __('User Management') }}
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" wire:navigate>
+                        {{ __('Admin') }}
                     </x-nav-link>
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
+            <!-- Utility Controls + Settings Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-1">
+                <x-quick-search />
+                <x-font-size-toggle />
+                <x-theme-toggle />
+                <x-language-switcher />
+                <livewire:layout.notification-bell />
+
+                <x-dropdown align="right" width="48" class="ms-2">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-txt-black-500 bg-white hover:text-txt-black-900 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-txt-black-500 bg-bg-white hover:text-txt-black-900 focus:outline-none transition ease-in-out duration-150">
                             <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
 
                             <div class="ms-1">
@@ -87,14 +94,22 @@ new class extends Component
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
-                {{ __('User Management') }}
+            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" wire:navigate>
+                {{ __('Admin') }}
             </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-otl-divider">
-            <div class="px-4">
+            <div class="px-4 flex items-center gap-1">
+                <x-quick-search />
+                <x-font-size-toggle />
+                <x-theme-toggle />
+                <x-language-switcher />
+                <livewire:layout.notification-bell />
+            </div>
+
+            <div class="px-4 mt-4">
                 <div class="font-medium text-base text-txt-black-900" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
                 <div class="font-medium text-sm text-txt-black-500">{{ auth()->user()->email }}</div>
             </div>

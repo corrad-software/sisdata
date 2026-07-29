@@ -5,10 +5,10 @@
 
 @php
 $variants = [
-    'success' => ['bg' => 'bg-success-50', 'border' => 'border-success-200', 'text' => 'text-success-700', 'icon' => 'text-success-600'],
-    'error' => ['bg' => 'bg-danger-50', 'border' => 'border-danger-200', 'text' => 'text-danger-700', 'icon' => 'text-danger-600'],
-    'warning' => ['bg' => 'bg-warning-50', 'border' => 'border-warning-200', 'text' => 'text-warning-700', 'icon' => 'text-warning-600'],
-    'info' => ['bg' => 'bg-primary-50', 'border' => 'border-primary-200', 'text' => 'text-primary-700', 'icon' => 'text-primary-600'],
+    'success' => ['bg' => 'bg-bg-success-50', 'border' => 'border-otl-success-200', 'text' => 'text-txt-success', 'icon' => 'text-txt-success'],
+    'error' => ['bg' => 'bg-bg-danger-50', 'border' => 'border-otl-danger-200', 'text' => 'text-txt-danger', 'icon' => 'text-txt-danger'],
+    'warning' => ['bg' => 'bg-bg-warning-50', 'border' => 'border-otl-warning-200', 'text' => 'text-txt-warning', 'icon' => 'text-txt-warning'],
+    'info' => ['bg' => 'bg-bg-primary-50', 'border' => 'border-otl-primary-200', 'text' => 'text-txt-primary', 'icon' => 'text-txt-primary'],
 ][$type];
 @endphp
 

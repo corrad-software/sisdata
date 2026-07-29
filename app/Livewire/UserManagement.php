@@ -5,14 +5,13 @@ namespace App\Livewire;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Notifications\UserCreated;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('layouts.app')]
 class UserManagement extends Component
 {
     use WithPagination;
@@ -90,13 +89,16 @@ class UserManagement extends Component
             $rules = (new StoreUserRequest)->rules();
             $validated = Validator::make($data, $rules)->validate();
 
-            User::create([
+            $newUser = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'role' => $validated['role'],
                 'is_active' => $validated['is_active'] ?? true,
             ]);
+
+            auth()->user()->notify(new UserCreated($newUser));
+            $this->dispatch('notification-created');
 
             session()->flash('status', __('User created successfully.'));
         }
@@ -135,6 +137,12 @@ class UserManagement extends Component
             ->latest()
             ->paginate(10);
 
-        return view('livewire.user-management', ['users' => $users]);
+        return view('livewire.user-management', ['users' => $users])
+            ->layout('layouts.admin', [
+                'breadcrumbs' => [
+                    ['label' => __('Admin'), 'url' => route('admin.dashboard')],
+                    ['label' => __('Users')],
+                ],
+            ]);
     }
 }

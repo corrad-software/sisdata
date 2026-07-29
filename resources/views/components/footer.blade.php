@@ -1,4 +1,4 @@
-<footer class="border-t border-otl-divider bg-white">
+<footer class="border-t border-otl-divider bg-bg-white">
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div class="flex flex-col items-center justify-between gap-2 text-body-xs text-txt-black-500 sm:flex-row">
             <p>{{ __('© :year :app. Built on the Malaysian Government Design System (MYDS).', ['year' => date('Y'), 'app' => config('app.name', 'Laravel')]) }}</p>

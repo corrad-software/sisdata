@@ -14,7 +14,7 @@ $id = $attributes->get('id') ?? $name;
 <div>
     @if ($label)
         <x-input-label :for="$id" class="mb-1.5">
-            {{ $label }} @if ($required) <span class="text-danger-600">*</span> @endif
+            {!! $label !!} @if ($required) <span class="text-danger-600">*</span> @endif
         </x-input-label>
     @endif
 
@@ -23,7 +23,7 @@ $id = $attributes->get('id') ?? $name;
         id="{{ $id }}"
         @if ($name) name="{{ $name }}" @endif
         {{ $attributes->except(['label', 'name', 'error', 'help', 'required'])->merge([
-            'class' => 'block w-full rounded-md border ' . ($error ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500' : 'border-otl-gray-300 focus:border-primary-600 focus:ring-fr-primary') . ' text-body-sm shadow-sm focus:ring-1 disabled:bg-bg-washed disabled:opacity-60',
+            'class' => 'block w-full rounded-md border bg-bg-white text-txt-black-900 ' . ($error ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500' : 'border-otl-gray-300 focus:border-primary-600 focus:ring-fr-primary') . ' text-body-sm shadow-sm focus:ring-1 disabled:bg-bg-washed disabled:opacity-60',
         ]) }}
     >
 

@@ -10,7 +10,7 @@
             </thead>
         @endif
 
-        <tbody class="divide-y divide-otl-gray-200 bg-white [&>tr>td]:px-4 [&>tr>td]:py-3 [&>tr>td]:text-txt-black-900 [&>tr:hover]:bg-bg-washed">
+        <tbody class="divide-y divide-otl-gray-200 bg-bg-white [&>tr>td]:px-4 [&>tr>td]:py-3 [&>tr>td]:text-txt-black-900 [&>tr:hover]:bg-bg-washed">
             {{ $slot }}
         </tbody>
     </table>

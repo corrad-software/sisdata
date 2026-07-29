@@ -6,18 +6,14 @@
                 <x-alert type="success" dismissible>{{ session('status') }}</x-alert>
             @endif
 
-            <div class="bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6">
-                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-                    <h2 class="font-heading font-semibold text-heading-2xs text-txt-black-900">
-                        {{ __('User Management') }}
-                    </h2>
-
+            <div class="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-end mb-6">
                     <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
                         <input
                             type="search"
                             wire:model.live.debounce.400ms="search"
                             placeholder="{{ __('Search by name or email...') }}"
-                            class="rounded-md border-otl-gray-300 focus:border-primary-600 focus:ring-fr-primary text-body-sm w-full sm:w-64"
+                            class="rounded-md border-otl-gray-300 bg-bg-white text-txt-black-900 focus:border-primary-600 focus:ring-fr-primary text-body-sm w-full sm:w-64"
                         >
 
                         <x-button
@@ -47,13 +43,9 @@
                             <td class="capitalize">{{ $user->role }}</td>
                             <td>
                                 @if ($user->is_active)
-                                    <span class="inline-flex items-center rounded-full bg-success-50 px-2.5 py-0.5 text-body-xs font-medium text-success-700">
-                                        {{ __('Active') }}
-                                    </span>
+                                    <x-badge variant="success">{{ __('Active') }}</x-badge>
                                 @else
-                                    <span class="inline-flex items-center rounded-full bg-bg-washed px-2.5 py-0.5 text-body-xs font-medium text-txt-black-500">
-                                        {{ __('Inactive') }}
-                                    </span>
+                                    <x-badge variant="neutral">{{ __('Inactive') }}</x-badge>
                                 @endif
                             </td>
                             <td class="text-right whitespace-nowrap">
@@ -87,7 +79,7 @@
                 </x-table>
 
                 <div class="mt-4">
-                    {{ $users->links() }}
+                    {{ $users->onEachSide(1)->links() }}
                 </div>
             </div>
         </div>
@@ -116,7 +108,7 @@
 
             <div>
                 <x-input-label for="role" class="mb-1.5">{{ __('Role') }}</x-input-label>
-                <select id="role" wire:model="role" class="block w-full rounded-md border-otl-gray-300 focus:border-primary-600 focus:ring-fr-primary text-body-sm">
+                <select id="role" wire:model="role" class="block w-full rounded-md border-otl-gray-300 bg-bg-white text-txt-black-900 focus:border-primary-600 focus:ring-fr-primary text-body-sm">
                     <option value="user">{{ __('User') }}</option>
                     <option value="admin">{{ __('Admin') }}</option>
                 </select>

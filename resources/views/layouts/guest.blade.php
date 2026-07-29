@@ -5,7 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        @include('partials.theme-init')
+
+        @php
+            $guestTitles = [
+                'login' => __('Log in'),
+                'register' => __('Register'),
+                'password.request' => __('Forgot Password'),
+                'password.reset' => __('Reset Password'),
+                'password.confirm' => __('Confirm Password'),
+                'verification.notice' => __('Verify Email'),
+            ];
+            $pageTitle = $guestTitles[request()->route()?->getName()] ?? null;
+        @endphp
+
+        <title>{{ $pageTitle ? "$pageTitle - " : '' }}{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -21,7 +35,7 @@
                     </a>
                 </div>
 
-                <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-card overflow-hidden sm:rounded-lg border border-otl-gray-200">
+                <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-bg-white shadow-card overflow-hidden sm:rounded-lg border border-otl-gray-200">
                     {{ $slot }}
                 </div>
             </div>
