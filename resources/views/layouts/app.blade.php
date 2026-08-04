@@ -7,10 +7,18 @@
 
         @include('partials.theme-init')
 
-        <title>{{ isset($breadcrumbs) && count($breadcrumbs) ? end($breadcrumbs)['label'] . ' - ' : '' }}{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ isset($breadcrumbs) && count($breadcrumbs) ? end($breadcrumbs)['label'] . ' - ' : '' }}{{ $siteTitle ?? config('app.name', 'Laravel') }}</title>
+
+        @if (!empty($siteFaviconUrl))
+            <link rel="icon" href="{{ $siteFaviconUrl }}">
+        @endif
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @if (!empty($themeColorCss))
+            <style>{!! $themeColorCss !!}</style>
+        @endif
     </head>
     <body class="font-body antialiased">
         <div class="min-h-screen flex flex-col bg-bg-washed">

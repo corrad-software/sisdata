@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\SetLocale;
+use App\Livewire\SiteSettings;
 use App\Livewire\UserManagement;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::view('profile', 'profile')
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::view('/', 'admin.dashboard')->name('dashboard');
     Route::get('users', UserManagement::class)->name('users.index');
+    Route::get('settings', SiteSettings::class)->name('settings');
 
     Route::prefix('kitchen-sink')->name('kitchen-sink.')->group(function () {
         Route::redirect('/', '/admin/kitchen-sink/components/buttons');

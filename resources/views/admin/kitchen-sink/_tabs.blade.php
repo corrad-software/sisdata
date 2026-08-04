@@ -35,7 +35,7 @@ $groups = [
 @endphp
 
 <div class="bg-bg-white border-b border-otl-divider">
-    <nav class="flex flex-wrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+    <nav class="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
         @foreach ($groups as $key => $label)
             <a
                 href="{{ route('admin.kitchen-sink.' . $group . '.' . $key) }}"

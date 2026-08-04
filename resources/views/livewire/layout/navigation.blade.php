@@ -25,7 +25,7 @@ new class extends Component
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-2">
                         <x-application-logo class="block h-9 w-auto fill-current text-primary-600" />
-                        <span class="hidden sm:block text-body-sm font-semibold text-txt-black-900">MYDS-Laravel</span>
+                        <span class="hidden sm:block text-body-sm font-semibold text-txt-black-900">{{ $siteTitle ?? config('app.name', 'Laravel') }}</span>
                     </a>
                 </div>
 
