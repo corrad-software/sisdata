@@ -53,6 +53,14 @@ Run the backend test suite with:
 php artisan test
 ```
 
+Run the frontend e2e suite (requires both `php artisan serve` and `npm run dev` reachable — Playwright starts the Next.js dev server for you if it isn't already running, but not the Laravel API):
+
+```bash
+cd frontend
+npx playwright install chromium   # first run only
+npm run test:e2e
+```
+
 ## Architecture
 
 The Laravel app is a **pure JSON API** — it renders no HTML of its own beyond the default Laravel error pages. `routes/web.php` is intentionally empty; every real route lives in `routes/api.php`. The Next.js app is the only frontend, and is the sole consumer of that API.
