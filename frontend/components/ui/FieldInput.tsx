@@ -10,6 +10,8 @@ interface FieldInputProps {
     help?: string;
     error?: string;
     placeholder?: string;
+    autoFocus?: boolean;
+    autoComplete?: string;
 }
 
 export function FieldInput({
@@ -22,6 +24,8 @@ export function FieldInput({
     help,
     error,
     placeholder,
+    autoFocus,
+    autoComplete,
 }: FieldInputProps) {
     return (
         <div>
@@ -38,6 +42,9 @@ export function FieldInput({
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
+                required={required}
+                autoFocus={autoFocus}
+                autoComplete={autoComplete}
                 className={`block w-full rounded-md border bg-bg-white text-txt-black-900 ${
                     error
                         ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500'

@@ -5,14 +5,28 @@ import type { ReactNode } from 'react';
 import { Sidebar } from './Sidebar';
 import { UserMenu } from './UserMenu';
 import { Footer } from './Footer';
+import { FontSizeToggle } from './ui/FontSizeToggle';
+import { ThemeToggle } from './ui/ThemeToggle';
+import { LanguageSwitcher } from './ui/LanguageSwitcher';
+import { NotificationBell } from './ui/NotificationBell';
 import type { User } from '@/lib/types';
 
-export function DashboardShell({ user, children }: { user: User; children: ReactNode }) {
+export function DashboardShell({
+    user,
+    siteTitle,
+    footerText,
+    children,
+}: {
+    user: User;
+    siteTitle: string;
+    footerText: string | null;
+    children: ReactNode;
+}) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
         <div className="flex flex-1 min-h-0">
-            <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} siteTitle={siteTitle} />
 
             <div className="flex-1 flex flex-col min-w-0">
                 <header className="h-16 flex items-center justify-between gap-4 px-4 sm:px-6 bg-bg-white border-b border-otl-divider">
@@ -24,12 +38,19 @@ export function DashboardShell({ user, children }: { user: User; children: React
 
                     <div className="flex-1" />
 
+                    <div className="flex items-center gap-1">
+                        <FontSizeToggle />
+                        <ThemeToggle />
+                        <LanguageSwitcher />
+                        <NotificationBell />
+                    </div>
+
                     <UserMenu user={user} />
                 </header>
 
                 <main className="flex-1">{children}</main>
 
-                <Footer />
+                <Footer siteTitle={siteTitle} footerText={footerText} />
             </div>
         </div>
     );

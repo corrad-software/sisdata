@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PageContainer } from '@/components/PageContainer';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -541,7 +542,7 @@ function PageNumbersSection() {
 
 export default function DataDisplayPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                 <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Table</h3>
 
@@ -652,6 +653,6 @@ export default function DataDisplayPage() {
                     </div>
                 </div>
             </section>
-        </div>
+        </PageContainer>
     );
 }

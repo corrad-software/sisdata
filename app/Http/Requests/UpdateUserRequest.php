@@ -19,15 +19,11 @@ class UpdateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * Accepts the id of the user being updated so the email uniqueness
-     * check can ignore that record. Also called directly from the
-     * UserManagement Livewire component (outside the HTTP lifecycle).
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(?int $userId = null): array
+    public function rules(): array
     {
-        $userId ??= $this->route('user')?->id;
+        $userId = $this->route('user')?->id;
 
         return [
             'name' => ['required', 'string', 'max:255'],

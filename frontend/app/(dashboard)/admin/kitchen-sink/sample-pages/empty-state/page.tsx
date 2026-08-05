@@ -1,11 +1,12 @@
 import { BrowserFrame } from '@/components/BrowserFrame';
 import { Masthead } from '@/components/Masthead';
 import { Footer } from '@/components/Footer';
+import { PageContainer } from '@/components/PageContainer';
 import { LinkButton } from '@/components/ui/Button';
 
 export default function SampleEmptyStatePage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-4">
+        <PageContainer className="space-y-4">
             <div>
                 <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Empty State Page</h3>
                 <p className="text-body-sm text-txt-black-500">
@@ -54,6 +55,6 @@ export default function SampleEmptyStatePage() {
                     <Footer />
                 </div>
             </BrowserFrame>
-        </div>
+        </PageContainer>
     );
 }

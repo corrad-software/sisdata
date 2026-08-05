@@ -1,3 +1,4 @@
+import { PageContainer } from '@/components/PageContainer';
 import { LineChart } from '@/components/ui/charts/LineChart';
 import { DonutChart } from '@/components/ui/charts/DonutChart';
 import { HorizontalBarChart } from '@/components/ui/charts/HorizontalBarChart';
@@ -41,7 +42,7 @@ const HEATMAP_COLS = ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'];
 
 export default function StatsViewPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="space-y-4">
                 <div>
                     <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Highlights</h3>
@@ -215,6 +216,6 @@ export default function StatsViewPage() {
                     ]}
                 />
             </section>
-        </div>
+        </PageContainer>
     );
 }

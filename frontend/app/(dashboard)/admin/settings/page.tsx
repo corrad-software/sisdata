@@ -5,6 +5,7 @@ import type { ChangeEvent } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { PageContainer } from '@/components/PageContainer';
 import { PageHeader } from '@/components/PageHeader';
 import { ApplicationLogo } from '@/components/ApplicationLogo';
 import { Button } from '@/components/ui/Button';
@@ -38,7 +39,7 @@ export default function SettingsPage() {
         return (
             <>
                 <PageHeader title="Settings" breadcrumbs={[{ label: 'Settings' }]} />
-                <div className="py-12 px-4 sm:px-6 lg:px-8 text-body-sm text-txt-black-500">Loading...</div>
+                <PageContainer className="text-body-sm text-txt-black-500">Loading...</PageContainer>
             </>
         );
     }
@@ -157,8 +158,7 @@ function SettingsForm({ settings }: { settings: Settings }) {
         <>
             <PageHeader title="Settings" breadcrumbs={[{ label: 'Settings' }]} />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <PageContainer className="space-y-6">
                     <div className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                         <div>
                             <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Site Identity</h3>
@@ -194,7 +194,6 @@ function SettingsForm({ settings }: { settings: Settings }) {
                                     name="footerText"
                                     value={footerText}
                                     onChange={setFooterText}
-                                    help={`© ${new Date().getFullYear()} ${siteTitle}. All rights reserved.`}
                                     error={errors.footer_text?.[0]}
                                 />
                             </div>
@@ -203,6 +202,12 @@ function SettingsForm({ settings }: { settings: Settings }) {
                                 Reset to Default
                             </Button>
                         </div>
+
+                        {!errors.footer_text?.[0] && (
+                            <p className="max-w-md text-body-xs text-txt-black-500">
+                                {`© ${new Date().getFullYear()} ${siteTitle}. All rights reserved.`}
+                            </p>
+                        )}
                     </div>
 
                     <div className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
@@ -221,17 +226,21 @@ function SettingsForm({ settings }: { settings: Settings }) {
                                     label="Primary Colour"
                                     value={primaryColor}
                                     onChange={setPrimaryColor}
-                                    help="Used for buttons, links, and focus rings across the app."
                                 />
-                                {errors.primary_color?.[0] && (
-                                    <p className="mt-1 text-body-xs text-danger-600">{errors.primary_color[0]}</p>
-                                )}
                             </div>
 
                             <Button variant="secondary" type="button" onClick={handleResetColor}>
                                 Reset to Default
                             </Button>
                         </div>
+
+                        {errors.primary_color?.[0] ? (
+                            <p className="max-w-xs text-body-xs text-danger-600">{errors.primary_color[0]}</p>
+                        ) : (
+                            <p className="max-w-xs text-body-xs text-txt-black-500">
+                                Used for buttons, links, and focus rings across the app.
+                            </p>
+                        )}
 
                         <div className="flex flex-wrap items-center gap-3 rounded-md border border-otl-gray-200 bg-bg-washed p-4">
                             <span className="text-body-xs font-medium text-txt-black-500">Preview:</span>
@@ -274,8 +283,7 @@ function SettingsForm({ settings }: { settings: Settings }) {
                             Save Settings
                         </Button>
                     </div>
-                </div>
-            </div>
+            </PageContainer>
         </>
     );
 }

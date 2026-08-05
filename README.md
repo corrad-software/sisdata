@@ -1,115 +1,126 @@
 # MYDS Laravel Starter
 
-A fast-prototyping foundation for Malaysian government-style applications, built with Laravel 12, Livewire, Blade, and Tailwind CSS, styled against the [Malaysian Government Design System (MYDS)](https://github.com/govtechmy/myds).
+A production-shaped foundation for Malaysian government-style applications: a Laravel 12 JSON API backend paired with a Next.js (React) frontend, styled against the [Malaysian Government Design System (MYDS)](https://github.com/govtechmy/myds).
 
-It ships with authentication, a MYDS-styled public/dashboard shell (top navbar) and a separate admin shell (left sidebar), five reusable UI components, a sample User Management CRUD module, and a set of navbar utilities common to gov sites — dark mode, a WCAG text-size control, an EN/BM language switcher, and a real notification bell — enough scaffolding to start a real project without re-solving the same setup problems.
+It ships with cookie-based SPA authentication, an admin shell (collapsible sidebar, breadcrumbs, header), a Users CRUD module with role-based authorization, a Site Settings page (site title/footer/theme color/logo/favicon — the theme color regenerates MYDS's full color ramp from a single hex value), and a 30-page "Kitchen Sink" component reference library covering every MYDS foundation token and UI pattern (including 10 hand-rolled SVG chart types) — enough scaffolding to start a real project without re-solving the same setup problems.
 
 ## Technology
 
+**Backend**
 - Laravel 12 / PHP 8.3+
 - SQLite
-- Blade + Livewire 3
+- Laravel Sanctum (SPA cookie auth)
+
+**Frontend** (`frontend/`)
+- Next.js 16 (App Router) / React 19 / TypeScript
 - Tailwind CSS 3.4 (pinned, see [MYDS integration](#myds-integration) below)
 - [`@govtechmy/myds-style`](https://www.npmjs.com/package/@govtechmy/myds-style) — MYDS's design tokens as a Tailwind preset
+- TanStack Query (server state), Zustand (UI state), `sonner` (toasts)
 
 ## Installation
+
+Backend:
 
 ```bash
 git clone <this-repo> myds-laravel
 cd myds-laravel
 
 composer install
-npm install
-
 cp .env.example .env
 php artisan key:generate
 
 touch database/database.sqlite
 php artisan migrate
 
-npm run build     # or: npm run dev
-php artisan serve
+php artisan serve   # http://localhost:8000
 ```
 
-Visit `http://localhost:8000`, register an account, and you'll land on the dashboard. From there, "Admin" in the nav bar opens the sidebar-based admin area, where "Users" is the sample CRUD module.
+Frontend (in a second terminal):
 
-Run the test suite with:
+```bash
+cd frontend
+npm install
+cp .env.example .env.local
+
+npm run dev   # http://localhost:3000
+```
+
+Visit `http://localhost:3000`, register an account, and you'll land on the admin dashboard. "Users" is the sample CRUD module, "Settings" is the site configuration page, and "Kitchen Sink" is the component reference library.
+
+Run the backend test suite with:
 
 ```bash
 php artisan test
 ```
+
+## Architecture
+
+The Laravel app is a **pure JSON API** — it renders no HTML of its own beyond the default Laravel error pages. `routes/web.php` is intentionally empty; every real route lives in `routes/api.php`. The Next.js app is the only frontend, and is the sole consumer of that API.
+
+**Auth** is Sanctum's SPA (cookie-based) flow, not token auth: the frontend calls `GET /sanctum/csrf-cookie` once, then `POST /api/login`/`/api/register` with the `X-XSRF-TOKEN` header Laravel expects, and every subsequent request rides on the session cookie. In dev, `frontend/next.config.ts` rewrites `/api/*` and `/sanctum/*` to the Laravel server, so the browser only ever talks to `localhost:3000` — same-origin, no CORS configuration needed. In production, put a reverse proxy in front of both apps on the same top-level domain for the same effect (see `SANCTUM_STATEFUL_DOMAINS` / `SESSION_DOMAIN` in `.env`).
+
+**Route protection** is two-layered: `frontend/proxy.ts` (Next.js's `middleware.ts` equivalent) does a cheap cookie-*presence* check to redirect obviously-unauthenticated requests before any rendering happens; the authoritative check is server-side in `app/(dashboard)/layout.tsx`, which forwards the request's cookies to `GET /api/user` and redirects to `/login` if that fails. Admin-only API routes (`users`, and the settings *write* endpoints) are additionally gated by the `admin` middleware alias (`App\Http\Middleware\EnsureUserIsAdmin`), checking `role === 'admin'` — the public settings `GET` stays unauthenticated since the guest/login layout needs it too.
+
+**Site-wide theming**: the root layout (`frontend/app/layout.tsx`) fetches `GET /api/settings` on every request and injects the returned `theme_css` string — `"* { --_primary-50: r g b; ... }"` — into `<head>`, *after* the compiled Tailwind stylesheet so it wins by source order. This matters because MYDS defines its `--_primary-*` variables on a universal `*` selector, not `:root` — every element gets its own directly-assigned value rather than inheriting from `<html>`, so an override has to target the same selector or it silently has no effect except on `<html>` itself. The ramp itself is generated server-side (`app/Support/ThemeColor.php`) from a single hex color via hand-rolled HSL math against a fixed lightness table per shade — kept in Laravel rather than duplicated in TypeScript, so there's one source of truth for the color math.
 
 ## Folder Structure
 
 ```
 app/
 ├── Http/
-│   ├── Middleware/SetLocale.php   # applies session-stored locale (en/ms) on every request
-│   └── Requests/
-│       ├── StoreUserRequest.php   # validation rules for creating a user
-│       └── UpdateUserRequest.php  # validation rules for updating a user
-├── Livewire/
-│   ├── Auth/, Profile/            # Breeze-generated auth & profile components
-│   ├── Layout/
-│   │   ├── AdminNavigation.php    # admin topbar: user dropdown + logout
-│   │   ├── NotificationBell.php   # notification dropdown (both navbars)
-│   │   └── ...                    # public navbar Livewire logic lives in the Volt-style view itself
-│   └── UserManagement.php         # sample CRUD module (list/search/create/edit/delete)
+│   ├── Controllers/Api/
+│   │   ├── AuthController.php     # login / register / logout / user
+│   │   ├── UserController.php     # Users CRUD (admin-only)
+│   │   └── SettingController.php  # site settings read (public) + write/upload (admin-only)
+│   ├── Middleware/
+│   │   └── EnsureUserIsAdmin.php  # the "admin" route middleware alias
+│   ├── Requests/
+│   │   ├── StoreUserRequest.php
+│   │   ├── UpdateUserRequest.php
+│   │   └── UpdateSettingsRequest.php
+│   └── Resources/
+│       └── UserResource.php
 ├── Models/
-│   └── User.php
-├── Notifications/
-│   └── UserCreated.php            # database notification sent when Users CRUD creates a user
-└── View/Components/
-    ├── AppLayout.php              # aliases <x-app-layout> to layouts.app
-    ├── GuestLayout.php            # aliases <x-guest-layout> to layouts.guest
-    └── AdminLayout.php            # aliases <x-admin-layout> to layouts.admin
+│   ├── User.php
+│   └── Setting.php                # key/value store backing Site Settings, cached via Cache::rememberForever
+├── Support/
+│   └── ThemeColor.php             # hex -> MYDS color-ramp generation
+└── Notifications/
+    └── UserCreated.php            # database notification sent when Users CRUD creates a user
 
 database/
 ├── database.sqlite
-└── migrations/                    # includes add_role_and_is_active_to_users_table, notifications table
-
-lang/
-├── en/                            # Laravel's default validation/auth/pagination strings (published)
-└── ms.json                        # Bahasa Malaysia translations for every __('...') string in the app
-
-resources/
-├── css/app.css                    # imports MYDS tokens (incl. dark theme) + Tailwind directives
-├── views/
-│   ├── admin/dashboard.blade.php  # admin area landing page
-│   ├── components/                # reusable Blade components (see below)
-│   ├── partials/theme-init.blade.php  # blocking <head> script: applies stored dark-mode/font-size before paint
-│   ├── layouts/
-│   │   ├── app.blade.php          # public/dashboard shell: masthead, top navbar, content, footer
-│   │   ├── guest.blade.php        # auth-page shell
-│   │   └── admin.blade.php        # admin shell: masthead, left sidebar, topbar, content, footer
-│   ├── livewire/
-│   │   ├── layout/
-│   │   │   ├── navigation.blade.php        # public top navbar (Volt)
-│   │   │   ├── admin-navigation.blade.php  # admin topbar dropdown
-│   │   │   └── notification-bell.blade.php # shared by both navbars
-│   │   ├── pages/auth/            # Breeze Livewire auth screens
-│   │   ├── profile/
-│   │   └── user-management.blade.php
-│   └── dashboard.blade.php
+└── migrations/                    # users (+role/is_active), settings, notifications, sessions/cache/jobs
 
 routes/
-├── web.php                        # public routes, locale.switch, and the admin.* route group
-└── auth.php                       # Breeze auth routes
+├── api.php                        # every real route lives here
+└── web.php                        # intentionally empty — see Architecture above
 
-tailwind.config.js                 # presets: [MYDS tailwind preset], darkMode: 'class'
+frontend/
+├── app/
+│   ├── (auth)/login, register     # guest shell + pages
+│   ├── (dashboard)/               # authenticated shell (sidebar, breadcrumbs, header)
+│   │   ├── admin/                 # dashboard landing page
+│   │   ├── admin/users/           # Users CRUD (TanStack Query)
+│   │   ├── admin/settings/        # Site Settings page
+│   │   └── admin/kitchen-sink/    # Foundation / Components / Data Visual / Sample Pages (30 pages)
+│   ├── layout.tsx                 # root layout: fetches settings, injects theme CSS + title + favicon
+│   └── page.tsx                   # auth-check redirect to /admin or /login
+├── components/
+│   ├── ui/                        # shared primitives: Button, Table, Modal, FieldInput, charts/, ...
+│   └── ...                        # Sidebar, DashboardShell, Breadcrumb, Masthead, Footer, ...
+├── lib/
+│   ├── api.ts                     # client fetch wrapper: CSRF cookie + XSRF header + credentials
+│   ├── auth-server.ts             # server-side session check (dashboard layout)
+│   └── settings-server.ts         # server-side settings fetch (root layout)
+├── store/sidebar.ts                # Zustand store for sidebar collapsed state (persisted)
+├── proxy.ts                        # cookie-presence redirect (Next.js 16's middleware.ts equivalent)
+└── tailwind.config.ts              # presets: [MYDS tailwind preset], darkMode: 'class'
 ```
 
-### Reusable components (`resources/views/components/`)
+### Reusable components (`frontend/components/ui/`)
 
-| Component | File | Notes |
-|---|---|---|
-| Button | `button.blade.php` | `<x-button variant="primary\|secondary\|danger\|outline" size="sm\|md\|lg">`. Renders `<a>` when given an `href`. Breeze's `primary-button`/`secondary-button`/`danger-button` are thin wrappers around it, so every button in the app shares one style source. |
-| Form Input | `input.blade.php` | `<x-input label="..." name="..." error="..." help="...">` — label, input, help text, and validation error in one call. Breeze's lower-level `text-input`/`input-label`/`input-error` are restyled to match but kept separate, since Breeze's auth views wire them up individually. |
-| Table | `table.blade.php` | `<x-table><x-slot name="head">...</x-slot>...rows...</x-table>` — MYDS-styled wrapper around a standard HTML table. |
-| Modal | `modal.blade.php` | Breeze's Alpine-based modal (focus trap, ESC to close, backdrop), restyled to MYDS. Opened/closed via the `open-modal` / `close-modal` browser events (`$dispatch('open-modal', 'name')`), used by both the CRUD module and Breeze's "delete account" flow. |
-| Alert | `alert.blade.php` | `<x-alert type="success\|error\|warning\|info" dismissible>`. `auth-session-status.blade.php` delegates to it, so login/registration status messages use the same component. |
-
-`sidebar-link.blade.php` (the admin sidebar's nav-link equivalent of `nav-link.blade.php`) isn't in the "5 required" list above but follows the same pattern, for the same reason `nav-link` exists for the top navbar. The navbar utility controls — `theme-toggle.blade.php`, `font-size-toggle.blade.php`, `language-switcher.blade.php` — are documented in [Navbar Utilities](#navbar-utilities) below.
+The full set mirrors what the Kitchen Sink demonstrates — buttons, form fields, tables, modals, dropdowns, tabs, accordions, badges, toasts (via `sonner`), a calendar, file upload, and ten chart types (bar/line/donut/pie/multi-line/gauge/stacked-bar/horizontal-bar/heatmap/radar), all built directly against MYDS's Tailwind tokens with no external UI or charting library. Browse `/admin/kitchen-sink` in a running app for the full visual reference — every component there is used verbatim from `components/ui/`.
 
 ## Database Design
 
@@ -120,47 +131,21 @@ tailwind.config.js                 # presets: [MYDS tailwind preset], darkMode: 
 | `id` | bigint, PK | |
 | `name` | string | |
 | `email` | string, unique | |
-| `email_verified_at` | timestamp, nullable | |
 | `password` | string, hashed | |
-| `role` | string, default `user` | `admin` or `user` — a plain string column rather than a separate `roles` table, to keep the CRUD demo simple |
+| `role` | string, default `user` | `admin` or `user` — gates admin-only API routes via `EnsureUserIsAdmin` |
 | `is_active` | boolean, default `true` | drives the Active/Inactive badge in the Users table |
 | `remember_token` | string, nullable | |
 | `created_at` / `updated_at` | timestamps | |
 
-**`sessions`, `cache`, `jobs`** — Laravel 12 defaults, unmodified (needed since `SESSION_DRIVER`/`CACHE_STORE` default to `database`).
+**`settings`** — plain key/value store (`key` unique, `value` text nullable) backing Site Settings: `site_title`, `footer_text`, `primary_color`, `site_logo`, `site_favicon`. Read through `Setting::get()`/cached via a single `Cache::rememberForever` key, invalidated on any write.
 
-No other tables. A single-entity CRUD is enough to demonstrate the pattern (Model + Migration + Form Requests + Livewire component + Blade components) without adding structure the POC doesn't need.
-
-## Architecture Notes
-
-**Auth** is Laravel Breeze's Livewire stack (`php artisan breeze:install livewire`) — Login, Register, Forgot/Reset Password, Email Verification, and Profile management, all Livewire + Blade out of the box.
-
-**Two layouts, two shells.** `layouts.app` (top navbar) is the general/public-facing shell — Dashboard, Profile. `layouts.admin` (left sidebar + topbar) is a separate shell for the admin section under `/admin/*`, both sitting under the same masthead/footer. They're independent Blade layouts, not a shared component with a "sidebar mode" flag — keeping them separate means each stays simple and neither has to branch internally for the other's shape. The public navbar has a single "Admin" link as the entry point into `/admin`; there's no role restriction on it in this starter (any logged-in user can enter), since gating routes by `role` is a one-line `->middleware('can:...')`/custom middleware addition you can bolt on when you actually need it, rather than something worth scaffolding speculatively.
-
-**The User Management CRUD is Livewire-powered**, not a classic resource controller, and lives under the admin shell at `/admin/users`:
-
-- The route (`routes/web.php`, inside the `admin.` route group) points directly at the Livewire component: `Route::get('users', UserManagement::class)`. The full-page Livewire component *is* the controller layer here — that's the standard Livewire convention, and adding a near-empty `UserController` on top of it would just be redundant indirection.
-- `StoreUserRequest` / `UpdateUserRequest` still exist as the single source of truth for validation rules, and `UserManagement::save()` calls into them (`(new StoreUserRequest)->rules()`) instead of duplicating validation logic — Form Requests reused outside the HTTP lifecycle.
-- Model + Migration are standard Eloquent.
-- Modals for create/edit/delete are the same reusable `x-modal` component described above.
-- `#[Layout('layouts.admin')]` on the `UserManagement` class is what places it inside the sidebar shell instead of the top-navbar one.
-
-If you need a second CRUD module that *should* go through classic Controllers (e.g. because it's consumed by an API too), that pattern isn't used here but fits naturally alongside this one — a resource controller + Form Request + Blade views work the same way this app already validates and models data.
-
-## Navbar Utilities
-
-Both navbars (public top nav and admin topbar) share the same four controls, each a small reusable Blade/Livewire piece rather than baked into the nav markup:
-
-- **Dark mode** (`x-theme-toggle`) — toggles a `dark` class on `<html>`, which is all that's needed: this app's colors are built on MYDS's CSS-variable tokens (`bg-bg-white`, `text-txt-black-900`, `border-otl-divider`, etc.), and `@govtechmy/myds-style/dark.css` redefines those same variables under `.dark`, so most of the app re-themes automatically. `tailwind.config.js` sets `darkMode: 'class'` to match. The one thing to watch: **plain Tailwind color utilities don't flip** — `bg-white` is a static primitive (`rgb(var(--_white))`, never overridden), while the semantic `bg-bg-white` (`rgb(var(--bg-white))`) is what `dark.css` actually redefines. Every "white card surface" in this app intentionally uses `bg-bg-white`, not `bg-white` — reach for the same semantic tokens (`bg-bg-*`, `text-txt-*`, `border-otl-*`) for anything new that should support dark mode. The preference is stored in `localStorage.theme` and applied before first paint by `partials/theme-init.blade.php` (a blocking inline `<script>` in `<head>`) to avoid a flash of the wrong theme; since `wire:navigate` only swaps `<body>`, the class on `<html>` naturally survives Livewire page navigations.
-- **Text size** (`x-font-size-toggle`) — a 3-step "A / A / A" control (WCAG 1.4.4, resize text) that adds `font-size-large` / `font-size-xlarge` to `<html>`, which scale the root `font-size` via plain CSS in `app.css`. Because this app's whole type scale is rem-based (MYDS's `body-sm`, `heading-2xs`, etc.), scaling the root font-size scales everything proportionally — no per-component work needed. Stored in `localStorage.fontSize`, also applied pre-paint by `theme-init.blade.php`.
-- **Language** (`x-language-switcher`) — EN/BM links hitting `Route::get('locale/{locale}', ...)`, which stores the choice in the session; `SetLocale` middleware (registered globally in `bootstrap/app.php`) applies it on every request via `App::setLocale()` and syncs `Carbon::setLocale()` too, so relative timestamps ("2 minutes ago") translate along with everything else. These are plain links (not `wire:navigate`) — switching locale needs a full page render since Blade strings outside the clicked component (e.g. the page's own `__('Dashboard')` heading) only re-translate on a fresh server render, not a same-component Livewire update. Translations for every `__('...')` string in the app live in `lang/ms.json`; Laravel falls back to English for anything untranslated (namespaced strings like `auth.password` use `lang/en/*.php`, published via `php artisan lang:publish`, with no `lang/ms/*.php` counterpart — validation error text stays in English in BM mode, which is an acceptable gap for a POC).
-- **Notifications** (`livewire:layout.notification-bell`) — real Laravel [database notifications](https://laravel.com/docs/notifications#database-notifications), not placeholder UI. Creating a user in the CRUD module (`UserManagement::save()`) sends the acting admin an `App\Notifications\UserCreated`; the bell shows an unread-count badge and a dropdown (built on the existing `x-dropdown` component) listing recent notifications with `->diffForHumans()` timestamps, click-to-mark-as-read, and "mark all as read". It's a *separate* Livewire component from `UserManagement`, so it wouldn't otherwise know a notification just arrived — it polls every 15s (`wire:poll.15s`) as a baseline, but `UserManagement::save()` also dispatches a `notification-created` browser event that `NotificationBell` listens for (`#[On('notification-created')]`) to refresh immediately instead of waiting on the poll.
+**`sessions`, `cache`, `jobs`** — Laravel 12 defaults, unmodified (needed since `SESSION_DRIVER`/`CACHE_STORE` default to `database`; sessions specifically back Sanctum's SPA auth).
 
 ## MYDS Integration
 
-MYDS's component library (`packages/react` in the [govtechmy/myds](https://github.com/govtechmy/myds) repo) is **React** — it can't be imported into a Blade/Livewire app. What *is* directly reusable is `packages/style`, published as [`@govtechmy/myds-style`](https://www.npmjs.com/package/@govtechmy/myds-style): MYDS's Tailwind CSS preset and design tokens (color scales, `bg-*`/`txt-*`/`otl-*`/`fr-*` semantic utilities, Inter/Poppins/Roboto Mono type scale, radius, shadows) independent of React.
+MYDS's component library (`packages/react` in the [govtechmy/myds](https://github.com/govtechmy/myds) repo) is React — directly usable in principle, but this starter hand-builds its own component set against `packages/style` (published as [`@govtechmy/myds-style`](https://www.npmjs.com/package/@govtechmy/myds-style)) instead, for full control over markup and behavior. That package is MYDS's Tailwind CSS preset and design tokens — color scales, `bg-*`/`txt-*`/`otl-*`/`fr-*` semantic utilities, Inter/Poppins/Roboto Mono type scale, radius, shadows — independent of the React components.
 
-That package targets **Tailwind CSS v3.4**, so this project is pinned to Tailwind v3 (classic `tailwind.config.js` + PostCSS) rather than Laravel 12's newer v4 default — Breeze's `breeze:install livewire` scaffolds v3 by default, which is what makes this integration possible without extra downgrade work.
+That package targets **Tailwind CSS v3.4**, so `frontend/` is pinned to Tailwind v3 (classic `tailwind.config.ts` + PostCSS) rather than `create-next-app`'s current Tailwind v4 default.
 
 Setup, if you're wiring this into a fresh project:
 
@@ -168,8 +153,8 @@ Setup, if you're wiring this into a fresh project:
 npm install @govtechmy/myds-style
 ```
 
-```js
-// tailwind.config.js
+```ts
+// tailwind.config.ts
 import mydsPreset from './node_modules/@govtechmy/myds-style/tailwind.config.js';
 // note: imported by relative path, not the package specifier — the package's
 // package.json "exports" map doesn't expose ./tailwind.config.js as a subpath,
@@ -177,12 +162,13 @@ import mydsPreset from './node_modules/@govtechmy/myds-style/tailwind.config.js'
 
 export default {
     presets: [mydsPreset],
+    darkMode: 'class',
     content: [/* ... */],
 };
 ```
 
 ```css
-/* resources/css/app.css */
+/* app/globals.css */
 @import '@govtechmy/myds-style/color.css';
 @import '@govtechmy/myds-style/light.css';
 @import '@govtechmy/myds-style/dark.css';
@@ -193,11 +179,12 @@ export default {
 @tailwind utilities;
 ```
 
-(The package's `full.css` export point is an empty build artifact in the published `1.0.0` version — importing `color.css` + `light.css` + `dark.css` directly, as done here, is the working path. See [Navbar Utilities](#navbar-utilities) for how `dark.css` is actually toggled.)
+(The package's `full.css` export point is an empty build artifact in the published `1.0.0` version — importing `color.css` + `light.css` + `dark.css` directly, as done here, is the working path.)
 
-With the tokens in place, the app's Blade components (Button, Input, Table, Modal, Alert) and layout (Masthead, Navbar, Footer) are hand-built to match MYDS's visual language using those utility classes — MYDS's actual component markup was used as a visual reference, not copied in directly, since it's React JSX.
+**A load-bearing detail if you ever touch theming**: MYDS defines `--_primary-*` and friends via a universal `*` selector in `color.css`, not `:root` — meaning every element gets its own directly-assigned value rather than inheriting one from `<html>`. Any runtime color override (like Site Settings' theme color) must match that same `*` selector and be placed *after* the compiled stylesheet in `<head>` to win by source order, or it will silently have no visible effect except on `<html>` itself. `app/Support/ThemeColor.php` (`css()` method) and `frontend/app/layout.tsx` both encode this — see [Architecture](#architecture) above.
 
 ## Notes
 
 - The repo targets PHP `^8.3` (set in `composer.json`); it also runs fine on newer PHP 8.x.
 - The Malaysian government masthead bar at the top of every page is a simplified static version — real MYDS masthead components include an expandable "how to identify an official government site" panel, omitted here to keep the layout simple.
+- No role-based UI hiding exists yet on the frontend (a `role: 'user'` account will see the Users/Settings nav links even though the API correctly 403s their requests) — the authorization boundary is enforced server-side; client-side hiding is a straightforward follow-up if you need it.

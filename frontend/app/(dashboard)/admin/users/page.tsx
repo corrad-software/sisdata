@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { PageContainer } from '@/components/PageContainer';
 import { PageHeader } from '@/components/PageHeader';
 import { Table } from '@/components/ui/Table';
 import { Badge } from '@/components/ui/Badge';
@@ -121,8 +122,7 @@ export default function UsersPage() {
         <>
             <PageHeader title="Users" breadcrumbs={[{ label: 'Users' }]} />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <PageContainer className="space-y-6">
                     <div className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-end mb-6">
                             <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
@@ -217,8 +217,7 @@ export default function UsersPage() {
                             </div>
                         )}
                     </div>
-                </div>
-            </div>
+            </PageContainer>
 
             <Modal open={formOpen} onClose={() => setFormOpen(false)}>
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">

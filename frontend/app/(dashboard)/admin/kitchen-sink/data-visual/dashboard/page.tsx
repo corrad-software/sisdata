@@ -1,3 +1,4 @@
+import { PageContainer } from '@/components/PageContainer';
 import { StatCard } from '@/components/ui/StatCard';
 import { BarChart } from '@/components/ui/charts/BarChart';
 import { LineChart } from '@/components/ui/charts/LineChart';
@@ -19,7 +20,7 @@ const PROCESS_STEPS = ['Submit', 'Review', 'Approve', 'Complete'];
 
 export default function DataVisualDashboardPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="space-y-4">
                 <div>
                     <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Key Metrics</h3>
@@ -212,6 +213,6 @@ export default function DataVisualDashboardPage() {
                     ))}
                 </div>
             </section>
-        </div>
+        </PageContainer>
     );
 }

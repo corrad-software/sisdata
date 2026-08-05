@@ -1,3 +1,4 @@
+import { PageContainer } from '@/components/PageContainer';
 import { Accordion } from '@/components/ui/Accordion';
 import { Panel } from '@/components/ui/Panel';
 
@@ -21,7 +22,7 @@ const ACCORDION_ITEMS = [
 
 export default function ContentPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                 <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Accordion</h3>
                 <p className="text-body-sm text-txt-black-500">One panel open at a time — click a heading to expand it.</p>
@@ -73,6 +74,6 @@ export default function ContentPage() {
                     after this time.
                 </blockquote>
             </section>
-        </div>
+        </PageContainer>
     );
 }

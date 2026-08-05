@@ -7,8 +7,6 @@ import { useSidebarStore } from '@/store/sidebar';
 import { SidebarLink } from './SidebarLink';
 import { ApplicationLogo } from './ApplicationLogo';
 
-const APP_NAME = 'Laravel';
-
 const KITCHEN_SINK_GROUPS: Array<{ key: string; label: string; href: string }> = [
     { key: 'foundation', label: 'Foundation', href: '/admin/kitchen-sink/foundation/colour' },
     { key: 'components', label: 'Components', href: '/admin/kitchen-sink/components/buttons' },
@@ -111,6 +109,8 @@ function KitchenSinkNavGroup({ collapsed }: { collapsed: boolean }) {
                 type="button"
                 onClick={handleClick}
                 className={`flex w-full items-center gap-3 px-3 py-2 rounded-md text-body-sm leading-tight font-medium ${
+                    collapsed ? 'lg:justify-center' : ''
+                } ${
                     isActiveGroup
                         ? 'bg-white text-primary-700 shadow-sm'
                         : 'text-primary-100 hover:bg-primary-600 hover:text-white'
@@ -153,7 +153,15 @@ function KitchenSinkNavGroup({ collapsed }: { collapsed: boolean }) {
     );
 }
 
-export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function Sidebar({
+    open,
+    onClose,
+    siteTitle = 'MYDS-Laravel',
+}: {
+    open: boolean;
+    onClose: () => void;
+    siteTitle?: string;
+}) {
     const collapsed = useSidebarStore((s) => s.collapsed);
     const toggle = useSidebarStore((s) => s.toggle);
 
@@ -171,7 +179,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
                 <button
                     type="button"
                     onClick={toggle}
-                    className="hidden lg:flex absolute -right-3 top-14 h-6 w-6 items-center justify-center rounded-full border-2 border-primary-600 bg-bg-white text-primary-600 shadow-card hover:bg-primary-600 hover:text-white z-10"
+                    className="hidden lg:flex absolute -right-3 top-12 h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-primary-600 text-white shadow-card hover:bg-bg-white hover:text-primary-600 z-10"
                     title={collapsed ? 'Expand menu' : 'Collapse menu'}
                 >
                     <svg
@@ -189,7 +197,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
                     <Link href="/admin" className="flex items-center gap-2 min-w-0">
                         <ApplicationLogo className="h-8 w-auto flex-shrink-0 fill-current text-white" />
                         <span className={`truncate text-body-sm font-semibold text-white ${collapsed ? 'lg:hidden' : ''}`}>
-                            {APP_NAME}
+                            {siteTitle}
                         </span>
                     </Link>
                     <button type="button" className="lg:hidden text-primary-100 hover:text-white" onClick={onClose}>

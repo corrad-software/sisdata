@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PageContainer } from '@/components/PageContainer';
 import { QuickSearch } from '@/components/ui/QuickSearch';
 import { FontSizeToggle } from '@/components/ui/FontSizeToggle';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
@@ -44,7 +45,7 @@ function SidebarParentDemo() {
 
 export default function NavigationPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                 <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Navbar Utilities</h3>
                 <p className="text-body-sm text-txt-black-500">
@@ -105,6 +106,6 @@ export default function NavigationPage() {
                     </TabPanel>
                 </Tabs>
             </section>
-        </div>
+        </PageContainer>
     );
 }

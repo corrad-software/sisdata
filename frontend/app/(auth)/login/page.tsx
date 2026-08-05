@@ -3,12 +3,11 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { toast } from 'sonner';
 import { login } from '@/lib/auth';
 import { ApiError } from '@/lib/api';
-import { InputLabel } from '@/components/ui/InputLabel';
-import { TextInput } from '@/components/ui/TextInput';
-import { InputError } from '@/components/ui/InputError';
+import { FieldInput } from '@/components/ui/FieldInput';
 import { Button } from '@/components/ui/Button';
 
 function getRedirectTarget(): string {
@@ -45,54 +44,54 @@ export default function LoginPage() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <InputLabel htmlFor="email">Email</InputLabel>
-                <TextInput
-                    id="email"
+        <>
+            <h2 className="mb-1 font-heading text-heading-xs font-semibold text-txt-black-900">Log in to your account</h2>
+            <p className="mb-6 text-body-sm text-txt-black-500">Welcome back! Please enter your details.</p>
+
+            <form className="space-y-4" onSubmit={handleSubmit}>
+                <FieldInput
+                    label="Email"
                     type="email"
-                    className="block mt-1 w-full"
+                    name="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={setEmail}
                     required
                     autoFocus
                     autoComplete="username"
+                    error={errors.email?.[0]}
                 />
-                <InputError messages={errors.email} className="mt-2" />
-            </div>
-
-            <div className="mt-4">
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <TextInput
-                    id="password"
+                <FieldInput
+                    label="Password"
                     type="password"
-                    className="block mt-1 w-full"
+                    name="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={setPassword}
                     required
                     autoComplete="current-password"
+                    error={errors.password?.[0]}
                 />
-                <InputError messages={errors.password} className="mt-2" />
-            </div>
 
-            <div className="block mt-4">
-                <label htmlFor="remember" className="inline-flex items-center">
+                <label className="flex items-center gap-2">
                     <input
-                        id="remember"
                         type="checkbox"
-                        className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
                         checked={remember}
                         onChange={(e) => setRemember(e.target.checked)}
+                        className="rounded border-otl-gray-300 text-primary-600 focus:ring-fr-primary"
                     />
-                    <span className="ms-2 text-sm text-gray-600">Remember me</span>
+                    <span className="text-body-sm text-txt-black-900">Remember me</span>
                 </label>
-            </div>
 
-            <div className="flex items-center justify-end mt-4">
-                <Button type="submit" className="ms-3" disabled={submitting}>
+                <Button variant="primary" type="submit" className="w-full" disabled={submitting}>
                     Log in
                 </Button>
-            </div>
-        </form>
+            </form>
+
+            <p className="mt-6 text-center text-body-sm text-txt-black-500">
+                {"Don't have an account? "}
+                <Link href="/register" className="font-medium text-primary-600 hover:text-primary-700">
+                    Register
+                </Link>
+            </p>
+        </>
     );
 }

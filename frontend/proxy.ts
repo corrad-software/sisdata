@@ -2,11 +2,18 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 const SESSION_COOKIE = process.env.SESSION_COOKIE_NAME ?? 'laravel-session';
-const GUEST_ONLY_PATHS = ['/login', '/register'];
 
 // Cheap cookie-presence check only — an opaque Laravel session cookie can't be
-// validated here without a network call. The authoritative check happens in
-// app/(dashboard)/layout.tsx by forwarding the cookie to GET /api/user.
+// validated here without a network call. The authoritative "am I logged in"
+// check happens server-side via getServerUser(): app/(dashboard)/layout.tsx
+// for protecting /admin, and app/(auth)/layout.tsx for redirecting an
+// already-authenticated visitor away from /login and /register.
+//
+// Deliberately NOT redirecting /login and /register away when a session
+// cookie is merely present: logging out rotates the cookie to a fresh,
+// unauthenticated session rather than clearing it, so "cookie present" isn't
+// "authenticated" — treating it as such here bounced /login back to /admin
+// (whose layout would then bounce right back to /login) in a redirect loop.
 export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const hasSession = request.cookies.has(SESSION_COOKIE);
@@ -17,13 +24,9 @@ export function proxy(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    if (hasSession && GUEST_ONLY_PATHS.includes(pathname)) {
-        return NextResponse.redirect(new URL('/admin', request.url));
-    }
-
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/login', '/register'],
+    matcher: ['/admin/:path*'],
 };

@@ -7,9 +7,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { register } from '@/lib/auth';
 import { ApiError } from '@/lib/api';
-import { InputLabel } from '@/components/ui/InputLabel';
-import { TextInput } from '@/components/ui/TextInput';
-import { InputError } from '@/components/ui/InputError';
+import { FieldInput } from '@/components/ui/FieldInput';
 import { Button } from '@/components/ui/Button';
 
 export default function RegisterPage() {
@@ -42,76 +40,63 @@ export default function RegisterPage() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <InputLabel htmlFor="name">Name</InputLabel>
-                <TextInput
-                    id="name"
-                    type="text"
-                    className="block mt-1 w-full"
+        <>
+            <h2 className="mb-1 font-heading text-heading-xs font-semibold text-txt-black-900">Create your account</h2>
+            <p className="mb-6 text-body-sm text-txt-black-500">Fill in your details to get started.</p>
+
+            <form className="space-y-4" onSubmit={handleSubmit}>
+                <FieldInput
+                    label="Name"
+                    name="name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={setName}
                     required
                     autoFocus
                     autoComplete="name"
+                    error={errors.name?.[0]}
                 />
-                <InputError messages={errors.name} className="mt-2" />
-            </div>
-
-            <div className="mt-4">
-                <InputLabel htmlFor="email">Email</InputLabel>
-                <TextInput
-                    id="email"
+                <FieldInput
+                    label="Email"
                     type="email"
-                    className="block mt-1 w-full"
+                    name="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={setEmail}
                     required
                     autoComplete="username"
+                    error={errors.email?.[0]}
                 />
-                <InputError messages={errors.email} className="mt-2" />
-            </div>
-
-            <div className="mt-4">
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <TextInput
-                    id="password"
+                <FieldInput
+                    label="Password"
                     type="password"
-                    className="block mt-1 w-full"
+                    name="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={setPassword}
                     required
                     autoComplete="new-password"
+                    error={errors.password?.[0]}
                 />
-                <InputError messages={errors.password} className="mt-2" />
-            </div>
-
-            <div className="mt-4">
-                <InputLabel htmlFor="password_confirmation">Confirm Password</InputLabel>
-                <TextInput
-                    id="password_confirmation"
+                <FieldInput
+                    label="Confirm Password"
                     type="password"
-                    className="block mt-1 w-full"
+                    name="password_confirmation"
                     value={passwordConfirmation}
-                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    onChange={setPasswordConfirmation}
                     required
                     autoComplete="new-password"
+                    error={errors.password_confirmation?.[0]}
                 />
-                <InputError messages={errors.password_confirmation} className="mt-2" />
-            </div>
 
-            <div className="flex items-center justify-end mt-4">
-                <Link
-                    className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    href="/login"
-                >
-                    Already registered?
-                </Link>
-
-                <Button type="submit" className="ms-4" disabled={submitting}>
+                <Button variant="primary" type="submit" className="w-full" disabled={submitting}>
                     Register
                 </Button>
-            </div>
-        </form>
+            </form>
+
+            <p className="mt-6 text-center text-body-sm text-txt-black-500">
+                Already have an account?{' '}
+                <Link href="/login" className="font-medium text-primary-600 hover:text-primary-700">
+                    Log in
+                </Link>
+            </p>
+        </>
     );
 }

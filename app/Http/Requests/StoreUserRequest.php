@@ -19,10 +19,6 @@ class StoreUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * Also called directly from the UserManagement Livewire component
-     * (outside the HTTP lifecycle) so create/update validation stays
-     * defined in a single place.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array

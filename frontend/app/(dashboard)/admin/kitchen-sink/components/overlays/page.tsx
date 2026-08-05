@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PageContainer } from '@/components/PageContainer';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { Dropdown, DropdownLink } from '@/components/ui/Dropdown';
@@ -10,7 +11,7 @@ export default function OverlaysPage() {
     const [confirmOpen, setConfirmOpen] = useState(false);
 
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                 <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Modal</h3>
 
@@ -64,6 +65,6 @@ export default function OverlaysPage() {
                     <DropdownLink href="#">Item three</DropdownLink>
                 </Dropdown>
             </section>
-        </div>
+        </PageContainer>
     );
 }

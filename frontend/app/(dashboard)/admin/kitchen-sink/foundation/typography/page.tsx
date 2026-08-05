@@ -1,3 +1,5 @@
+import { PageContainer } from '@/components/PageContainer';
+
 const HEADINGS = [
     { className: 'text-heading-xl', name: 'heading-xl', size: '60px / 72px' },
     { className: 'text-heading-lg', name: 'heading-lg', size: '48px / 60px' },
@@ -17,7 +19,7 @@ const BODY = [
 
 export default function TypographyPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-6">
                 <div>
                     <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Font Families</h3>
@@ -89,6 +91,6 @@ export default function TypographyPage() {
                     ))}
                 </div>
             </section>
-        </div>
+        </PageContainer>
     );
 }

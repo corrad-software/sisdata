@@ -1,8 +1,9 @@
+import { PageContainer } from '@/components/PageContainer';
 import { Button, LinkButton } from '@/components/ui/Button';
 
 export default function ButtonsPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                 <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Button</h3>
 
@@ -72,6 +73,6 @@ export default function ButtonsPage() {
                     </p>
                 </div>
             </section>
-        </div>
+        </PageContainer>
     );
 }

@@ -1,10 +1,25 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { Masthead } from '@/components/Masthead';
 import { Footer } from '@/components/Footer';
 import { ApplicationLogo } from '@/components/ApplicationLogo';
+import { getServerSettings } from '@/lib/settings-server';
+import { getServerUser } from '@/lib/auth-server';
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default async function AuthLayout({ children }: { children: ReactNode }) {
+    // Authoritative check (unlike proxy.ts's cheap cookie-presence check) —
+    // an already-logged-in visitor shouldn't see the login/register forms.
+    const user = await getServerUser();
+
+    if (user) {
+        redirect('/admin');
+    }
+
+    // Deduped with the root layout's own call via getServerSettings' cache()
+    // wrapper — this doesn't cost a second network round-trip.
+    const settings = await getServerSettings();
+
     return (
         <div className="min-h-screen flex flex-col bg-bg-washed">
             <Masthead />
@@ -21,7 +36,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
                 </div>
             </div>
 
-            <Footer />
+            <Footer siteTitle={settings.site_title} footerText={settings.footer_text} />
         </div>
     );
 }

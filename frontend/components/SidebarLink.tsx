@@ -21,9 +21,13 @@ export function SidebarLink({ href, icon, label, activeMatch, children }: Sideba
 
     const active = activeMatch ? activeMatch(pathname) : pathname === href;
 
-    const classes = active
-        ? 'flex items-center gap-3 px-3 py-2 rounded-md text-body-sm leading-tight font-medium bg-white text-primary-700 shadow-sm'
-        : 'flex items-center gap-3 px-3 py-2 rounded-md text-body-sm leading-tight font-medium text-primary-100 hover:bg-primary-600 hover:text-white';
+    const classes = `flex w-full items-center gap-3 px-3 py-2 rounded-md text-body-sm leading-tight font-medium ${
+        collapsed ? 'lg:justify-center' : ''
+    } ${
+        active
+            ? 'bg-white text-primary-700 shadow-sm'
+            : 'text-primary-100 hover:bg-primary-600 hover:text-white'
+    }`;
 
     return (
         <div className="relative" onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)}>

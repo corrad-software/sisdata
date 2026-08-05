@@ -20,8 +20,11 @@ export function UserMenu({ user }: { user: User }) {
 
     async function handleLogout() {
         await logout();
+        // No router.refresh() here: /login has no auth-dependent server logic
+        // to go stale, and refreshing the still-mounted /admin tree at the same
+        // moment races its own server-side redirect (now unauthenticated)
+        // against this client push — the two competing navigations can hang.
         router.push('/login');
-        router.refresh();
     }
 
     return (

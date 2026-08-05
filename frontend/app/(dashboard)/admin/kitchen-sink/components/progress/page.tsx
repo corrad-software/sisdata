@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PageContainer } from '@/components/PageContainer';
 import { Stepper } from '@/components/ui/Stepper';
 import { Timeline } from '@/components/ui/Timeline';
 import { Button } from '@/components/ui/Button';
@@ -168,7 +169,7 @@ const TIMELINE_ITEMS = [
 
 export default function ProgressPage() {
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-6">
                 <div>
                     <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Stepper</h3>
@@ -208,6 +209,6 @@ export default function ProgressPage() {
 
                 <Timeline items={TIMELINE_ITEMS} />
             </section>
-        </div>
+        </PageContainer>
     );
 }

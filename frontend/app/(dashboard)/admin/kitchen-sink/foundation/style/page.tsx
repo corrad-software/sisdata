@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PageContainer } from '@/components/PageContainer';
 
 const RADII = [
     { className: 'rounded-xs', name: 'rounded-xs', px: '4px' },
@@ -34,7 +35,7 @@ export default function StylePage() {
     const [slideDownKey, setSlideDownKey] = useState(0);
 
     return (
-        <div className="py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+        <PageContainer className="space-y-8">
             <section className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                 <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Radius Scale</h3>
 
@@ -166,6 +167,6 @@ export default function StylePage() {
                     ))}
                 </div>
             </section>
-        </div>
+        </PageContainer>
     );
 }
