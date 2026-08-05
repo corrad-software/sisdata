@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
@@ -14,7 +14,7 @@ class Setting extends Model
 
     public static function get(string $key, mixed $default = null): mixed
     {
-        return static::allCached()->get($key, $default);
+        return Arr::get(static::allCached(), $key, $default);
     }
 
     public static function set(string $key, mixed $value): void
@@ -24,10 +24,10 @@ class Setting extends Model
         Cache::forget(static::$cacheKey);
     }
 
-    public static function allCached(): Collection
+    public static function allCached(): array
     {
         return Cache::rememberForever(static::$cacheKey, function () {
-            return static::query()->pluck('value', 'key');
+            return static::query()->pluck('value', 'key')->toArray();
         });
     }
 }
