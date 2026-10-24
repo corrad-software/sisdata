@@ -61,7 +61,9 @@ class PenemuanTest extends PtnTestCase
         $this->assertSame('KEROSAKAN_ASET', $aduan->kategori);
         $this->assertStringContainsString('Bumbung bocor', (string) $aduan->keterangan);
         $this->assertStringContainsString('/admin/ptn/lawatan/'.$v->id, (string) $aduan->keterangan);
-        $this->actingAs($sup)->postJson('/api/v1/ptn/isu/'.$isu->id.'/eskalasi-kes')->assertUnprocessable();
+        // MOD-KES binds LegalCaseIntake: escalation opens a case (once).
+        $kes = $this->actingAs($sup)->postJson('/api/v1/ptn/isu/'.$isu->id.'/eskalasi-kes')->assertOk()->json('data.id_kes');
+        $this->assertSame($kes, $this->actingAs($sup)->postJson('/api/v1/ptn/isu/'.$isu->id.'/eskalasi-kes')->assertOk()->json('data.id_kes'));
         $this->actingAs($me)->postJson('/api/v1/ptn/isu/'.$isu->id.'/eskalasi-aduan')->assertForbidden();
     }
 

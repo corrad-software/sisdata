@@ -87,6 +87,60 @@ function AboutIcon({ collapsed }: { collapsed: boolean }) {
     );
 }
 
+function AssetIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21"
+            />
+        </svg>
+    );
+}
+
+function SurveyIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z"
+            />
+        </svg>
+    );
+}
+
+function GavelIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z"
+            />
+        </svg>
+    );
+}
+
 function InboxIcon({ collapsed }: { collapsed: boolean }) {
     return (
         <svg
@@ -628,6 +682,39 @@ export function Sidebar({
                             icon={<InspectIcon collapsed={collapsed} />}
                         >
                             Pemantauan Tanah
+                        </SidebarLink>
+                    )}
+
+                    {can('ast.aset.lihat') && (
+                        <SidebarLink
+                            href="/admin/ast"
+                            label="Aset Fizikal"
+                            activeMatch={(p) => p.startsWith('/admin/ast')}
+                            icon={<AssetIcon collapsed={collapsed} />}
+                        >
+                            Aset Fizikal
+                        </SidebarLink>
+                    )}
+
+                    {can('tsu.urusan.lihat') && (
+                        <SidebarLink
+                            href="/admin/tsu/urusan"
+                            label="Tukar Syarat & Ukur"
+                            activeMatch={(p) => p.startsWith('/admin/tsu')}
+                            icon={<SurveyIcon collapsed={collapsed} />}
+                        >
+                            Tukar Syarat & Ukur
+                        </SidebarLink>
+                    )}
+
+                    {can('kes.kes.lihat') && (
+                        <SidebarLink
+                            href="/admin/kes/kes"
+                            label="Kes Mahkamah"
+                            activeMatch={(p) => p.startsWith('/admin/kes')}
+                            icon={<GavelIcon collapsed={collapsed} />}
+                        >
+                            Kes Mahkamah
                         </SidebarLink>
                     )}
 

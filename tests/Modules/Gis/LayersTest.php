@@ -142,8 +142,9 @@ class LayersTest extends GisTestCase
             $this->assertNotEmpty($slot['legenda'], $slot['nama']);
         }
         $this->assertSame(['gis.hak_milik'], $slots->firstWhere('kod', 'hak_milik')['lapisan']);
-        // A slot whose module isn't built yet (MOD-KES, G4) waits for it.
-        $this->assertSame('menunggu_modul', $slots->firstWhere('kod', 'kes_mahkamah')['status']);
+        // MOD-KES (G4) now fills its slot with its own layer.
+        $this->assertSame('tersedia', $slots->firstWhere('kod', 'kes_mahkamah')['status']);
+        $this->assertSame(['kes.kes_mahkamah'], $slots->firstWhere('kod', 'kes_mahkamah')['lapisan']);
 
         // A module registers its layer through the MapLayers contract → slot 4 is filled.
         app(MapLayers::class)->register(FakePajakanLayer::class);

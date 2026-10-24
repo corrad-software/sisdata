@@ -1,0 +1,12 @@
+{
+    "name": "SISDATA Inventori Aset — Aplikasi Lapangan",
+    "short_name": "Aset Lapangan",
+    "description": "Pemeriksaan aset fizikal MAIS secara luar talian (imbas QR, borang, gambar bergeotag).",
+    "lang": "ms",
+    "start_url": "/admin/ast/lapangan",
+    "scope": "/admin/ast/lapangan",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563eb",
+    "icons": [{ "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon" }]
+}

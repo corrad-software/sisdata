@@ -9,7 +9,7 @@ use App\Models\User;
  * chart of the Profil Hartanah 360° (SRS-PRO-28). MOD-PRO buckets them by
  * month and year and computes the net return; modules only report events.
  *
- * jenis: hasil_sewaan (income) | kos_cukai | kos_penyelenggaraan | kos_guaman
+ * jenis: hasil_sewaan (income) | kos_cukai | kos_penyelenggaraan | kos_guaman | kos_urusan_tanah
  * (costs). Other jenis values are shown but not counted in pulangan_bersih.
  * Return only what $user may see (rental and legal amounts are Sulit/Rahsia).
  */
@@ -17,7 +17,7 @@ interface FinancialSeries
 {
     public const HASIL = ['hasil_sewaan'];
 
-    public const KOS = ['kos_cukai', 'kos_penyelenggaraan', 'kos_guaman'];
+    public const KOS = ['kos_cukai', 'kos_penyelenggaraan', 'kos_guaman', 'kos_urusan_tanah'];
 
     /**
      * @return list<array{tarikh: string, jenis: string, amaun: float, keterangan?: string, link?: string}>

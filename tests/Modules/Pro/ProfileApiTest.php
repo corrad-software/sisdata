@@ -26,11 +26,10 @@ class ProfileApiTest extends ProTestCase
         $this->assertSame('ada', $sections('identiti')['lot_identiti']['status']);
         // MOD-HKM / MOD-PER register their own sections now; modules not built yet stay placeholders.
         $this->assertSame('belum_tersedia', $sections('kewangan')['penilaian']['status']);
-        $this->assertSame('belum_tersedia', $sections('ruang')['aset_fizikal']['status']);
+        $this->assertArrayNotHasKey('aset_fizikal', $sections('ruang')->all()); // registered by MOD-AST; hidden without ast.aset.lihat
         $this->assertArrayNotHasKey('cukai', $sections('kewangan')->all()); // registered by MOD-CKI; hidden without cki.bil.lihat
-        foreach (['kes_mahkamah' => 'risiko'] as $key => $tab) { // 'aduan' / 'pajakan' are registered by MOD-ADU / MOD-PJK
-            $this->assertSame('belum_tersedia', $sections($tab)[$key]['status'], $key);
-        }
+        // 'aduan' / 'pajakan' / 'kes_mahkamah' are registered by MOD-ADU / MOD-PJK / MOD-KES; kes_mahkamah is Rahsia → hidden without kes.rahsia.lihat.
+        $this->assertArrayNotHasKey('kes_mahkamah', $sections('risiko')->all());
         $this->assertSame('ada', $sections('ruang')['spatial']['status']);
         $this->assertArrayHasKey('jejak_audit', $sections('dokumen')->all());
         $this->assertArrayHasKey('log_akses', $sections('dokumen')->all());

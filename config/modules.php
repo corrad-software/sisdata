@@ -2,12 +2,14 @@
 
 use App\Modules\Adm\AdmServiceProvider;
 use App\Modules\Adu\AduServiceProvider;
+use App\Modules\Ast\AstServiceProvider;
 use App\Modules\Aud\AudServiceProvider;
 use App\Modules\Cki\CkiServiceProvider;
 use App\Modules\Dms\DmsServiceProvider;
 use App\Modules\Dsh\DshServiceProvider;
 use App\Modules\Gis\GisServiceProvider;
 use App\Modules\Hkm\HkmServiceProvider;
+use App\Modules\Kes\KesServiceProvider;
 use App\Modules\Ntf\NtfServiceProvider;
 use App\Modules\Per\PerServiceProvider;
 use App\Modules\Pjk\PjkServiceProvider;
@@ -16,6 +18,7 @@ use App\Modules\Pro\ProServiceProvider;
 use App\Modules\Ptn\PtnServiceProvider;
 use App\Modules\Rbc\RbcServiceProvider;
 use App\Modules\Ref\RefServiceProvider;
+use App\Modules\Tsu\TsuServiceProvider;
 use App\Modules\Wfe\WfeServiceProvider;
 
 /*
@@ -45,5 +48,9 @@ return [
         CkiServiceProvider::class,
         PtnServiceProvider::class,
         AduServiceProvider::class,
+        // G4 — undang-undang & aset
+        KesServiceProvider::class,
+        TsuServiceProvider::class,
+        AstServiceProvider::class,
     ],
 ];

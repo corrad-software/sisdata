@@ -300,6 +300,16 @@ Terbuka: jadual satelit (penilaian, pajakan, cukai, aduan, kes) hanya rangka seh
 
 Pengajaran: disk hampir penuh (salinan SIEM JSONL 710 MB — dev kini `AUD_SIEM=null`); suite penuh perlukan `memory_limit` 1G; `artisan serve` tanpa `--no-reload` mengabaikan override DB.
 
+### Status G4 — siap (2026-10-25)
+
+| Modul | Kod SRS ada ujian | Catatan |
+| --- | --- | --- |
+| KES | 24/24 | Rahsia + MFA, setiap paparan dilog; LegalCaseIntake untuk PTN; kos guaman → graf 360°; bayaran peguam panel via GRP |
+| TSU | 27/27 | 7 jenis urusan, pelupusan dengan JPPH + MFA, perolehan jurukur (tawaran tersulit), hasil ukur → lot baharu + pemindahan rekod dua pegawai. Istibdal wakaf perlu dasar MAIS |
+| AST | 26/26 | QR awam/berdaftar, susut nilai garis lurus, penyelenggaraan berjadual + pesanan kerja, aplikasi lapangan luar talian |
+
+Suite penuh: 2,317 ujian lulus. Insiden: disk penuh menyebabkan Postgres panik sekali (07:17 +08); pulih, data dan rantaian audit (58,361 rekod) disahkan utuh.
+
 ## 16. Langkah seterusnya (bila diluluskan)
 
 1. F0 langkah 1–3 (PostGIS, rangka modul, `/api/v1`) — boleh mula serta-merta.
