@@ -93,7 +93,8 @@ class PihakDanCapaianTest extends PerTestCase
         $other = $this->officer(self::PEGAWAI, ['daerah' => ['1001']]);
         $this->actingAs($other)->getJson("/api/v1/per/kes/{$case->id}")->assertNotFound();
         $this->assertSame(0, $this->actingAs($other)->getJson('/api/v1/per/kes')->json('meta.total'));
-        $this->createCase($other, 'wakaf', ['lot_id' => $this->lot('PT 10', '100803')])->assertForbidden();
+        // Out-of-scope lots don't exist for this user (LotRegistry contract) → rejected as invalid lot.
+        $this->createCase($other, 'wakaf', ['lot_id' => $this->lot('PT 10', '100803')])->assertUnprocessable()->assertJsonValidationErrors('lot_id');
         $this->createCase($other, 'wakaf', ['lot_id' => $this->lot('PT 11', '100101')])->assertCreated();
 
         $baitulmal = $this->officer(self::PEGAWAI, ['bahagian' => ['baitulmal']]);

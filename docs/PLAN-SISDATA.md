@@ -275,6 +275,18 @@ Dibina serentak oleh 7 "developer" (subagent, satu worktree setiap seorang) atas
 
 Isu terbuka: sempadan mukim anggaran; 5 kod mukim diteka; had muat naik PHP 50 MB (fail spatial 250 MB); MFA step-up WFE belum diuji dengan Keycloak sebenar; tiada hierarki penyelia sebenar (guna peranan lalai).
 
+### Status G1 — siap (2026-10-25)
+
+| Modul | Kod SRS ada ujian | Catatan |
+| --- | --- | --- |
+| PRO | 30/30 (+ DAT-01..04, 06..09) | Profil 360° (6 tab, garis masa, peta MapLibre), import dengan pratonton, duplikasi, stewardship, kamus data + ERD dijana (`docs/data/`), API OpenAPI + kunci API |
+| HKM | 22/22 | Peti besi, sejarah tak boleh ubah (trigger), perubahan 2 peringkat MFA melalui WFE, legenda warna `frontend/lib/legend.ts` |
+| PER | 29/30 diuji (30 dilaksana) | 11 saluran, Notis 5A, kelulusan berlapis melalui WFE, mock Portal Wakaf + e-Faraid |
+
+DB dev diisi: 500 lot sintetik + geometri, 488 hak milik, 60 kes pemerolehan; aliran WFE `per.kelulusan`, `pro.perubahan_kritikal`, `pro.arkib_rekod`, `hkm.perubahan_hak_milik` aktif (`db:seed --class=G1AliranSeeder`, `HkmAliranSeeder`).
+
+Terbuka: jadual satelit (penilaian, pajakan, cukai, aduan, kes) hanya rangka sehingga G3/G4; gabung duplikasi belum memindah rekod modul lain; `csv`/`zip` tiada dalam senarai putih DMS (fail import asal tidak disimpan).
+
 ## 16. Langkah seterusnya (bila diluluskan)
 
 1. F0 langkah 1–3 (PostGIS, rangka modul, `/api/v1`) — boleh mula serta-merta.

@@ -1,0 +1,448 @@
+openapi: 3.0.3
+info:
+  title: SISDATA — MOD-PRO Pangkalan Data Induk dan Profil Hartanah 360°
+  version: "1.0.0"
+  description: |
+    REST API berversi bagi rekod induk lot tanah dan Profil Hartanah 360° (SRS-PRO-29).
+
+    **Autentikasi.** Dua cara:
+    1. Sesi SPA (Sanctum, kuki) — untuk antara muka SISDATA.
+    2. **Kunci API** (Bearer) — dijana di `/admin/pro/kunci-api` (`POST /kunci-api`). Setiap kunci
+       mempunyai skop (`pro:lot`, `pro:geojson`, `pro:kewangan`), tarikh luput, had kadar seminit
+       dan boleh dibatalkan serta-merta. Kunci bertindak sebagai pemiliknya — skop daerah/mukim
+       dan klasifikasi pemilik tetap terpakai. Setiap panggilan direkod (laporan penggunaan).
+
+    **Kebenaran.** Setiap operasi menyatakan kebenaran MOD-RBC yang diperlukan (`x-kebenaran`).
+    Lot di luar skop pengguna dipulangkan sebagai 404. Medan berklasifikasi Sulit/Rahsia
+    dikembalikan `null` dan disenaraikan dalam `medan_disamarkan`.
+
+    **Ralat.** Semua ralat mengikut format seragam `{message, code, request_id, errors?}`.
+    Ralat pengesahan (422) menamakan medan dan sebab dalam Bahasa Malaysia.
+  contact:
+    name: Pasukan SISDATA
+servers:
+  - url: /api/v1/pro
+security:
+  - kunciApi: []
+  - sesi: []
+tags:
+  - name: Lot
+  - name: Profil 360
+  - name: Spatial
+  - name: Tadbir urus data
+  - name: Import
+  - name: Kamus data
+  - name: Arkib
+  - name: Kunci API
+
+paths:
+  /lot:
+    get:
+      tags: [Lot]
+      summary: Senarai lot (berskop, bertapis, berhalaman)
+      x-kebenaran: pro.lot.lihat
+      x-skop-kunci: pro:lot
+      parameters:
+        - { name: q, in: query, schema: { type: string }, description: Carian no. lot (dinormalkan) atau kunci asal }
+        - { name: kod_daerah, in: query, schema: { type: string, example: "1008" } }
+        - { name: kod_mukim, in: query, schema: { type: string, example: "100803" } }
+        - { name: bahagian_pemilik, in: query, schema: { type: string, enum: [hartanah, wakaf, baitulmal] } }
+        - { name: status_lot, in: query, schema: { type: string, enum: [draf, aktif, tidak_aktif, digabung, arkib] } }
+        - { name: kategori_guna_tanah, in: query, schema: { type: string } }
+        - { name: status_pengesahan, in: query, schema: { type: string, enum: [belum_disahkan, disahkan_juruukur, disahkan_ptg, bertindih, tiada_geometri, belum_disahkan_semua] } }
+        - { name: klasifikasi, in: query, schema: { type: string } }
+        - { name: tag, in: query, schema: { type: string } }
+        - { name: arkib, in: query, schema: { type: string, enum: ["0", "1", sahaja] }, description: "1 = termasuk lot diarkib, sahaja = lot diarkib sahaja" }
+        - { name: sort, in: query, schema: { type: string, enum: [no_lot, -no_lot, keluasan, -keluasan, dikemas_kini, -dikemas_kini] } }
+        - { name: per_page, in: query, schema: { type: integer, maximum: 200 } }
+        - { name: page, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Senarai lot
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/LotRingkas" } }
+                  meta: { $ref: "#/components/schemas/Meta" }
+        "401": { $ref: "#/components/responses/Ralat" }
+        "403": { $ref: "#/components/responses/Ralat" }
+        "429": { $ref: "#/components/responses/Ralat" }
+    post:
+      tags: [Lot]
+      summary: Cipta lot (peraturan kualiti data SRS-PRO-13 dikuatkuasakan)
+      x-kebenaran: pro.lot.cipta
+      security: [{ sesi: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LotInput" }
+      responses:
+        "201": { description: Lot dicipta, content: { application/json: { schema: { type: object, properties: { message: { type: string }, data: { $ref: "#/components/schemas/LotButiran" } } } } } }
+        "422": { $ref: "#/components/responses/Ralat" }
+  /lot/{id}:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    get:
+      tags: [Lot]
+      summary: Butiran lot
+      x-kebenaran: pro.lot.lihat
+      x-skop-kunci: pro:lot
+      responses:
+        "200": { description: Butiran, content: { application/json: { schema: { type: object, properties: { data: { $ref: "#/components/schemas/LotButiran" } } } } } }
+        "404": { $ref: "#/components/responses/Ralat" }
+    put:
+      tags: [Lot]
+      summary: Kemas kini lot — perubahan kritikal dihantar untuk pengesahan pegawai kedua (WFE pro.perubahan_kritikal)
+      x-kebenaran: pro.lot.kemas_kini
+      security: [{ sesi: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/LotInput"
+                - type: object
+                  properties:
+                    justifikasi: { type: string, description: Wajib jika ada perubahan kritikal }
+                    versi_rekod: { type: integer, description: Kawalan concurrency optimistik — 409 jika tidak sepadan }
+      responses:
+        "200":
+          description: Dikemas kini
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  data: { $ref: "#/components/schemas/LotButiran" }
+                  diterapkan: { type: array, items: { type: string } }
+                  tertunda: { type: object, nullable: true, properties: { id: { type: string }, medan: { type: array, items: { type: string } }, id_aliran_kerja: { type: string } } }
+        "409": { $ref: "#/components/responses/Ralat" }
+        "422": { $ref: "#/components/responses/Ralat" }
+    delete:
+      tags: [Lot]
+      summary: Padam lot berstatus draf (lot lain perlu diarkib)
+      x-kebenaran: pro.lot.padam
+      security: [{ sesi: [] }]
+      requestBody: { content: { application/json: { schema: { type: object, required: [sebab], properties: { sebab: { type: string } } } } } }
+      responses: { "200": { description: Dipadam }, "422": { $ref: "#/components/responses/Ralat" } }
+  /lot/{id}/geojson:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    get:
+      tags: [Spatial]
+      summary: Geometri semasa lot sebagai GeoJSON Feature (WGS84)
+      x-kebenaran: pro.lot.lihat
+      x-skop-kunci: pro:geojson
+      responses:
+        "200": { description: Feature, content: { application/geo+json: { schema: { $ref: "#/components/schemas/LotFeature" } } } }
+        "404": { $ref: "#/components/responses/Ralat" }
+  /geojson:
+    get:
+      tags: [Spatial]
+      summary: FeatureCollection lot (tapisan sama seperti /lot, maks 5000)
+      x-kebenaran: pro.lot.lihat
+      x-skop-kunci: pro:geojson
+      responses:
+        "200": { description: FeatureCollection, content: { application/geo+json: { schema: { type: object, properties: { type: { type: string, enum: [FeatureCollection] }, features: { type: array, items: { $ref: "#/components/schemas/LotFeature" } } } } } } }
+  /lot/{id}/kewangan:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    get:
+      tags: [Profil 360]
+      summary: Kedudukan kewangan lot (hasil sewaan, kos cukai, penyelenggaraan, guaman, pulangan bersih) — SRS-PRO-28
+      description: Bentuk data ditetapkan; angka diisi oleh modul G3/G4 melalui kontrak FinancialSeries. `tersedia=false` sehingga itu.
+      x-kebenaran: pro.lot.lihat
+      x-skop-kunci: pro:kewangan
+      responses:
+        "200": { description: Kewangan, content: { application/json: { schema: { type: object, properties: { data: { $ref: "#/components/schemas/Kewangan" } } } } } }
+  /lot/{id}/profil:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    get:
+      tags: [Profil 360]
+      summary: Profil Hartanah 360° — tab, seksyen, garis masa, bendera, kewangan, GeoJSON. Setiap paparan direkod (SRS-PRO-30).
+      x-kebenaran: pro.lot.lihat
+      responses:
+        "200": { description: Profil, content: { application/json: { schema: { type: object, properties: { data: { $ref: "#/components/schemas/Profil" } } } } } }
+  /lot/{id}/profil/eksport:
+    parameters: [{ $ref: "#/components/parameters/LotId" }, { name: format, in: query, required: true, schema: { type: string, enum: [pdf, json, csv, xlsx] } }]
+    get: { tags: [Profil 360], summary: Eksport profil (direkod dalam log akses), x-kebenaran: pro.lot.eksport, responses: { "200": { description: Fail } } }
+  /lot/{id}/cetak:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    post: { tags: [Profil 360], summary: Rekod cetakan profil (dipanggil sebelum window.print), x-kebenaran: pro.lot.lihat, responses: { "200": { description: Direkod } } }
+  /lot/{id}/versi:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    get: { tags: [Lot], summary: Sejarah versi rekod induk (SRS-DAT-04), x-kebenaran: pro.lot.lihat, responses: { "200": { description: Versi } } }
+  /lot/{id}/versi/{versi}:
+    parameters: [{ $ref: "#/components/parameters/LotId" }, { name: versi, in: path, required: true, schema: { type: string, format: uuid } }]
+    get: { tags: [Lot], summary: Perbandingan sebelum/selepas satu versi, x-kebenaran: pro.lot.lihat, responses: { "200": { description: Perbandingan } } }
+  /lot/eksport:
+    get:
+      tags: [Lot]
+      summary: Eksport senarai lot — Excel, CSV, PDF, JSON (skop medan ikut peranan & klasifikasi, SRS-PRO-18)
+      x-kebenaran: pro.lot.eksport
+      parameters: [{ name: format, in: query, required: true, schema: { type: string, enum: [csv, xlsx, pdf, json] } }]
+      responses: { "200": { description: Fail } }
+  /lot/ringkasan:
+    get: { tags: [Lot], summary: Kiraan ringkas (status pengesahan spatial, bahagian), x-kebenaran: pro.lot.lihat, responses: { "200": { description: Ringkasan } } }
+  /rujukan:
+    get: { tags: [Lot], summary: Senarai rujukan untuk borang (daripada MOD-REF, SRS-PRO-25), x-kebenaran: pro.lot.lihat, responses: { "200": { description: Senarai } } }
+  /lot/{id}/spatial:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    get: { tags: [Spatial], summary: Sejarah geometri lot, x-kebenaran: pro.lot.lihat, responses: { "200": { description: Sejarah } } }
+    post:
+      tags: [Spatial]
+      summary: Muat naik / pautkan geometri (GeoJSON, WKT/EWKT, KML, Shapefile zip) — ditukar ke WGS84, semakan pertindihan & keluasan
+      x-kebenaran: pro.spatial.cipta
+      security: [{ sesi: [] }]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [format, sumber_data]
+              properties:
+                format: { type: string, enum: [geojson, wkt, kml, shp] }
+                geometri: { type: string, description: Teks geometri (atau gunakan fail) }
+                fail: { type: string, format: binary }
+                srid: { type: integer, enum: [4326, 4742, 3375, 3380, 3168, 4245], default: 4326 }
+                sumber_data: { type: string, enum: [jupem, ptg, pbt, juruukur, lakaran, satelit, sintetik] }
+                rujukan_fail_sumber: { type: string }
+                tarikh_perolehan_data: { type: string, format: date }
+      responses: { "201": { description: Disimpan (status belum_disahkan / bertindih) }, "422": { $ref: "#/components/responses/Ralat" } }
+  /spatial/{spatial}/sahkan:
+    parameters: [{ name: spatial, in: path, required: true, schema: { type: integer } }]
+    post: { tags: [Spatial], summary: Sahkan geometri (pemuat naik tidak boleh mengesahkan sendiri), x-kebenaran: pro.spatial.lulus, responses: { "200": { description: Dikemas kini } } }
+  /stewardship:
+    get: { tags: [Tadbir urus data], summary: Daftar stewardship data (SRS-PRO-11), x-kebenaran: pro.stewardship.lihat, responses: { "200": { description: Daftar } } }
+    post: { tags: [Tadbir urus data], summary: Tambah entri stewardship, x-kebenaran: pro.stewardship.kemas_kini, responses: { "201": { description: Disimpan } } }
+  /kualiti/laporan:
+    get:
+      tags: [Tadbir urus data]
+      summary: Laporan kualiti data (SRS-PRO-24, SRS-DAT-09)
+      x-kebenaran: pro.kualiti.lihat
+      parameters:
+        - { name: kod_daerah, in: query, schema: { type: string } }
+        - { name: kod_mukim, in: query, schema: { type: string } }
+        - { name: bahagian_pemilik, in: query, schema: { type: string } }
+        - { name: entiti, in: query, schema: { type: string, enum: [lot_tanah, data_spatial, dokumen, cukai] } }
+        - { name: id_data_steward, in: query, schema: { type: integer } }
+      responses: { "200": { description: Laporan } }
+  /kualiti/tugasan:
+    get: { tags: [Tadbir urus data], summary: Senarai tugasan steward (SRS-PRO-12), x-kebenaran: "pro.kualiti.lihat | pro.stewardship.lihat", responses: { "200": { description: Tugasan } } }
+  /duplikasi:
+    get: { tags: [Tadbir urus data], summary: Baris gilir cadangan duplikasi dengan skor padanan (SRS-PRO-20), x-kebenaran: pro.duplikasi.lihat, responses: { "200": { description: Cadangan } } }
+  /duplikasi/{id}/keputusan:
+    parameters: [{ name: id, in: path, required: true, schema: { type: integer } }]
+    post:
+      tags: [Tadbir urus data]
+      summary: Keputusan steward — sah, gabung atau tolak (direkod & diaudit)
+      x-kebenaran: pro.duplikasi.kemas_kini
+      requestBody: { content: { application/json: { schema: { type: object, required: [keputusan], properties: { keputusan: { type: string, enum: [sah, gabung, tolak] }, catatan: { type: string }, id_rekod_kekal: { type: string, format: uuid } } } } } }
+      responses: { "200": { description: Direkod } }
+  /import:
+    get: { tags: [Import], summary: Senarai sesi import, x-kebenaran: "pro.import.cipta | pro.kualiti.lihat", responses: { "200": { description: Sesi } } }
+    post:
+      tags: [Import]
+      summary: Muat naik fail Excel/CSV → validasi baris demi baris + pratonton (belum dikomit)
+      x-kebenaran: pro.import.cipta
+      requestBody:
+        content:
+          multipart/form-data:
+            schema: { type: object, required: [fail, entiti], properties: { fail: { type: string, format: binary }, entiti: { type: string, enum: [lot_tanah, data_spatial] }, pemetaan: { type: string, description: 'JSON {"lajur fail": "medan sasaran"}' }, id_pemetaan: { type: integer } } }
+      responses: { "201": { description: Pratonton }, "422": { $ref: "#/components/responses/Ralat" } }
+  /import/{id}/komit:
+    parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+    post: { tags: [Import], summary: Komit baris sah sahaja, x-kebenaran: pro.import.cipta, responses: { "200": { description: Laporan sesi } } }
+  /import/{id}/laporan:
+    parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }, { name: format, in: query, required: true, schema: { type: string, enum: [csv, xlsx, pdf, json] } }]
+    get: { tags: [Import], summary: Laporan keputusan import (dibaca/berjaya/ditolak/diabaikan + baris ditolak), x-kebenaran: "pro.import.cipta | pro.kualiti.lihat", responses: { "200": { description: Fail } } }
+  /import/templat/{entiti}:
+    parameters: [{ name: entiti, in: path, required: true, schema: { type: string, enum: [lot_tanah, data_spatial] } }, { name: format, in: query, schema: { type: string, enum: [csv, xlsx] } }]
+    get: { tags: [Import], summary: Templat import boleh dimuat turun, x-kebenaran: pro.import.cipta, responses: { "200": { description: Fail } } }
+  /kamus:
+    get: { tags: [Kamus data], summary: Kamus data (dijana daripada skema + metadata dikurasi), x-kebenaran: pro.kamus.lihat, responses: { "200": { description: Medan } } }
+  /kamus/model-fizikal:
+    get: { tags: [Kamus data], summary: Model data fizikal (kekangan, indeks, view, fungsi), x-kebenaran: pro.kamus.lihat, responses: { "200": { description: Model } } }
+  /arkib:
+    get: { tags: [Arkib], summary: Rekod arkib (cadangan, menunggu kelulusan, diarkib, dipulih), x-kebenaran: pro.arkib.lihat, responses: { "200": { description: Rekod } } }
+  /lot/{id}/arkib:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    post: { tags: [Arkib], summary: Hantar lot untuk diarkib (WFE pro.arkib_rekod), x-kebenaran: pro.arkib.cipta, responses: { "202": { description: Dihantar } } }
+  /lot/{id}/pulih:
+    parameters: [{ $ref: "#/components/parameters/LotId" }]
+    post: { tags: [Arkib], summary: Pulihkan lot diarkib, x-kebenaran: pro.arkib.kemas_kini, responses: { "200": { description: Dipulih } } }
+  /kunci-api:
+    get: { tags: [Kunci API], summary: Senarai kunci API (sendiri; semua dengan pro.api.kemas_kini), x-kebenaran: pro.api.cipta, security: [{ sesi: [] }], responses: { "200": { description: Kunci } } }
+    post:
+      tags: [Kunci API]
+      summary: Jana kunci API berskop (hanya daripada sesi log masuk)
+      x-kebenaran: pro.api.cipta
+      security: [{ sesi: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nama, sistem_pemanggil, skop]
+              properties:
+                nama: { type: string }
+                sistem_pemanggil: { type: string, example: GRP MAIS }
+                skop: { type: array, items: { type: string, enum: ["pro:lot", "pro:geojson", "pro:kewangan"] } }
+                tamat_hari: { type: integer, default: 90, maximum: 365 }
+                had_kadar_seminit: { type: integer, default: 60 }
+      responses: { "201": { description: "Kunci (token dipaparkan sekali sahaja)" } }
+  /kunci-api/{id}:
+    parameters: [{ name: id, in: path, required: true, schema: { type: integer } }]
+    delete: { tags: [Kunci API], summary: Batalkan kunci serta-merta, x-kebenaran: pro.api.cipta, security: [{ sesi: [] }], responses: { "204": { description: Dibatalkan } } }
+  /kunci-api/penggunaan:
+    get: { tags: [Kunci API], summary: Laporan penggunaan kunci API mengikut kunci, sistem pemanggil dan tempoh, x-kebenaran: pro.api.cipta, security: [{ sesi: [] }], responses: { "200": { description: Penggunaan } } }
+
+components:
+  securitySchemes:
+    kunciApi: { type: http, scheme: bearer, description: "Kunci API MOD-PRO (Sanctum personal access token dengan kebolehan pro:api + skop)" }
+    sesi: { type: apiKey, in: cookie, name: laravel_session, description: Sesi SPA Sanctum }
+  parameters:
+    LotId: { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+  responses:
+    Ralat:
+      description: Ralat seragam
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: { type: string, example: "No. Lot: No. lot ini telah didaftarkan dalam mukim yang sama." }
+              code: { type: string }
+              request_id: { type: string }
+              errors: { type: object, additionalProperties: { type: array, items: { type: string } } }
+  schemas:
+    Meta:
+      type: object
+      properties: { current_page: { type: integer }, last_page: { type: integer }, per_page: { type: integer }, total: { type: integer }, from: { type: integer, nullable: true }, to: { type: integer, nullable: true } }
+    StatusSpatial:
+      type: object
+      properties:
+        status: { type: string, enum: [belum_disahkan, disahkan_juruukur, disahkan_ptg, bertindih, tiada_geometri] }
+        disahkan: { type: boolean }
+        label: { type: string }
+        keluasan_dikira: { type: number, nullable: true }
+        peratus_beza_keluasan: { type: number, nullable: true }
+    LotRingkas:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        no_lot: { type: string, example: "Lot 12345" }
+        kod_negeri: { type: string }
+        kod_daerah: { type: string }
+        nama_daerah: { type: string }
+        kod_mukim: { type: string }
+        nama_mukim: { type: string }
+        keluasan: { type: number, nullable: true }
+        unit_keluasan: { type: string, enum: [m2, hektar, ekar] }
+        kategori_guna_tanah: { type: string, nullable: true }
+        nama_kategori_guna_tanah: { type: string, nullable: true }
+        zoning: { type: string, nullable: true }
+        bahagian_pemilik: { type: string, nullable: true }
+        status_lot: { type: string }
+        klasifikasi: { type: string }
+        versi_rekod: { type: integer }
+        id_data_steward: { type: integer, nullable: true }
+        sintetik: { type: boolean }
+        tag: { type: array, items: { type: string } }
+        spatial: { $ref: "#/components/schemas/StatusSpatial" }
+        dikemas_kini_pada: { type: string, format: date-time }
+        medan_disamarkan: { type: array, items: { type: string } }
+    LotButiran:
+      allOf:
+        - $ref: "#/components/schemas/LotRingkas"
+        - type: object
+          properties:
+            syarat_nyata: { type: string, nullable: true, description: "Sulit — null jika tiada pro.sulit.lihat" }
+            catatan: { type: string, nullable: true }
+            id_data_owner: { type: integer, nullable: true }
+            nama_data_owner: { type: string, nullable: true }
+            nama_data_steward: { type: string, nullable: true }
+            salasilah: { type: object, properties: { sumber_sistem: { type: string, nullable: true }, fail_asal: { type: string, nullable: true }, kunci_asal: { type: string, nullable: true }, id_migrasi_larian: { type: string, nullable: true }, id_sesi_import: { type: string, nullable: true } } }
+            id_lot_gabung: { type: string, nullable: true }
+            diarkib_pada: { type: string, nullable: true }
+            dicipta_pada: { type: string }
+    LotInput:
+      type: object
+      properties:
+        no_lot: { type: string, example: "Lot 12345", description: 'Dinormalkan ("Lot No. 123", "L123" → "Lot 123")' }
+        kod_mukim: { type: string, example: "100803" }
+        kod_daerah: { type: string, description: Diterbitkan daripada mukim jika kosong }
+        keluasan: { type: number }
+        unit_keluasan: { type: string, enum: [m2, hektar, ekar] }
+        kategori_guna_tanah: { type: string }
+        zoning: { type: string }
+        syarat_nyata: { type: string }
+        bahagian_pemilik: { type: string, enum: [hartanah, wakaf, baitulmal] }
+        status_lot: { type: string, enum: [draf, aktif, tidak_aktif] }
+        klasifikasi: { type: string, enum: [awam, dalaman, sulit, rahsia] }
+        id_data_owner: { type: integer }
+        id_data_steward: { type: integer }
+        tag: { type: array, items: { type: string } }
+        catatan: { type: string }
+    LotFeature:
+      type: object
+      properties:
+        type: { type: string, enum: [Feature] }
+        id: { type: string }
+        geometry: { type: object, description: GeoJSON MultiPolygon (EPSG:4326) }
+        properties:
+          type: object
+          properties:
+            lot_id: { type: string }
+            no_lot: { type: string }
+            kod_mukim: { type: string }
+            status_pengesahan: { type: string }
+            disahkan: { type: boolean }
+            sumber_data: { type: string }
+            keluasan_dikira: { type: number }
+            srid_asal: { type: integer }
+            versi: { type: integer }
+    TempohKewangan:
+      type: object
+      properties:
+        tempoh: { type: string, example: "2026-01" }
+        hasil_sewaan: { type: number }
+        kos_cukai: { type: number }
+        kos_penyelenggaraan: { type: number }
+        kos_guaman: { type: number }
+        jumlah_hasil: { type: number }
+        jumlah_kos: { type: number }
+        pulangan_bersih: { type: number }
+    Kewangan:
+      type: object
+      properties:
+        lot_id: { type: string }
+        tersedia: { type: boolean }
+        mesej: { type: string, nullable: true }
+        jenis: { type: array, items: { type: string } }
+        bulanan: { type: array, items: { $ref: "#/components/schemas/TempohKewangan" } }
+        tahunan: { type: array, items: { $ref: "#/components/schemas/TempohKewangan" } }
+        jumlah: { type: object, properties: { hasil: { type: number }, kos: { type: number }, pulangan_bersih: { type: number } } }
+    Seksyen:
+      type: object
+      properties:
+        key: { type: string }
+        label: { type: string }
+        modul: { type: string }
+        status: { type: string, enum: [ada, kosong, belum_tersedia, ralat] }
+        mesej: { type: string }
+        items: { type: array, items: { type: object, additionalProperties: true } }
+        flags: { type: array, items: { type: object, properties: { level: { type: string }, label: { type: string } } } }
+        link: { type: string, nullable: true }
+    Profil:
+      type: object
+      properties:
+        lot: { $ref: "#/components/schemas/LotButiran" }
+        tab:
+          type: array
+          items: { type: object, properties: { kod: { type: string, enum: [identiti, kewangan, pemanfaatan, risiko, ruang, dokumen] }, label: { type: string }, seksyen: { type: array, items: { $ref: "#/components/schemas/Seksyen" } } } }
+        bendera: { type: array, items: { type: object, properties: { level: { type: string }, label: { type: string }, seksyen: { type: string } } } }
+        garis_masa: { type: array, items: { type: object, properties: { date: { type: string }, type: { type: string }, title: { type: string }, link: { type: string }, seksyen: { type: string }, modul_label: { type: string } } } }
+        kewangan: { $ref: "#/components/schemas/Kewangan" }
+        geojson: { allOf: [{ $ref: "#/components/schemas/LotFeature" }], nullable: true }

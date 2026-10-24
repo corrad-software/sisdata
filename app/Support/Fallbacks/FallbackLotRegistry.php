@@ -28,6 +28,22 @@ class FallbackLotRegistry implements LotRegistry
             ->where('kod_mukim', $kodMukim)->where('no_lot', $noLot)->value('id');
     }
 
+    public function summaries(array $lotIds, ?User $user = null): array
+    {
+        return $lotIds === [] ? [] : DB::table('lot_tanah')->whereNull('deleted_at')->whereIn('id', $lotIds)
+            ->get(['id', 'no_lot', 'kod_mukim', 'kod_daerah', 'keluasan', 'unit_keluasan', 'kategori_guna_tanah', 'bahagian_pemilik', 'status_lot', 'klasifikasi'])
+            ->mapWithKeys(fn ($r) => [(string) $r->id => (array) $r])->all();
+    }
+
+    public function search(string $query, ?User $user = null, int $limit = 20, array $filters = []): array
+    {
+        return DB::table('lot_tanah')->whereNull('deleted_at')->where('no_lot', 'ilike', '%'.$query.'%')
+            ->when(! empty($filters['kod_mukim']), fn ($q) => $q->where('kod_mukim', $filters['kod_mukim']))
+            ->orderBy('no_lot')->limit($limit)
+            ->get(['id', 'no_lot', 'kod_mukim', 'kod_daerah', 'keluasan', 'unit_keluasan', 'kategori_guna_tanah', 'bahagian_pemilik', 'status_lot', 'klasifikasi'])
+            ->map(fn ($r) => (array) $r)->all();
+    }
+
     public function profileLink(string $lotId): string
     {
         return '/admin/pro/lot/'.$lotId;
