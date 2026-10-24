@@ -19,7 +19,13 @@ export function UserMenu({ user }: { user: User }) {
     }, []);
 
     async function handleLogout() {
-        await logout();
+        const result = await logout();
+        // SRS-RBC-01: SSO users also end their SSO MAIS session; Keycloak then
+        // sends them back to /login (its post-logout redirect URI).
+        if (result?.logout_url) {
+            window.location.assign(result.logout_url);
+            return;
+        }
         // No router.refresh() here: /login has no auth-dependent server logic
         // to go stale, and refreshing the still-mounted /admin tree at the same
         // moment races its own server-side redirect (now unauthenticated)

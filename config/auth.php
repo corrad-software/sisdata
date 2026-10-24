@@ -114,4 +114,17 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Local Password Login
+    |--------------------------------------------------------------------------
+    |
+    | When false, POST login/register are refused (403) and users must sign
+    | in through the SSO MAIS OIDC IdP (SRS-RBC-01). Keep it enabled locally
+    | so the seeded admin account still works without Keycloak running.
+    |
+    */
+
+    'password_login' => (bool) env('AUTH_PASSWORD_LOGIN', true),
+
 ];

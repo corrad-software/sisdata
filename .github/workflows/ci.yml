@@ -1,0 +1,168 @@
+# SISDATA CI — secure SDLC gate (SRS-ADM-23/24).
+# backend: format (Pint), static analysis (Larastan), tests on PostgreSQL+PostGIS, dependency audit
+# frontend: typecheck, lint, dependency audit
+# security: secret scanning (gitleaks) and SAST (Semgrep)
+#
+# CI uses service containers; local development stays Docker-free (native PostgreSQL 17 + PostGIS).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (PHP)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_DB: myds_laravel_test
+          POSTGRES_USER: myds
+          POSTGRES_PASSWORD: myds_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U myds -d myds_laravel_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: myds_laravel_test
+      DB_USERNAME: myds
+      DB_PASSWORD: myds_ci
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, intl, bcmath, zip, pdo_pgsql, pgsql, redis
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare application environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+
+      - name: Code style (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Static analysis (Larastan)
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G --error-format=github
+
+      # postgis/postgis ships PostGIS but not pgvector; the extensions
+      # migration needs both. The image keeps the PGDG apt repo configured.
+      - name: Add pgvector to the PostGIS service
+        run: docker exec ${{ job.services.postgres.id }} sh -c "apt-get update -qq && apt-get install -y -qq postgresql-17-pgvector"
+
+      - name: Tests (PostgreSQL + PostGIS)
+        run: php artisan test
+
+      - name: Dependency audit (Composer)
+        run: composer audit --no-interaction
+
+  frontend:
+    name: Frontend (Next.js)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npx eslint . --max-warnings=0
+
+      # Fails on high/critical advisories. Moderate advisories that remain come from
+      # tailwindcss 3.4 -> postcss-nested -> postcss-selector-parser, which has no fix on the
+      # 3.x line; Tailwind is pinned to 3.4 because @govtechmy/myds-style has no v4 support.
+      - name: Dependency audit (npm)
+        run: npm audit --audit-level=high
+
+  security:
+    name: Security (secrets + SAST)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout (full history for secret scanning)
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Secret scanning (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Required only when the repository belongs to a GitHub organisation.
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+          GITLEAKS_ENABLE_COMMENTS: 'false'
+
+      - name: SAST (Semgrep)
+        env:
+          SEMGREP_VERSION: '1.182.1'
+        run: |
+          pipx run --spec "semgrep==${SEMGREP_VERSION}" semgrep scan \
+            --config p/php \
+            --config p/typescript \
+            --config p/secrets \
+            --error \
+            --metrics=off

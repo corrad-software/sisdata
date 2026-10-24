@@ -22,6 +22,11 @@ export function register(payload: RegisterPayload) {
     return api.post<{ data: User }>('/register', payload);
 }
 
+/**
+ * Resolves to `{ logout_url }` when the session came from SSO MAIS (the
+ * caller should navigate there to end the IdP session too), or undefined
+ * (204) for a password login.
+ */
 export function logout() {
-    return api.post<void>('/logout');
+    return api.post<{ logout_url?: string } | undefined>('/logout');
 }

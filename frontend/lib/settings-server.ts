@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: Settings = {
     site_logo_url: null,
     site_favicon_url: null,
     theme_css: '',
+    password_login_enabled: true,
 };
 
 // Wrapped in React's cache() so the root layout's generateMetadata() and the
@@ -17,7 +18,7 @@ const DEFAULT_SETTINGS: Settings = {
 // call per request instead of firing it twice.
 export const getServerSettings = cache(async (): Promise<Settings> => {
     try {
-        const response = await fetch(`${backend}/api/settings`, {
+        const response = await fetch(`${backend}/api/v1/settings`, {
             headers: { Accept: 'application/json' },
             cache: 'no-store',
         });

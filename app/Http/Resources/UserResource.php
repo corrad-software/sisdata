@@ -2,9 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
+use App\Support\Permissions;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin User
+ */
 class UserResource extends JsonResource
 {
     /**
@@ -18,6 +23,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role,
             'is_active' => $this->is_active,
+            'permissions' => Permissions::for($this->resource),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

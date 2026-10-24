@@ -16,7 +16,7 @@ class SettingsApiTest extends TestCase
 
     public function test_settings_are_publicly_readable(): void
     {
-        $response = $this->getJson('/api/settings')->assertOk();
+        $response = $this->getJson('/api/v1/settings')->assertOk();
 
         $response->assertJsonPath('data.site_title', config('app.name'));
         $response->assertJsonPath('data.site_logo_url', null);
@@ -33,7 +33,7 @@ class SettingsApiTest extends TestCase
         Setting::set('primary_color', null);
         Setting::set('site_title', null);
 
-        $response = $this->getJson('/api/settings')->assertOk();
+        $response = $this->getJson('/api/v1/settings')->assertOk();
 
         $response->assertJsonPath('data.primary_color', '#2563EB');
         $response->assertJsonPath('data.site_title', config('app.name'));
@@ -44,14 +44,14 @@ class SettingsApiTest extends TestCase
     {
         Setting::set('primary_color', '#123ABC');
 
-        $this->getJson('/api/settings')
+        $this->getJson('/api/v1/settings')
             ->assertOk()
             ->assertJsonPath('data.theme_css', ThemeColor::css('#123ABC'));
     }
 
     public function test_guests_cannot_update_settings(): void
     {
-        $this->putJson('/api/settings', [
+        $this->putJson('/api/v1/settings', [
             'site_title' => 'New Title',
             'primary_color' => '#123ABC',
         ])->assertUnauthorized();
@@ -61,7 +61,7 @@ class SettingsApiTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'user']);
 
-        $this->actingAs($user)->putJson('/api/settings', [
+        $this->actingAs($user)->putJson('/api/v1/settings', [
             'site_title' => 'New Title',
             'primary_color' => '#123ABC',
         ])->assertForbidden();
@@ -71,7 +71,7 @@ class SettingsApiTest extends TestCase
     {
         $admin = User::factory()->create(['role' => 'admin']);
 
-        $response = $this->actingAs($admin)->putJson('/api/settings', [
+        $response = $this->actingAs($admin)->putJson('/api/v1/settings', [
             'site_title' => 'New Title',
             'footer_text' => 'Custom footer',
             'primary_color' => '#123abc',
@@ -90,7 +90,7 @@ class SettingsApiTest extends TestCase
     {
         $admin = User::factory()->create(['role' => 'admin']);
 
-        $this->actingAs($admin)->putJson('/api/settings', [
+        $this->actingAs($admin)->putJson('/api/v1/settings', [
             'site_title' => 'New Title',
             'primary_color' => 'not-a-hex-color',
         ])->assertUnprocessable()->assertJsonValidationErrors('primary_color');
@@ -103,7 +103,7 @@ class SettingsApiTest extends TestCase
 
         $first = UploadedFile::fake()->image('logo.png');
         $this->actingAs($admin)
-            ->postJson('/api/settings/logo', ['file' => $first])
+            ->postJson('/api/v1/settings/logo', ['file' => $first])
             ->assertOk();
 
         $firstPath = Setting::get('site_logo');
@@ -111,7 +111,7 @@ class SettingsApiTest extends TestCase
 
         $second = UploadedFile::fake()->image('logo-2.png');
         $this->actingAs($admin)
-            ->postJson('/api/settings/logo', ['file' => $second])
+            ->postJson('/api/v1/settings/logo', ['file' => $second])
             ->assertOk();
 
         Storage::disk('public')->assertMissing($firstPath);
@@ -123,13 +123,13 @@ class SettingsApiTest extends TestCase
         Storage::fake('public');
         $admin = User::factory()->create(['role' => 'admin']);
 
-        $this->actingAs($admin)->postJson('/api/settings/logo', [
+        $this->actingAs($admin)->postJson('/api/v1/settings/logo', [
             'file' => UploadedFile::fake()->image('logo.png'),
         ])->assertOk();
 
         $path = Setting::get('site_logo');
 
-        $this->actingAs($admin)->deleteJson('/api/settings/logo')->assertOk();
+        $this->actingAs($admin)->deleteJson('/api/v1/settings/logo')->assertOk();
 
         Storage::disk('public')->assertMissing($path);
         $this->assertNull(Setting::get('site_logo'));
@@ -141,7 +141,7 @@ class SettingsApiTest extends TestCase
         $admin = User::factory()->create(['role' => 'admin']);
 
         $this->actingAs($admin)
-            ->postJson('/api/settings/logo', [
+            ->postJson('/api/v1/settings/logo', [
                 'file' => UploadedFile::fake()->image('logo.png')->size(2048),
             ])
             ->assertUnprocessable()

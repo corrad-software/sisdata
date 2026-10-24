@@ -175,11 +175,15 @@ export function Sidebar({
     open,
     onClose,
     siteTitle = 'MYDS-Laravel',
+    permissions,
 }: {
     open: boolean;
     onClose: () => void;
     siteTitle?: string;
+    // Only decides what's shown; the API enforces access on its own.
+    permissions: string[];
 }) {
+    const can = (permission: string) => permissions.includes(permission);
     const collapsed = useSidebarStore((s) => s.collapsed);
     const toggle = useSidebarStore((s) => s.toggle);
 
@@ -235,23 +239,27 @@ export function Sidebar({
                         Dashboard
                     </SidebarLink>
 
-                    <SidebarLink
-                        href="/admin/users"
-                        label="Users"
-                        activeMatch={(p) => p.startsWith('/admin/users')}
-                        icon={<UsersIcon collapsed={collapsed} />}
-                    >
-                        Users
-                    </SidebarLink>
+                    {can('users.manage') && (
+                        <SidebarLink
+                            href="/admin/users"
+                            label="Users"
+                            activeMatch={(p) => p.startsWith('/admin/users')}
+                            icon={<UsersIcon collapsed={collapsed} />}
+                        >
+                            Users
+                        </SidebarLink>
+                    )}
 
-                    <SidebarLink
-                        href="/admin/settings"
-                        label="Settings"
-                        activeMatch={(p) => p.startsWith('/admin/settings')}
-                        icon={<SettingsIcon collapsed={collapsed} />}
-                    >
-                        Settings
-                    </SidebarLink>
+                    {can('settings.manage') && (
+                        <SidebarLink
+                            href="/admin/settings"
+                            label="Settings"
+                            activeMatch={(p) => p.startsWith('/admin/settings')}
+                            icon={<SettingsIcon collapsed={collapsed} />}
+                        >
+                            Settings
+                        </SidebarLink>
+                    )}
 
                     <KitchenSinkNavGroup collapsed={collapsed} />
 

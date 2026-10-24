@@ -47,6 +47,20 @@ return [
             'report' => false,
         ],
 
+        // SISDATA documents (MOD-DMS). Local dev: MinIO via infra/bin/sisdata-services.sh.
+        'dokumen' => [
+            'driver' => 's3',
+            'key' => env('DOKUMEN_S3_KEY'),
+            'secret' => env('DOKUMEN_S3_SECRET'),
+            'region' => env('DOKUMEN_S3_REGION', 'us-east-1'),
+            'bucket' => env('DOKUMEN_S3_BUCKET', 'sisdata-dokumen'),
+            'endpoint' => env('DOKUMEN_S3_ENDPOINT'),
+            'use_path_style_endpoint' => env('DOKUMEN_S3_PATH_STYLE', true),
+            'visibility' => 'private',
+            'throw' => true,
+            'report' => true,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

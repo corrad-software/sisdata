@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    // SRS-RBC-01 / SRS-RBC-03: the "SSO MAIS" OIDC identity provider
+    // (Keycloak locally — see infra/keycloak/ and infra/bin/keycloak-dev.sh).
+    // MFA is enforced by the IdP itself, not by this application.
+    'keycloak' => [
+        'client_id' => env('KEYCLOAK_CLIENT_ID', 'sisdata-web'),
+        'client_secret' => env('KEYCLOAK_CLIENT_SECRET'),
+        'redirect' => env('KEYCLOAK_REDIRECT_URI', rtrim((string) env('FRONTEND_URL', 'http://localhost:3000'), '/').'/auth/oidc/callback'),
+        'base_url' => env('KEYCLOAK_BASE_URL', 'http://localhost:8180'),
+        'realms' => env('KEYCLOAK_REALM', 'mais'),
+        'after_login_redirect' => env('KEYCLOAK_AFTER_LOGIN_REDIRECT_URI', rtrim((string) env('FRONTEND_URL', 'http://localhost:3000'), '/').'/admin'),
+        'login_page' => rtrim((string) env('FRONTEND_URL', 'http://localhost:3000'), '/').'/login',
+        'post_logout_redirect' => env('KEYCLOAK_POST_LOGOUT_REDIRECT_URI', rtrim((string) env('FRONTEND_URL', 'http://localhost:3000'), '/').'/login'),
+    ],
+
 ];

@@ -47,6 +47,19 @@ interface LinkButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     children?: ReactNode;
 }
 
+/**
+ * Button-styled plain `<a>` for full-page navigations that must leave the
+ * Next.js router (e.g. backend redirects like `/auth/oidc/redirect`), where
+ * `next/link`'s client-side routing/prefetching would be wrong.
+ */
+export function AnchorButton({ variant = 'primary', size = 'md', className, href, children, ...props }: LinkButtonProps) {
+    return (
+        <a href={href} className={classes(variant, size, className)} {...props}>
+            {children}
+        </a>
+    );
+}
+
 export function LinkButton({ variant = 'primary', size = 'md', className, href, children, ...props }: LinkButtonProps) {
     return (
         <Link href={href} className={classes(variant, size, className)} {...props}>

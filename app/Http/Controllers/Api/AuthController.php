@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Auth\OidcController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -19,6 +20,8 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        $this->ensurePasswordLoginEnabled();
+
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
@@ -55,6 +58,8 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $this->ensurePasswordLoginEnabled();
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -77,12 +82,34 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        // Must be read before the session is invalidated. Null for password
+        // logins, which keep the plain 204 response.
+        $logoutUrl = OidcController::endSessionUrl($request);
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        if ($logoutUrl) {
+            // SRS-RBC-01: the frontend navigates here to end the IdP session too.
+            return response()->json(['logout_url' => $logoutUrl]);
+        }
+
         return response()->noContent();
+    }
+
+    /**
+     * SRS-RBC-01: local password login can be switched off so that SSO MAIS
+     * is the only way in (config auth.password_login / AUTH_PASSWORD_LOGIN).
+     */
+    protected function ensurePasswordLoginEnabled(): void
+    {
+        abort_unless(
+            config('auth.password_login'),
+            403,
+            'Log masuk menggunakan kata laluan telah dinyahdayakan. Sila log masuk melalui SSO MAIS.'
+        );
     }
 
     public function user(Request $request)

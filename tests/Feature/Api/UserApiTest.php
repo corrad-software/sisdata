@@ -12,7 +12,7 @@ class UserApiTest extends TestCase
 
     public function test_guests_cannot_access_the_users_api(): void
     {
-        $this->getJson('/api/users')->assertUnauthorized();
+        $this->getJson('/api/v1/users')->assertUnauthorized();
     }
 
     public function test_non_admin_users_cannot_access_the_users_api(): void
@@ -20,7 +20,7 @@ class UserApiTest extends TestCase
         $user = User::factory()->create(['role' => 'user']);
 
         $this->actingAs($user)
-            ->getJson('/api/users')
+            ->getJson('/api/v1/users')
             ->assertForbidden();
     }
 
@@ -30,7 +30,7 @@ class UserApiTest extends TestCase
         User::factory()->create(['name' => 'Jane Doe']);
 
         $this->actingAs($user)
-            ->getJson('/api/users')
+            ->getJson('/api/v1/users')
             ->assertOk()
             ->assertJsonFragment(['name' => 'Jane Doe']);
     }
@@ -42,7 +42,7 @@ class UserApiTest extends TestCase
         User::factory()->create(['name' => 'Nomatch Person']);
 
         $response = $this->actingAs($user)
-            ->getJson('/api/users?search=Findme')
+            ->getJson('/api/v1/users?search=Findme')
             ->assertOk();
 
         $response->assertJsonFragment(['name' => 'Findme Person']);
@@ -53,7 +53,7 @@ class UserApiTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'admin']);
 
-        $response = $this->actingAs($user)->postJson('/api/users', [
+        $response = $this->actingAs($user)->postJson('/api/v1/users', [
             'name' => 'New Person',
             'email' => 'new-person@example.com',
             'password' => 'password123',
@@ -73,7 +73,7 @@ class UserApiTest extends TestCase
         $user = User::factory()->create(['role' => 'admin']);
 
         $this->actingAs($user)
-            ->postJson('/api/users', ['name' => '', 'email' => '', 'password' => ''])
+            ->postJson('/api/v1/users', ['name' => '', 'email' => '', 'password' => ''])
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['name', 'email', 'password', 'role']);
     }
@@ -83,7 +83,7 @@ class UserApiTest extends TestCase
         $user = User::factory()->create(['role' => 'admin']);
         $target = User::factory()->create(['name' => 'Old Name', 'role' => 'user']);
 
-        $response = $this->actingAs($user)->putJson("/api/users/{$target->id}", [
+        $response = $this->actingAs($user)->putJson("/api/v1/users/{$target->id}", [
             'name' => 'Updated Name',
             'email' => $target->email,
             'role' => 'user',
@@ -103,7 +103,7 @@ class UserApiTest extends TestCase
         $target = User::factory()->create();
 
         $this->actingAs($user)
-            ->deleteJson("/api/users/{$target->id}")
+            ->deleteJson("/api/v1/users/{$target->id}")
             ->assertNoContent();
 
         $this->assertDatabaseMissing('users', ['id' => $target->id]);

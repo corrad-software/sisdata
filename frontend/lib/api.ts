@@ -36,7 +36,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
         }
     }
 
-    const response = await fetch(`/api${path}`, { ...options, method, headers, credentials: 'include' });
+    const response = await fetch(`/api/v1${path}`, { ...options, method, headers, credentials: 'include' });
 
     if (response.status === 204) return undefined as T;
 

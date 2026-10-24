@@ -26,7 +26,12 @@ export function DashboardShell({
 
     return (
         <div className="flex flex-1 min-h-0">
-            <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} siteTitle={siteTitle} />
+            <Sidebar
+                open={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+                siteTitle={siteTitle}
+                permissions={user.permissions ?? []}
+            />
 
             <div className="flex-1 flex flex-col min-w-0">
                 <header className="h-16 flex items-center justify-between gap-4 px-4 sm:px-6 bg-bg-white border-b border-otl-divider">

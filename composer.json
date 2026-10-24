@@ -8,11 +8,17 @@
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.0",
+        "laravel/horizon": "^5.50",
         "laravel/sanctum": "^4.3",
-        "laravel/tinker": "^3.0"
+        "laravel/socialite": "^5.31",
+        "laravel/tinker": "^3.0",
+        "league/flysystem-aws-s3-v3": "^3.35",
+        "predis/predis": "^3.7",
+        "socialiteproviders/keycloak": "^5.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.13",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",
@@ -35,6 +41,7 @@
     "scripts": {
         "setup": [
             "composer install",
+            "infra/bin/sisdata-db-setup.sh",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
             "@php artisan migrate --force",
@@ -43,11 +50,19 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"cd frontend && npm run dev\" --names=server,queue,logs,frontend --kill-others"
+            "infra/bin/sisdata-services.sh start",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan horizon\" \"php artisan pail --timeout=0\" \"cd frontend && npm run dev\" --names=server,horizon,logs,frontend --kill-others"
         ],
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ],
+        "lint": [
+            "vendor/bin/pint --test",
+            "vendor/bin/phpstan analyse --no-progress --memory-limit=1G"
+        ],
+        "format": [
+            "vendor/bin/pint"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

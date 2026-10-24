@@ -2,22 +2,41 @@
 
 Laravel API backend + Next.js admin frontend, styled with the Malaysian Government Design System (MYDS). Laravel is a **pure JSON API** — no Blade views render anything user-facing. Next.js is the sole UI. Full picture: [README.md](README.md).
 
+**This repo is being built into SISDATA** (MAIS land/property system, 22 modules, 572 SRS requirements). The dev plan, phases and open SRS issues are in [docs/PLAN-SISDATA.md](docs/PLAN-SISDATA.md); F0 (groundwork) is done.
+
 ## Running it locally
 
-Two servers, two terminals (or `composer run dev`, which runs both via `concurrently`):
+`composer run dev` starts the backing services (`infra/bin/sisdata-services.sh start`), then API (:8000), Horizon, Pail and the UI (:3000) via `concurrently`.
 
-```bash
-php artisan serve        # :8000 — API
-cd frontend && npm run dev   # :3000 — UI
-```
+Backing services are **native (Homebrew), no Docker** — the user's choice. `infra/bin/sisdata-services.sh start|stop|status` manages them:
 
-`composer run setup` bootstraps both sides (`.env` files, `key:generate`, `migrate`, `npm install`) for a fresh clone.
+| Service | Port | Notes |
+| --- | --- | --- |
+| PostgreSQL 17 + PostGIS 3.6 + pgvector + pg_trgm | 5432 | DBs `myds_laravel` (dev) and `myds_laravel_test` (PHPUnit). PostGIS isn't a trusted extension → `infra/bin/sisdata-db-setup.sh` creates extensions as superuser |
+| Redis | 6379 | cache + queue (Horizon). PHP has no `redis` ext → `REDIS_CLIENT=predis` |
+| Mailpit | 1025 / UI 8025 | all outgoing mail |
+| MinIO | 9000 / console 9001 | `dokumen` disk, bucket via `php artisan sisdata:bucket` |
+| ClamAV clamd | socket `/opt/homebrew/var/run/clamav/clamd.sock` | signatures: `freshclam` |
+| GeoServer | 8085 | stand-in for SuperMap |
+| Keycloak 26 ("SSO MAIS", realm `mais`) | 8180 | `infra/bin/keycloak-dev.sh`; realm in `infra/keycloak/realm-mais.json`; test users in that file |
+
+`composer run setup` bootstraps a fresh clone.
 
 ## Critical gotchas — read before touching these areas
 
 - **MYDS theming uses a universal `*` selector, not `:root`.** `color.css` defines `--_primary-*` on `*`, so every element gets its own directly-assigned value rather than inheriting from `<html>`. Any runtime color override (Site Settings' theme color) must match that same `*` selector and be placed *after* the compiled stylesheet in `<head>` to win by source order. See `app/Support/ThemeColor.php` (`css()`) and `frontend/app/layout.tsx`.
 - **Sanctum SPA auth is cross-origin** (`:3000` → `:8000`). The session cookie *rotates* on logout rather than clearing — cookie-presence alone can't distinguish "logged in" from "just logged out." `frontend/proxy.ts` only does a cheap presence check to gate `/admin/*`; the authoritative check is always `getServerUser()` server-side (see `frontend/app/(dashboard)/layout.tsx` and `frontend/app/(auth)/layout.tsx`). Don't add cookie-presence-based redirects for the guest routes (`/login`, `/register`) — that caused a real infinite redirect loop once.
 - **`Setting::allCached()` must return a plain array, not a `Collection`.** Laravel 13's `serializable_classes: false` cache hardening silently breaks unserializing cached objects. If you touch `app/Models/Setting.php`, keep it array-based.
+
+## Backend conventions (SISDATA)
+
+- **API prefix is `/api/v1`** (`apiPrefix` in `bootstrap/app.php`). Route names (`api.login` …) are unchanged.
+- **Modules live in `app/Modules/<Name>/`**, each with a `<Name>ServiceProvider` extending `App\Support\Modules\ModuleServiceProvider` and listed in `config/modules.php`. `routes.php` mounts at `/api/v1/<code>`; migrations and `lang/` load automatically. Copy `app/Modules/Platform` to start one. A module may only reference another module's `Contracts\` or `Events\` — `tests/Architecture/ModuleBoundaryTest` fails otherwise.
+- **Errors:** every `/api` error goes through `App\Support\ApiErrorRenderer` → `{message, code, request_id, errors?}`; no internals unless `APP_DEBUG`. Every response carries `X-Request-Id` (`AssignRequestId` middleware, also in log `Context`).
+- **Language is Malay** (`APP_LOCALE=ms`). Write source strings in English with `__()` and add the Malay to `lang/ms.json` / `lang/ms/*.php`.
+- **Tests are named after SRS codes** (`test_SRS_ADM_12_…`) so `php artisan srs:rtm` can build `docs/RTM.md`. Pint's `php_unit_method_casing` is disabled for that reason — don't re-enable it.
+- **Login:** SSO MAIS via OIDC (`App\Http\Controllers\Auth\OidcController`, `/auth/oidc/*`, proxied by Next's `/auth/:path*` rewrite). Password login stays behind `AUTH_PASSWORD_LOGIN`.
+- `App\Support\Permissions` is an interim role→permission map until MOD-RBC lands; it only drives which menu items the UI shows.
 
 ## Frontend conventions
 
@@ -39,7 +58,8 @@ cd frontend && npm run dev   # :3000 — UI
 
 Backend (`/`):
 ```bash
-php artisan test
+composer lint      # Pint + Larastan (level 5)
+php artisan test   # Postgres myds_laravel_test, never the dev DB
 ```
 
 Frontend (`frontend/`):
@@ -53,8 +73,8 @@ For anything touching auth, the settings form, or layout/spacing, prefer an actu
 
 ## Scope decisions already made (don't relitigate without asking)
 
-- Profile self-service, a real notifications backend, password reset, and an EN/MS locale switcher were **deliberately dropped**, not forgotten, when Blade was retired — only Kitchen Sink + Site Settings were ported.
-- No client-side role-based UI hiding yet: a `role: 'user'` account still sees the Users/Settings nav links even though the API 403s their requests server-side. Known gap, not a bug — see [README's Notes section](README.md#notes).
+- Profile self-service, password reset, and an EN/MS locale switcher were **deliberately dropped** when Blade was retired. A real notifications backend was dropped too, but SISDATA's MOD-NTF (G0) will build one — that's planned, not relitigation.
+- Sidebar links are now hidden by permission (`user.permissions` from the API). The API still enforces access itself; never rely on the UI hiding.
 
 ## Git
 

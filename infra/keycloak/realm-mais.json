@@ -1,0 +1,129 @@
+{
+  "realm": "mais",
+  "displayName": "SSO MAIS",
+  "displayNameHtml": "<strong>SSO MAIS</strong>",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "rememberMe": false,
+  "bruteForceProtected": true,
+  "failureFactor": 5,
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+
+  "otpPolicyType": "totp",
+  "otpPolicyAlgorithm": "HmacSHA1",
+  "otpPolicyDigits": 6,
+  "otpPolicyPeriod": 30,
+  "otpPolicyLookAheadWindow": 1,
+  "otpPolicyInitialCounter": 0,
+  "otpPolicyCodeReusable": false,
+  "otpSupportedApplications": ["totpAppGoogleName", "totpAppMicrosoftAuthenticatorName", "totpAppFreeOTPName"],
+
+  "roles": {
+    "realm": [
+      { "name": "pentadbir_sistem", "description": "Pentadbir Sistem SISDATA" },
+      { "name": "pegawai_daerah", "description": "Pegawai Daerah (Pejabat Agama Islam Daerah)" },
+      { "name": "pegawai_hq", "description": "Pegawai Ibu Pejabat MAIS" },
+      { "name": "pengurusan", "description": "Pengurusan Tertinggi MAIS" }
+    ]
+  },
+
+  "clients": [
+    {
+      "clientId": "sisdata-web",
+      "name": "SISDATA (Sistem Data Tanah & Hartanah MAIS)",
+      "description": "SISDATA web frontend (Laravel handles the OIDC code flow)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "sisdata-web-dev-secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "frontchannelLogout": true,
+      "rootUrl": "http://localhost:3000",
+      "baseUrl": "/admin",
+      "redirectUris": ["http://localhost:3000/auth/oidc/callback"],
+      "webOrigins": ["http://localhost:3000"],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:3000/login",
+        "pkce.code.challenge.method": "S256"
+      },
+      "defaultClientScopes": ["basic", "acr", "web-origins", "profile", "roles", "email"],
+      "optionalClientScopes": ["offline_access", "address", "phone"],
+      "protocolMappers": [
+        {
+          "name": "realm roles (roles claim)",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "roles",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+
+  "users": [
+    {
+      "id": "5a1e0000-0000-4000-8000-000000000001",
+      "username": "admin",
+      "email": "admin@example.com",
+      "firstName": "Pentadbir",
+      "lastName": "Sistem",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "Admin@12345", "temporary": false }],
+      "realmRoles": ["pentadbir_sistem"]
+    },
+    {
+      "id": "5a1e0000-0000-4000-8000-000000000002",
+      "username": "siti.aminah",
+      "email": "siti.aminah@mais.test",
+      "firstName": "Siti Aminah",
+      "lastName": "binti Abdullah",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "Sisdata@123", "temporary": false }],
+      "realmRoles": ["pegawai_daerah"]
+    },
+    {
+      "id": "5a1e0000-0000-4000-8000-000000000003",
+      "username": "mohd.faizal",
+      "email": "mohd.faizal@mais.test",
+      "firstName": "Mohd Faizal",
+      "lastName": "bin Hassan",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "Sisdata@123", "temporary": false }],
+      "realmRoles": ["pegawai_hq"],
+      "requiredActions": ["CONFIGURE_TOTP"]
+    },
+    {
+      "id": "5a1e0000-0000-4000-8000-000000000004",
+      "username": "nurul.huda",
+      "email": "nurul.huda@mais.test",
+      "firstName": "Nurul Huda",
+      "lastName": "binti Ismail",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [{ "type": "password", "value": "Sisdata@123", "temporary": false }],
+      "realmRoles": ["pengurusan"]
+    }
+  ]
+}

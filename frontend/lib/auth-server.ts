@@ -13,7 +13,7 @@ export const getServerUser = cache(async (): Promise<User | null> => {
 
     if (!cookieHeader) return null;
 
-    const response = await fetch(`${backend}/api/user`, {
+    const response = await fetch(`${backend}/api/v1/user`, {
         // Sanctum only treats a request as coming from the SPA frontend (and
         // thus checks session auth) when Referer/Origin matches a configured
         // stateful domain — this direct server-to-server call needs it too.

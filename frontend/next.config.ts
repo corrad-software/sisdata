@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
         return [
             { source: '/api/:path*', destination: `${backend}/api/:path*` },
             { source: '/sanctum/:path*', destination: `${backend}/sanctum/:path*` },
+            // SRS-RBC-01: SSO MAIS OIDC redirect/callback, handled by Laravel
+            // but kept on this origin so the session cookie lands on :3000.
+            { source: '/auth/:path*', destination: `${backend}/auth/:path*` },
         ];
     },
 };

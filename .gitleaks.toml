@@ -1,0 +1,19 @@
+# Gitleaks configuration (SRS-ADM-24: secret scanning).
+# Extends the built-in ruleset; only known-safe placeholder/fixture files are allowlisted.
+# Do NOT add real source paths here to silence a finding — rotate the secret instead.
+
+title = "SISDATA gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholder env templates and non-production test fixtures"
+paths = [
+    '''(^|/)\.env\.example$''',
+    '''(^|/)frontend/\.env\.example$''',
+    '''^tests/fixtures/''',
+    '''^frontend/e2e/fixtures/''',
+    '''^composer\.lock$''',
+    '''^frontend/package-lock\.json$''',
+]

@@ -29,6 +29,9 @@ class SettingController extends Controller
                 'site_logo_url' => $siteLogo ? asset('storage/'.$siteLogo) : null,
                 'site_favicon_url' => $siteFavicon ? asset('storage/'.$siteFavicon) : null,
                 'theme_css' => ThemeColor::css($primaryColor),
+                // SRS-RBC-01: lets the login page hide the password form when
+                // SSO MAIS is the only allowed sign-in method.
+                'password_login_enabled' => (bool) config('auth.password_login'),
             ],
         ]);
     }
