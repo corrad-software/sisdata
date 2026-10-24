@@ -1,0 +1,61 @@
+{
+    "kod_aliran": "per.kelulusan",
+    "nama": "Kelulusan berlapis kes pemerolehan",
+    "keterangan": "SRS-PER-29 — definisi cadangan untuk diimport ke pereka aliran WFE (POST /api/v1/wfe/definisi). Lapisan: semakan pegawai kanan → Ketua Bahagian mengikut kod_bahagian (wakaf / baitulmal / hartanah) → Pengurusan Tertinggi (MFA) jika nilai_pemerolehan melebihi RM1 juta. Pendaftar kes ialah pemohon WFE, jadi tidak boleh meluluskan kes sendiri.",
+    "modul": "per",
+    "jenis_transaksi": "pemerolehan",
+    "templat": false,
+    "peringkat": [
+        {
+            "kod": "semakan_pegawai_kanan", "nama": "Semakan pegawai kanan", "mod_kelulusan": "mana_mana",
+            "sla_nilai": 3, "sla_unit": "hari_bekerja", "perlu_mfa": false, "perlu_justifikasi": false,
+            "pelulus": [{"jenis": "kumpulan", "nilai": "per_penyemak", "label": "Pegawai kanan penyemak pemerolehan"}],
+            "eskalasi": [
+                {"aras": 1, "tempoh_nilai": 0, "tempoh_unit": "hari_bekerja", "jenis_penerima": "penyelia", "nilai_penerima": null},
+                {"aras": 2, "tempoh_nilai": 2, "tempoh_unit": "hari_bekerja", "jenis_penerima": "kumpulan", "nilai_penerima": "per_pengurusan"}
+            ]
+        },
+        {
+            "kod": "kb_hartanah", "nama": "Kelulusan Ketua Bahagian Pengurusan Hartanah", "mod_kelulusan": "mana_mana",
+            "sla_nilai": 5, "sla_unit": "hari_bekerja", "perlu_mfa": false, "perlu_justifikasi": false,
+            "pelulus": [{"jenis": "kumpulan", "nilai": "per_ketua_hartanah", "label": "Ketua Bahagian Pengurusan Hartanah"}],
+            "eskalasi": [{"aras": 1, "tempoh_nilai": 0, "tempoh_unit": "hari_bekerja", "jenis_penerima": "kumpulan", "nilai_penerima": "per_pengurusan"}]
+        },
+        {
+            "kod": "kb_wakaf", "nama": "Kelulusan Ketua Bahagian Wakaf", "mod_kelulusan": "mana_mana",
+            "sla_nilai": 5, "sla_unit": "hari_bekerja", "perlu_mfa": false, "perlu_justifikasi": false,
+            "pelulus": [{"jenis": "kumpulan", "nilai": "per_ketua_wakaf", "label": "Ketua Bahagian Wakaf"}],
+            "eskalasi": [{"aras": 1, "tempoh_nilai": 0, "tempoh_unit": "hari_bekerja", "jenis_penerima": "kumpulan", "nilai_penerima": "per_pengurusan"}]
+        },
+        {
+            "kod": "kb_baitulmal", "nama": "Kelulusan Ketua Bahagian Baitulmal", "mod_kelulusan": "mana_mana",
+            "sla_nilai": 5, "sla_unit": "hari_bekerja", "perlu_mfa": false, "perlu_justifikasi": false,
+            "pelulus": [{"jenis": "kumpulan", "nilai": "per_ketua_baitulmal", "label": "Ketua Bahagian Baitulmal"}],
+            "eskalasi": [{"aras": 1, "tempoh_nilai": 0, "tempoh_unit": "hari_bekerja", "jenis_penerima": "kumpulan", "nilai_penerima": "per_pengurusan"}]
+        },
+        {
+            "kod": "pengurusan", "nama": "Kelulusan Pengurusan Tertinggi (nilai > RM1 juta)", "mod_kelulusan": "mana_mana",
+            "sla_nilai": 5, "sla_unit": "hari_bekerja", "perlu_mfa": true, "perlu_justifikasi": true,
+            "pelulus": [{"jenis": "kumpulan", "nilai": "per_pengurusan", "label": "Pengurusan Tertinggi MAIS"}],
+            "eskalasi": [{"aras": 1, "tempoh_nilai": 0, "tempoh_unit": "hari_bekerja", "jenis_penerima": "peranan", "nilai_penerima": "pentadbir_sistem"}]
+        }
+    ],
+    "peralihan": [
+        {"dari": "mula", "ke": "semakan_pegawai_kanan"},
+        {"dari": "semakan_pegawai_kanan", "ke": "kb_wakaf", "keutamaan": 1, "label": "Bahagian Wakaf", "syarat": [{"medan": "kod_bahagian", "operator": "sama", "nilai": "wakaf"}]},
+        {"dari": "semakan_pegawai_kanan", "ke": "kb_baitulmal", "keutamaan": 2, "label": "Bahagian Baitulmal", "syarat": [{"medan": "kod_bahagian", "operator": "sama", "nilai": "baitulmal"}]},
+        {"dari": "semakan_pegawai_kanan", "ke": "kb_hartanah", "keutamaan": 3, "label": "Bahagian Pengurusan Hartanah"},
+        {"dari": "kb_hartanah", "ke": "pengurusan", "keutamaan": 1, "label": "Nilai > RM1 juta", "syarat": [{"medan": "nilai_pemerolehan", "operator": "lebih", "nilai": 1000000}]},
+        {"dari": "kb_hartanah", "ke": "tamat", "keutamaan": 2},
+        {"dari": "kb_wakaf", "ke": "pengurusan", "keutamaan": 1, "label": "Nilai > RM1 juta", "syarat": [{"medan": "nilai_pemerolehan", "operator": "lebih", "nilai": 1000000}]},
+        {"dari": "kb_wakaf", "ke": "tamat", "keutamaan": 2},
+        {"dari": "kb_baitulmal", "ke": "pengurusan", "keutamaan": 1, "label": "Nilai > RM1 juta", "syarat": [{"medan": "nilai_pemerolehan", "operator": "lebih", "nilai": 1000000}]},
+        {"dari": "kb_baitulmal", "ke": "tamat", "keutamaan": 2},
+        {"dari": "pengurusan", "ke": "tamat"}
+    ],
+    "susun_atur": {"nodes": {
+        "mula": {"x": 0, "y": 200}, "semakan_pegawai_kanan": {"x": 200, "y": 180},
+        "kb_hartanah": {"x": 480, "y": 40}, "kb_wakaf": {"x": 480, "y": 180}, "kb_baitulmal": {"x": 480, "y": 320},
+        "pengurusan": {"x": 760, "y": 180}, "tamat": {"x": 1020, "y": 200}
+    }}
+}

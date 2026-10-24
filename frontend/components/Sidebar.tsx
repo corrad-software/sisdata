@@ -87,6 +87,42 @@ function AboutIcon({ collapsed }: { collapsed: boolean }) {
     );
 }
 
+function TitleIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
+            />
+        </svg>
+    );
+}
+
+function AcquisitionIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"
+            />
+        </svg>
+    );
+}
+
 function AdminIcon({ collapsed }: { collapsed: boolean }) {
     return (
         <svg
@@ -378,6 +414,28 @@ export function Sidebar({
                             icon={<SettingsIcon collapsed={collapsed} />}
                         >
                             Settings
+                        </SidebarLink>
+                    )}
+
+                    {can('hkm.hak_milik.lihat') && (
+                        <SidebarLink
+                            href="/admin/hkm/hak-milik"
+                            label="Hak Milik Tanah"
+                            activeMatch={(p) => p.startsWith('/admin/hkm')}
+                            icon={<TitleIcon collapsed={collapsed} />}
+                        >
+                            Hak Milik Tanah
+                        </SidebarLink>
+                    )}
+
+                    {can('per.kes.lihat') && (
+                        <SidebarLink
+                            href="/admin/per"
+                            label="Rekod Pemerolehan"
+                            activeMatch={(p) => p.startsWith('/admin/per')}
+                            icon={<AcquisitionIcon collapsed={collapsed} />}
+                        >
+                            Rekod Pemerolehan
                         </SidebarLink>
                     )}
 
