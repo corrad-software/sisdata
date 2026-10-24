@@ -36,6 +36,9 @@ final class BaseRoles
      */
     private const CLASSIFIED = ['*.sulit.*', '*.rahsia.*'];
 
+    /** Module settings that are administration, not operations, despite a *.kemas_kini key. */
+    private const MODULE_SETTINGS = ['dsh.widget.*'];
+
     /**
      * @return array<string, array{nama: string, keterangan: string, include: list<string>, exclude: list<string>}>
      */
@@ -65,7 +68,7 @@ final class BaseRoles
                 'nama' => 'Pegawai Operasi',
                 'keterangan' => 'Kemasukan data, kemas kini rekod, pengurusan dokumen, semakan maklumat dan tindakan harian mengikut bidang tugas.',
                 'include' => ['*.lihat', '*.cipta', '*.kemas_kini'],
-                'exclude' => [...self::PLATFORM_ADMIN, ...self::CLASSIFIED],
+                'exclude' => [...self::PLATFORM_ADMIN, ...self::CLASSIFIED, ...self::MODULE_SETTINGS],
             ],
             self::PELULUS => [
                 'nama' => 'Pelulus',

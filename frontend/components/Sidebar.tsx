@@ -87,6 +87,114 @@ function AboutIcon({ collapsed }: { collapsed: boolean }) {
     );
 }
 
+function InboxIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"
+            />
+        </svg>
+    );
+}
+
+function InspectIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+        </svg>
+    );
+}
+
+function TaxIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+            />
+        </svg>
+    );
+}
+
+function LeaseIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"
+            />
+        </svg>
+    );
+}
+
+function GlobeIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+            />
+        </svg>
+    );
+}
+
+function ComplaintIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+            />
+        </svg>
+    );
+}
+
 function MapIcon({ collapsed }: { collapsed: boolean }) {
     return (
         <svg
@@ -401,6 +509,17 @@ export function Sidebar({
                         Dashboard
                     </SidebarLink>
 
+                    {can('dsh.dashboard.lihat') && (
+                        <SidebarLink
+                            href="/admin/dsh/inbox"
+                            label="Inbox Tugasan"
+                            activeMatch={(p) => p.startsWith('/admin/dsh')}
+                            icon={<InboxIcon collapsed={collapsed} />}
+                        >
+                            Inbox Tugasan
+                        </SidebarLink>
+                    )}
+
                     {can('rbc.pengguna.lihat') && (
                         <SidebarLink
                             href="/admin/users"
@@ -435,6 +554,17 @@ export function Sidebar({
                         </SidebarLink>
                     )}
 
+                    {can('gis.peta.lihat') && (
+                        <SidebarLink
+                            href="/admin/gis"
+                            label="Peta GIS"
+                            activeMatch={(p) => p.startsWith('/admin/gis')}
+                            icon={<GlobeIcon collapsed={collapsed} />}
+                        >
+                            Peta GIS
+                        </SidebarLink>
+                    )}
+
                     {can('pro.lot.lihat') && (
                         <SidebarLink
                             href="/admin/pro"
@@ -465,6 +595,50 @@ export function Sidebar({
                             icon={<AcquisitionIcon collapsed={collapsed} />}
                         >
                             Rekod Pemerolehan
+                        </SidebarLink>
+                    )}
+
+                    {can('pjk.kontrak.lihat') && (
+                        <SidebarLink
+                            href="/admin/pjk/kontrak"
+                            label="Pajakan & Kontrak"
+                            activeMatch={(p) => p.startsWith('/admin/pjk')}
+                            icon={<LeaseIcon collapsed={collapsed} />}
+                        >
+                            Pajakan & Kontrak
+                        </SidebarLink>
+                    )}
+
+                    {can('cki.bil.lihat') && (
+                        <SidebarLink
+                            href="/admin/cki/ringkasan"
+                            label="Cukai Tanah"
+                            activeMatch={(p) => p.startsWith('/admin/cki')}
+                            icon={<TaxIcon collapsed={collapsed} />}
+                        >
+                            Cukai Tanah
+                        </SidebarLink>
+                    )}
+
+                    {can('ptn.lawatan.lihat') && (
+                        <SidebarLink
+                            href="/admin/ptn"
+                            label="Pemantauan Tanah"
+                            activeMatch={(p) => p.startsWith('/admin/ptn')}
+                            icon={<InspectIcon collapsed={collapsed} />}
+                        >
+                            Pemantauan Tanah
+                        </SidebarLink>
+                    )}
+
+                    {can('adu.aduan.lihat') && (
+                        <SidebarLink
+                            href="/admin/adu"
+                            label="Aduan & Isu Tanah"
+                            activeMatch={(p) => p.startsWith('/admin/adu')}
+                            icon={<ComplaintIcon collapsed={collapsed} />}
+                        >
+                            Aduan & Isu Tanah
                         </SidebarLink>
                     )}
 

@@ -24,6 +24,8 @@
         </include>
     </source>
     <php>
+        <!-- The full suite (1,500+ tests incl. Excel/PDF/ZIP exports) outgrows PHP's 128M default in one process. -->
+        <ini name="memory_limit" value="1G"/>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>

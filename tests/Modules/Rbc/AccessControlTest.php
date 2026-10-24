@@ -100,6 +100,8 @@ class AccessControlTest extends TestCase
         $this->assertTrue(BaseRoles::grantsByDefault(BaseRoles::PENTADBIR_APLIKASI, 'ref.rujukan.lihat'));
         $this->assertTrue(BaseRoles::grantsByDefault(BaseRoles::PENTADBIR_APLIKASI, 'wfe.tugasan.lihat'));
         $this->assertFalse(BaseRoles::grantsByDefault(BaseRoles::PENTADBIR_APLIKASI, 'dms.sulit.lihat'));
+        // Dashboard settings are administration, not an operations update.
+        $this->assertFalse(BaseRoles::grantsByDefault(BaseRoles::PEGAWAI_OPERASI, 'dsh.widget.kemas_kini'));
     }
 
     public function test_SRS_RBC_05_a_newly_registered_module_gets_base_role_defaults_once(): void

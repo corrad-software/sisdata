@@ -1,0 +1,12 @@
+{
+    "name": "SISDATA Pemantauan Tanah — Aplikasi Lapangan",
+    "short_name": "PTN Lapangan",
+    "description": "Rekod lawatan pemantauan tanah MAIS secara luar talian.",
+    "lang": "ms",
+    "start_url": "/admin/ptn/lapangan",
+    "scope": "/admin/ptn/lapangan",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563eb",
+    "icons": [{ "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon" }]
+}

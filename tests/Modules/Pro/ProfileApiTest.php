@@ -27,8 +27,8 @@ class ProfileApiTest extends ProTestCase
         // MOD-HKM / MOD-PER register their own sections now; modules not built yet stay placeholders.
         $this->assertSame('belum_tersedia', $sections('kewangan')['penilaian']['status']);
         $this->assertSame('belum_tersedia', $sections('ruang')['aset_fizikal']['status']);
-        $this->assertStringContainsString('Belum tersedia', $sections('kewangan')['cukai']['mesej']);
-        foreach (['pajakan' => 'pemanfaatan', 'aduan' => 'risiko', 'kes_mahkamah' => 'risiko'] as $key => $tab) {
+        $this->assertArrayNotHasKey('cukai', $sections('kewangan')->all()); // registered by MOD-CKI; hidden without cki.bil.lihat
+        foreach (['kes_mahkamah' => 'risiko'] as $key => $tab) { // 'aduan' / 'pajakan' are registered by MOD-ADU / MOD-PJK
             $this->assertSame('belum_tersedia', $sections($tab)[$key]['status'], $key);
         }
         $this->assertSame('ada', $sections('ruang')['spatial']['status']);
@@ -125,8 +125,8 @@ class ProfileApiTest extends ProTestCase
 
         $this->assertSame('ada', $all['hak_milik']['status']);                       // hak milik
         $this->assertSame('MultiPolygon', $data['geojson']['geometry']['type']);       // lokasi GIS
-        $this->assertArrayHasKey('cukai', $all->all());                                // cukai (placeholder until MOD-CKI)
-        $this->assertArrayHasKey('pajakan', $all->all());                              // pajakan (placeholder until MOD-PJK)
+        $this->assertArrayNotHasKey('cukai', $all->all());                             // MOD-CKI section hidden without cki.bil.lihat
+        $this->assertArrayNotHasKey('pajakan', $all->all());                           // MOD-PJK section hidden without pjk.kontrak.lihat
         $this->assertSame('geran.pdf', $all['dokumen']['items'][0]['label']);          // dokumen
         $this->assertArrayHasKey('kualiti_data', $all->all());                         // risiko
         $this->assertContains('kemas_kini', array_map(fn ($i) => $i['label'] === 'Kemas kini' ? 'kemas_kini' : $i['label'], $all['jejak_audit']['items'])); // sejarah transaksi

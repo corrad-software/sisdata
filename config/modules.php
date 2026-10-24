@@ -1,13 +1,19 @@
 <?php
 
 use App\Modules\Adm\AdmServiceProvider;
+use App\Modules\Adu\AduServiceProvider;
 use App\Modules\Aud\AudServiceProvider;
+use App\Modules\Cki\CkiServiceProvider;
 use App\Modules\Dms\DmsServiceProvider;
+use App\Modules\Dsh\DshServiceProvider;
+use App\Modules\Gis\GisServiceProvider;
 use App\Modules\Hkm\HkmServiceProvider;
 use App\Modules\Ntf\NtfServiceProvider;
 use App\Modules\Per\PerServiceProvider;
+use App\Modules\Pjk\PjkServiceProvider;
 use App\Modules\Platform\PlatformServiceProvider;
 use App\Modules\Pro\ProServiceProvider;
+use App\Modules\Ptn\PtnServiceProvider;
 use App\Modules\Rbc\RbcServiceProvider;
 use App\Modules\Ref\RefServiceProvider;
 use App\Modules\Wfe\WfeServiceProvider;
@@ -31,5 +37,13 @@ return [
         ProServiceProvider::class,
         HkmServiceProvider::class,
         PerServiceProvider::class,
+        // G2 — ruang
+        GisServiceProvider::class,
+        DshServiceProvider::class,
+        // G3 — operasi
+        PjkServiceProvider::class,
+        CkiServiceProvider::class,
+        PtnServiceProvider::class,
+        AduServiceProvider::class,
     ],
 ];

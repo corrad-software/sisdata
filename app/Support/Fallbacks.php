@@ -4,7 +4,10 @@ namespace App\Support;
 
 use App\Modules\Adm\Contracts\Parameters;
 use App\Modules\Adm\Contracts\SearchProviders;
+use App\Modules\Adu\Contracts\ComplaintIntake;
 use App\Modules\Aud\Contracts\AuditLogger;
+use App\Modules\Dsh\Contracts\KpiProviders;
+use App\Modules\Gis\Contracts\MapLayers;
 use App\Modules\Hkm\Contracts\TitleRegistry;
 use App\Modules\Ntf\Contracts\NotificationTypes;
 use App\Modules\Ntf\Contracts\Notifier;
@@ -35,5 +38,8 @@ class Fallbacks
         $app->bindIf(LotRegistry::class, Fallbacks\FallbackLotRegistry::class);
         $app->singletonIf(ProfileSections::class, Fallbacks\FallbackProfileSections::class);
         $app->bindIf(TitleRegistry::class, Fallbacks\FallbackTitleRegistry::class);
+        $app->singletonIf(MapLayers::class, Fallbacks\FallbackMapLayers::class);
+        $app->singletonIf(KpiProviders::class, Fallbacks\FallbackKpiProviders::class);
+        $app->bindIf(ComplaintIntake::class, Fallbacks\FallbackComplaintIntake::class);
     }
 }

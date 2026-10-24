@@ -287,6 +287,19 @@ DB dev diisi: 500 lot sintetik + geometri, 488 hak milik, 60 kes pemerolehan; al
 
 Terbuka: jadual satelit (penilaian, pajakan, cukai, aduan, kes) hanya rangka sehingga G3/G4; gabung duplikasi belum memindah rekod modul lain; `csv`/`zip` tiada dalam senarai putih DMS (fail import asal tidak disimpan).
 
+### Status G2 + G3 — siap (2026-10-25)
+
+| Modul | Kod SRS ada ujian | Catatan |
+| --- | --- | --- |
+| GIS | 30/35 | 04–07, 24, 35 serahan perolehan. Tile vektor berskop, proksi OGC (GeoServer) yang menyuntik skop, analisis, import/eksport, QA spatial |
+| DSH | 23/25 | 20 (responsif) diuji browser sahaja; 21 milik RBC/WFE. KPI dari semua modul, 3 aras, AI berasaskan peraturan (tiada AI awam) |
+| PJK | 28/28 | Lejar tak boleh ubah, FPX mock + webhook bertandatangan, rekonsiliasi GRP/e-Sewa, agihan manfaat (formula andaian — perlu dasar MAIS) |
+| CKI | 24/24 | Adapter MBI + mod sandaran manual, kelulusan bayaran berlapis, rekonsiliasi GRP (jadual penalti sebenar perlu input MAIS) |
+| PTN | 24/24 | Aplikasi lapangan luar talian (IndexedDB tersulit), geofence, laporan dikunci, skor risiko harian |
+| ADU | 27/27 | Pelbagai saluran, triaj PostGIS, SLA + eskalasi, identiti pengadu tersulit |
+
+Pengajaran: disk hampir penuh (salinan SIEM JSONL 710 MB — dev kini `AUD_SIEM=null`); suite penuh perlukan `memory_limit` 1G; `artisan serve` tanpa `--no-reload` mengabaikan override DB.
+
 ## 16. Langkah seterusnya (bila diluluskan)
 
 1. F0 langkah 1–3 (PostGIS, rangka modul, `/api/v1`) — boleh mula serta-merta.
