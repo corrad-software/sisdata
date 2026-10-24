@@ -2,7 +2,7 @@
 
 Laravel API backend + Next.js admin frontend, styled with the Malaysian Government Design System (MYDS). Laravel is a **pure JSON API** — no Blade views render anything user-facing. Next.js is the sole UI. Full picture: [README.md](README.md).
 
-**This repo is being built into SISDATA** (MAIS land/property system, 22 modules, 572 SRS requirements). The dev plan, phases and open SRS issues are in [docs/PLAN-SISDATA.md](docs/PLAN-SISDATA.md); F0 (groundwork) is done.
+**This repo is being built into SISDATA** (MAIS land/property system, 22 modules, 572 SRS requirements). The dev plan, phases and open SRS issues are in [docs/PLAN-SISDATA.md](docs/PLAN-SISDATA.md); F0 (groundwork) and G0 (platform modules RBC, AUD, ADM, NTF, DMS, WFE + Ref reference data) are done. Cross-module contracts are in `app/Modules/*/Contracts`; `app/Support/Fallbacks` stands in when a module is disabled. Parallel-developer brief: [docs/dev/developer-brief.md](docs/dev/developer-brief.md).
 
 ## Running it locally
 
@@ -36,7 +36,8 @@ Backing services are **native (Homebrew), no Docker** — the user's choice. `in
 - **Language is Malay** (`APP_LOCALE=ms`). Write source strings in English with `__()` and add the Malay to `lang/ms.json` / `lang/ms/*.php`.
 - **Tests are named after SRS codes** (`test_SRS_ADM_12_…`) so `php artisan srs:rtm` can build `docs/RTM.md`. Pint's `php_unit_method_casing` is disabled for that reason — don't re-enable it.
 - **Login:** SSO MAIS via OIDC (`App\Http\Controllers\Auth\OidcController`, `/auth/oidc/*`, proxied by Next's `/auth/:path*` rewrite). Password login stays behind `AUTH_PASSWORD_LOGIN`.
-- `App\Support\Permissions` is an interim role→permission map until MOD-RBC lands; it only drives which menu items the UI shows.
+- **Authorisation is MOD-RBC:** permissions `<modul>.<fungsi>.<tindakan>` declared via `PermissionRegistry`, checked with `can:` / `$user->can()` (Gate → `AccessControl`). Record scoping: `ScopedByAccess` trait. Sulit/Rahsia keys are never granted by wildcard base-role rules.
+- **Tests refuse to run on a DB without `_test` in its name** (`tests/TestCase.php`) — the shared dev DB was wiped twice before that guard.
 
 ## Frontend conventions
 
@@ -46,7 +47,7 @@ Backing services are **native (Homebrew), no Docker** — the user's choice. `in
   - The generic `components/ui/Tabs.tsx` (`Tabs`/`TabPanel`) is for tabs *inside* a card/content area (a Kitchen Sink demo, a form section) — it renders its own underline nav, not a full-bleed bar.
 - **`SidebarLink` needs `w-full`** on its root element or the hover/active background only hugs the icon+label instead of spanning the row.
 - **Kitchen Sink (`/admin/kitchen-sink/**`) is the component reference library** — check there first before building a new UI primitive. ~40 shared components already exist in `components/ui/`.
-- **`LanguageSwitcher` and `NotificationBell` are intentionally UI-only** — local state, no backend, no real i18n or notifications API. This was an explicit scope decision, not an oversight. Same goes for the "Forgot password?" link pattern in the Kitchen Sink auth samples (`href="#"`) — there's no password-reset flow.
+- **`LanguageSwitcher` is intentionally UI-only** — no real i18n switch. `NotificationBell` is now real (MOD-NTF: `/api/v1/ntf/*`, polls for unread count); modules send notifications only through `App\Modules\Ntf\Contracts\Notifier`. Same goes for the "Forgot password?" link pattern in the Kitchen Sink auth samples (`href="#"`) — there's no password-reset flow.
 
 ## Version constraints — don't blindly bump these
 

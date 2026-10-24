@@ -1,0 +1,167 @@
+<?php
+
+return [
+    'ya' => 'Ya',
+    'tidak' => 'Tidak',
+    'aktif' => 'Aktif',
+    'tidak_aktif' => 'Tidak aktif',
+    'dijana_oleh' => 'Dijana oleh :nama pada :tarikh',
+
+    'status' => [
+        'aktif' => 'Aktif',
+        'gantung' => 'Gantung',
+        'nyahaktif' => 'Nyahaktif',
+        'tamat_tempoh' => 'Tamat Tempoh',
+        'diri_sendiri' => 'Anda tidak boleh menukar status akaun anda sendiri kepada selain Aktif.',
+        'sebab_kemas_kini' => 'Dikemas kini oleh pentadbir.',
+        'sebab_tamat_tempoh' => 'Tarikh tamat capaian telah berlalu.',
+        'sebab_tidak_aktif' => 'Tiada log masuk melebihi :hari hari.',
+    ],
+
+    'log_masuk' => [
+        'tajuk' => 'Log Log Masuk',
+        'akaun_sso' => 'Akaun ini menggunakan SSO MAIS. Sila log masuk melalui SSO MAIS.',
+        'dikunci' => 'Akaun dikunci kerana terlalu banyak cubaan gagal. Cuba lagi dalam :minit minit atau hubungi Pentadbir Sistem.',
+        'status_gantung' => 'Akaun anda telah digantung. Sila hubungi Pentadbir Sistem.',
+        'status_nyahaktif' => 'Akaun anda telah dinyahaktifkan. Sila hubungi Pentadbir Sistem.',
+        'status_tamat_tempoh' => 'Tempoh capaian akaun anda telah tamat. Sila hubungi Pentadbir Sistem.',
+        'kaedah_kata_laluan' => 'Kata laluan',
+        'lajur' => [
+            'tarikh' => 'Tarikh & masa',
+            'pengguna' => 'Pengguna',
+            'pengecam' => 'Pengecam',
+            'kaedah' => 'Kaedah',
+            'berjaya' => 'Berjaya',
+            'sebab' => 'Sebab kegagalan',
+            'ip' => 'Alamat IP',
+            'lokasi' => 'Lokasi anggaran',
+            'peranti' => 'Pelayar / platform / peranti',
+            'mencurigakan' => 'Mencurigakan',
+        ],
+    ],
+
+    'sebab' => [
+        'pengguna_tidak_wujud' => 'Pengguna tidak wujud',
+        'kata_laluan_salah' => 'Kata laluan salah',
+        'akaun_dikunci' => 'Akaun dikunci',
+        'akaun_sso' => 'Akaun SSO (log masuk kata laluan tidak dibenarkan)',
+        'had_kadar' => 'Terlalu banyak cubaan dari alamat IP ini',
+        'status_gantung' => 'Akaun digantung',
+        'status_nyahaktif' => 'Akaun dinyahaktif',
+        'status_tamat_tempoh' => 'Akaun tamat tempoh',
+        'sso_ditolak' => 'Ditolak oleh SSO MAIS',
+        'sso_gagal' => 'Ralat SSO MAIS',
+        'sso_konflik' => 'E-mel dipautkan kepada identiti SSO lain',
+        'sso_tiada_emel' => 'Tiada e-mel daripada SSO MAIS',
+    ],
+
+    'amaran' => [
+        'gagal_berulang' => 'Cubaan log masuk gagal berulang',
+        'peranti_baharu' => 'Log masuk dari peranti baharu',
+        'lokasi_baharu' => 'Log masuk dari lokasi baharu',
+        'capaian_tanpa_kebenaran' => 'Percubaan capaian tanpa kebenaran',
+    ],
+
+    'sesi' => [
+        'ditamatkan' => ':n sesi telah ditamatkan.',
+        'tamat' => [
+            'log_keluar' => 'Sesi anda telah tamat. Sila log masuk semula.',
+            'tamat_masa' => 'Sesi anda telah tamat kerana tidak aktif. Sila log masuk semula.',
+            'paksa' => 'Sesi anda telah ditamatkan oleh Pentadbir Sistem.',
+            'status_akaun' => 'Sesi anda telah ditamatkan kerana status akaun anda berubah.',
+            'had_serentak' => 'Sesi ini ditamatkan kerana anda log masuk di peranti lain (had sesi serentak).',
+            'ikatan_gagal' => 'Sesi ditamatkan kerana pelayar atau rangkaian anda berubah. Sila log masuk semula.',
+        ],
+    ],
+
+    'kata_laluan' => [
+        'pendek' => 'Kata laluan mestilah sekurang-kurangnya :min aksara.',
+        'kompleksiti' => 'Kata laluan mesti mengandungi sekurang-kurangnya tiga daripada empat jenis aksara: huruf kecil, huruf besar, nombor dan simbol.',
+        'mengandungi_emel' => 'Kata laluan tidak boleh mengandungi nama e-mel anda.',
+        'guna_semula' => 'Kata laluan ini telah digunakan dalam :n kata laluan terakhir anda.',
+        'semasa_salah' => 'Kata laluan semasa tidak betul.',
+        'wajib_tukar' => 'Anda perlu menukar kata laluan sebelum meneruskan.',
+        'berjaya' => 'Kata laluan berjaya ditukar.',
+        'akaun_sso' => 'Akaun SSO MAIS tidak mempunyai kata laluan SISDATA; kata laluan diurus oleh SSO MAIS.',
+    ],
+
+    'peranan' => [
+        'kebenaran_tidak_wujud' => 'Kebenaran tidak berdaftar: :senarai',
+        'tidak_boleh_padam' => 'Peranan asas tidak boleh dipadam; nyahaktifkan sahaja jika perlu.',
+        'masih_digunakan' => 'Peranan ini masih diberikan kepada pengguna. Keluarkan pengguna dahulu atau nyahaktifkan peranan.',
+        'eskalasi' => 'Anda tidak boleh memberi kebenaran yang anda sendiri tidak miliki: :senarai',
+    ],
+
+    'pengguna' => [
+        'padam_diri' => 'Anda tidak boleh memadam akaun anda sendiri.',
+    ],
+
+    'skop' => [
+        'daerah' => 'Daerah',
+        'mukim' => 'Mukim',
+        'bahagian' => 'Bahagian',
+        'unit' => 'Unit',
+        'klasifikasi' => 'Klasifikasi keselamatan',
+        'kategori_tanah' => 'Kategori tanah',
+        'jenis_tidak_sah' => 'Jenis skop tidak sah: :jenis',
+    ],
+
+    'polisi' => [
+        'tidak_dikenali' => 'Parameter polisi tidak dikenali.',
+        'julat' => 'Nilai mestilah antara :min dan :max.',
+        'pilihan' => 'Pilihan yang sah: :pilihan.',
+    ],
+
+    'matriks' => [
+        'tajuk' => 'Matriks Capaian SISDATA',
+        'helaian_kebenaran' => 'Kebenaran',
+        'helaian_skop' => 'Peranan & Skop',
+        'modul' => 'Modul',
+        'fungsi' => 'Fungsi',
+        'tindakan' => 'Tindakan',
+        'kunci' => 'Kunci kebenaran',
+        'peranan' => 'Peranan',
+        'kod' => 'Kod',
+        'status' => 'Status',
+        'pengguna' => 'Bil. pengguna',
+        'bilangan_kebenaran' => 'Bil. kebenaran',
+        'skop' => 'Skop',
+        'tiada_had' => 'Tiada had',
+    ],
+
+    'laporan' => [
+        'tajuk' => 'Laporan Capaian Pengguna',
+        'mengikut_status' => 'Pengguna mengikut status akaun',
+        'mengikut_peranan' => 'Pengguna mengikut peranan',
+        'mengikut_bahagian' => 'Pengguna mengikut bahagian',
+        'tidak_aktif' => 'Pengguna tidak aktif / tamat tempoh',
+        'kebenaran_peranan' => 'Kebenaran setiap peranan',
+        'gagal_pengguna' => 'Log masuk gagal mengikut pengguna',
+        'gagal_ip' => 'Log masuk gagal mengikut alamat IP',
+        'status' => 'Status',
+        'bilangan' => 'Bilangan',
+        'peranan' => 'Peranan',
+        'aktif' => 'Aktif',
+        'jumlah' => 'Jumlah',
+        'bahagian' => 'Bahagian',
+        'nama' => 'Nama',
+        'emel' => 'E-mel',
+        'log_masuk_akhir' => 'Log masuk terakhir',
+        'tamat_capaian' => 'Tarikh tamat capaian',
+        'kebenaran' => 'Kebenaran',
+        'label' => 'Keterangan',
+        'pengecam' => 'Pengecam',
+        'alamat_ip' => 'Alamat IP',
+        'terakhir' => 'Terakhir',
+    ],
+
+    'recert' => [
+        'ditutup' => 'Kitaran ini telah ditutup.',
+        'keputusan_tidak_sah' => 'Keputusan mestilah "disahkan" atau "ditarik".',
+        'luar_skop' => 'Anda bukan pemilik data bagi bahagian kitaran ini.',
+        'diri_sendiri' => 'Anda tidak boleh mengesahkan capaian anda sendiri.',
+        'tidak_disahkan' => 'Tidak disahkan dalam tempoh kitaran.',
+        'nama_auto' => 'Pengesahan semula capaian — :bahagian — :tarikh',
+        'tiada_bahagian' => 'Tanpa bahagian',
+    ],
+];

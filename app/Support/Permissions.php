@@ -5,10 +5,11 @@ namespace App\Support;
 use App\Models\User;
 
 /**
- * Interim permission list until MOD-RBC (G0) replaces it with the real
- * peranan/peranan_kebenaran tables. Only exists so the API can tell the
- * frontend which menu items to show — the API itself still enforces access
- * through middleware, never through this list.
+ * @deprecated MOD-RBC is live: permissions come from
+ * App\Modules\Rbc\Contracts\AccessControl::permissions(). This legacy map
+ * remains only for the fallback AccessControl in App\Support\Fallbacks (used
+ * when MOD-RBC is not enabled, e.g. a worktree building another module).
+ * Nothing else should call it.
  */
 class Permissions
 {

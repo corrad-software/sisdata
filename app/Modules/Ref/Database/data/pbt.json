@@ -1,0 +1,14 @@
+[
+ {"kod": "MBSA", "singkatan": "MBSA", "nama": "Majlis Bandaraya Shah Alam", "jenis": "majlis_bandaraya", "negeri_kod": "10", "daerah_kod": ["1008", "1001"], "wikidata": null, "osm_relation_id": 8347577, "susunan": 1},
+ {"kod": "MBPJ", "singkatan": "MBPJ", "nama": "Majlis Bandaraya Petaling Jaya", "jenis": "majlis_bandaraya", "negeri_kod": "10", "daerah_kod": ["1008"], "wikidata": null, "osm_relation_id": 8347386, "susunan": 2},
+ {"kod": "MBSJ", "singkatan": "MBSJ", "nama": "Majlis Bandaraya Subang Jaya", "jenis": "majlis_bandaraya", "negeri_kod": "10", "daerah_kod": ["1008"], "wikidata": null, "osm_relation_id": 10743361, "susunan": 3},
+ {"kod": "MBDK", "singkatan": "MBDK", "nama": "Majlis Bandaraya Diraja Klang", "jenis": "majlis_bandaraya", "negeri_kod": "10", "daerah_kod": ["1001"], "wikidata": "Q12696643", "osm_relation_id": 10715532, "susunan": 4},
+ {"kod": "MPAJ", "singkatan": "MPAJ", "nama": "Majlis Perbandaran Ampang Jaya", "jenis": "majlis_perbandaran", "negeri_kod": "10", "daerah_kod": ["1009", "1006"], "wikidata": "Q4748040", "osm_relation_id": 10743276, "susunan": 5},
+ {"kod": "MPKJ", "singkatan": "MPKj", "nama": "Majlis Perbandaran Kajang", "jenis": "majlis_perbandaran", "negeri_kod": "10", "daerah_kod": ["1006"], "wikidata": "Q6348885", "osm_relation_id": 10743339, "susunan": 6},
+ {"kod": "MPS", "singkatan": "MPS", "nama": "Majlis Perbandaran Selayang", "jenis": "majlis_perbandaran", "negeri_kod": "10", "daerah_kod": ["1009"], "wikidata": null, "osm_relation_id": 10715467, "susunan": 7},
+ {"kod": "MPSP", "singkatan": "MPSp", "nama": "Majlis Perbandaran Sepang", "jenis": "majlis_perbandaran", "negeri_kod": "10", "daerah_kod": ["1010"], "wikidata": null, "osm_relation_id": null, "susunan": 8},
+ {"kod": "MPHS", "singkatan": "MPHS", "nama": "Majlis Perbandaran Hulu Selangor", "jenis": "majlis_perbandaran", "negeri_kod": "10", "daerah_kod": ["1007"], "wikidata": null, "osm_relation_id": null, "susunan": 9},
+ {"kod": "MPKL", "singkatan": "MPKL", "nama": "Majlis Perbandaran Kuala Langat", "jenis": "majlis_perbandaran", "negeri_kod": "10", "daerah_kod": ["1002"], "wikidata": null, "osm_relation_id": null, "susunan": 10},
+ {"kod": "MPKS", "singkatan": "MPKS", "nama": "Majlis Perbandaran Kuala Selangor", "jenis": "majlis_perbandaran", "negeri_kod": "10", "daerah_kod": ["1004"], "wikidata": null, "osm_relation_id": null, "susunan": 11},
+ {"kod": "MDSB", "singkatan": "MDSB", "nama": "Majlis Daerah Sabak Bernam", "jenis": "majlis_daerah", "negeri_kod": "10", "daerah_kod": ["1005"], "wikidata": null, "osm_relation_id": null, "susunan": 12}
+]

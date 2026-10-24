@@ -14,9 +14,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('api.logout');
     Route::get('user', [AuthController::class, 'user'])->name('api.user');
 
-    Route::middleware('admin')->group(function () {
-        Route::apiResource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+    // MOD-RBC: user accounts, authorised by permission (never the legacy role string).
+    Route::get('users', [UserController::class, 'index'])->middleware('can:rbc.pengguna.lihat')->name('users.index');
+    Route::post('users', [UserController::class, 'store'])->middleware('can:rbc.pengguna.cipta')->name('users.store');
+    Route::match(['put', 'patch'], 'users/{user}', [UserController::class, 'update'])->middleware('can:rbc.pengguna.kemas_kini')->name('users.update');
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('can:rbc.pengguna.padam')->name('users.destroy');
 
+    // `admin` = permission rbc.pentadbiran.akses (see EnsureUserIsAdmin).
+    Route::middleware('admin')->group(function () {
         Route::put('settings', [SettingController::class, 'update'])->name('api.settings.update');
         Route::post('settings/logo', [SettingController::class, 'uploadLogo'])->name('api.settings.logo.upload');
         Route::post('settings/favicon', [SettingController::class, 'uploadFavicon'])->name('api.settings.favicon.upload');

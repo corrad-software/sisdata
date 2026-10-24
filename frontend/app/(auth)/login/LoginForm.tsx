@@ -19,9 +19,11 @@ function getRedirectTarget(): string {
 export function LoginForm({
     passwordLoginEnabled,
     ssoError,
+    sessionNotice = null,
 }: {
     passwordLoginEnabled: boolean;
     ssoError: string | null;
+    sessionNotice?: string | null;
 }) {
     const router = useRouter();
     const [email, setEmail] = useState('');
@@ -56,6 +58,12 @@ export function LoginForm({
         <>
             <h2 className="mb-1 font-heading text-heading-xs font-semibold text-txt-black-900">Log in to your account</h2>
             <p className="mb-6 text-body-sm text-txt-black-500">Welcome back! Please enter your details.</p>
+
+            {sessionNotice && !ssoError && (
+                <Alert type="warning" className="mb-4">
+                    {sessionNotice}
+                </Alert>
+            )}
 
             {ssoError && (
                 <Alert type="error" className="mb-4">

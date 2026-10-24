@@ -87,6 +87,114 @@ function AboutIcon({ collapsed }: { collapsed: boolean }) {
     );
 }
 
+function AdminIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
+            />
+        </svg>
+    );
+}
+
+function WorkflowIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z"
+            />
+        </svg>
+    );
+}
+
+function DocumentIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+            />
+        </svg>
+    );
+}
+
+function BellIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+            />
+        </svg>
+    );
+}
+
+function AuditIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+            />
+        </svg>
+    );
+}
+
+function AccessIcon({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-4 w-4 transition-all ${collapsed ? 'lg:h-6 lg:w-6' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+            />
+        </svg>
+    );
+}
+
 function KitchenSinkIcon({ collapsed }: { collapsed: boolean }) {
     return (
         <svg
@@ -239,7 +347,7 @@ export function Sidebar({
                         Dashboard
                     </SidebarLink>
 
-                    {can('users.manage') && (
+                    {can('rbc.pengguna.lihat') && (
                         <SidebarLink
                             href="/admin/users"
                             label="Users"
@@ -250,6 +358,18 @@ export function Sidebar({
                         </SidebarLink>
                     )}
 
+                    {can('rbc.peranan.lihat') && (
+                        <SidebarLink
+                            href="/admin/rbc/peranan"
+                            label="Capaian"
+                            activeMatch={(p) => p.startsWith('/admin/rbc')}
+                            icon={<AccessIcon collapsed={collapsed} />}
+                        >
+                            Capaian
+                        </SidebarLink>
+                    )}
+
+                    {/* settings.manage = RBC alias of rbc.pentadbiran.akses, which the Settings API requires */}
                     {can('settings.manage') && (
                         <SidebarLink
                             href="/admin/settings"
@@ -258,6 +378,59 @@ export function Sidebar({
                             icon={<SettingsIcon collapsed={collapsed} />}
                         >
                             Settings
+                        </SidebarLink>
+                    )}
+
+                    {can('wfe.tugasan.lihat') && (
+                        <SidebarLink
+                            href="/admin/wfe/tugasan"
+                            label="Workflow"
+                            activeMatch={(p) => p.startsWith('/admin/wfe')}
+                            icon={<WorkflowIcon collapsed={collapsed} />}
+                        >
+                            Workflow
+                        </SidebarLink>
+                    )}
+
+                    {can('dms.dokumen.lihat') && (
+                        <SidebarLink
+                            href="/admin/dms"
+                            label="Dokumen Digital"
+                            activeMatch={(p) => p.startsWith('/admin/dms')}
+                            icon={<DocumentIcon collapsed={collapsed} />}
+                        >
+                            Dokumen Digital
+                        </SidebarLink>
+                    )}
+
+                    <SidebarLink
+                        href="/admin/notifikasi"
+                        label="Notifikasi"
+                        activeMatch={(p) => p.startsWith('/admin/notifikasi')}
+                        icon={<BellIcon collapsed={collapsed} />}
+                    >
+                        Notifikasi
+                    </SidebarLink>
+
+                    {can('aud.rekod.lihat') && (
+                        <SidebarLink
+                            href="/admin/aud"
+                            label="Audit Trail"
+                            activeMatch={(p) => p.startsWith('/admin/aud')}
+                            icon={<AuditIcon collapsed={collapsed} />}
+                        >
+                            Audit Trail
+                        </SidebarLink>
+                    )}
+
+                    {can('adm.parameter.lihat') && (
+                        <SidebarLink
+                            href="/admin/pentadbiran"
+                            label="Pentadbiran Sistem"
+                            activeMatch={(p) => p.startsWith('/admin/pentadbiran')}
+                            icon={<AdminIcon collapsed={collapsed} />}
+                        >
+                            Pentadbiran Sistem
                         </SidebarLink>
                     )}
 

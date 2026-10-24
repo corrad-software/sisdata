@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Dotenv\Dotenv;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -26,7 +27,14 @@ class SrsRtm extends Command
         if (! $this->option('no-run')) {
             File::ensureDirectoryExists(dirname($junit));
             $this->info('Running test suite…');
+            // Laravel putenv()s .env into this process; a child inherits it and
+            // phpunit.xml's <env> never overrides an existing variable — so the
+            // suite would run with the dev DB/queue/cache settings. Drop them.
+            $envFile = base_path('.env');
+            $dotenvKeys = is_file($envFile) ? array_keys(Dotenv::parse((string) file_get_contents($envFile))) : [];
+
             Process::timeout(1800)->path(base_path())
+                ->env(array_fill_keys($dotenvKeys, false))
                 ->run([PHP_BINARY, 'vendor/bin/phpunit', '--log-junit', $junit]);
             $results = $this->parseJunit($junit);
         }
@@ -44,21 +52,59 @@ class SrsRtm extends Command
             }
         }
 
-        ksort($rows);
+        $catalog = $this->catalog();
+        $codes = array_unique([...array_keys($catalog), ...array_keys($rows)]);
+        sort($codes);
+
+        $byModule = [];
+        foreach ($codes as $code) {
+            $byModule[substr($code, 4, 3)][] = $code;
+        }
 
         $md = "# RTM — SISDATA\n\n_Dijana oleh `php artisan srs:rtm` pada ".now()->toDateTimeString().". Jangan sunting dengan tangan._\n\n";
-        $md .= "| Keperluan | Ujian | Status |\n| --- | --- | --- |\n";
-        foreach ($rows as $code => $tests) {
-            foreach ($tests as $t) {
-                $md .= "| {$code} | `{$t['test']}` | {$t['status']} |\n";
+        $md .= "| Modul | Keperluan | Ada ujian | Liputan |\n| --- | --- | --- | --- |\n";
+        foreach ($byModule as $module => $moduleCodes) {
+            $covered = count(array_filter($moduleCodes, fn ($c) => isset($rows[$c])));
+            $md .= sprintf("| %s | %d | %d | %d%% |\n", $module, count($moduleCodes), $covered, intdiv($covered * 100, count($moduleCodes)));
+        }
+
+        $md .= "\n## Butiran\n\n| Keperluan | Keutamaan | Ujian | Status |\n| --- | --- | --- | --- |\n";
+        foreach ($codes as $code) {
+            $priority = $catalog[$code] ?? '?';
+            foreach ($rows[$code] ?? [['test' => '—', 'status' => 'tiada ujian']] as $t) {
+                $test = $t['test'] === '—' ? '—' : "`{$t['test']}`";
+                $md .= "| {$code} | {$priority} | {$test} | {$t['status']} |\n";
             }
         }
-        $md .= "\n**".count($rows)." keperluan** mempunyai sekurang-kurangnya satu ujian.\n";
+        $md .= "\n**".count($rows).' daripada '.count($codes)." keperluan** mempunyai sekurang-kurangnya satu ujian.\n";
 
         File::put(base_path($this->option('output')), $md);
         $this->info(count($rows).' requirements mapped → '.$this->option('output'));
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Requirement code → priority, from docs/srs/requirements.csv (extracted from the SRS).
+     *
+     * @return array<string, string>
+     */
+    private function catalog(): array
+    {
+        $path = base_path('docs/srs/requirements.csv');
+        if (! is_file($path)) {
+            return [];
+        }
+
+        $out = [];
+        $handle = fopen($path, 'r');
+        fgetcsv($handle, escape: '');
+        while (($row = fgetcsv($handle, escape: '')) !== false) {
+            $out[$row[0]] = $row[2] ?? '';
+        }
+        fclose($handle);
+
+        return $out;
     }
 
     /**

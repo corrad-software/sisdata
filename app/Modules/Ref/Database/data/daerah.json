@@ -1,0 +1,123 @@
+[
+ {
+  "kod": "1001",
+  "kod_pendek": "01",
+  "negeri_kod": "10",
+  "nama": "Klang",
+  "nama_lain": [],
+  "kod_disahkan": true,
+  "wikidata": "Q20466235",
+  "osm_relation_id": 12391135,
+  "susunan": 1,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1002",
+  "kod_pendek": "02",
+  "negeri_kod": "10",
+  "nama": "Kuala Langat",
+  "nama_lain": [],
+  "kod_disahkan": true,
+  "wikidata": "Q2219254",
+  "osm_relation_id": 10743362,
+  "susunan": 2,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1004",
+  "kod_pendek": "04",
+  "negeri_kod": "10",
+  "nama": "Kuala Selangor",
+  "nama_lain": [],
+  "kod_disahkan": true,
+  "wikidata": "Q2010079",
+  "osm_relation_id": 10714137,
+  "susunan": 3,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1005",
+  "kod_pendek": "05",
+  "negeri_kod": "10",
+  "nama": "Sabak Bernam",
+  "nama_lain": [],
+  "kod_disahkan": true,
+  "wikidata": "Q2198128",
+  "osm_relation_id": 10714136,
+  "susunan": 4,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1006",
+  "kod_pendek": "06",
+  "negeri_kod": "10",
+  "nama": "Hulu Langat",
+  "nama_lain": [
+   "Ulu Langat"
+  ],
+  "kod_disahkan": true,
+  "wikidata": "Q4251470",
+  "osm_relation_id": 12438351,
+  "susunan": 5,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1007",
+  "kod_pendek": "07",
+  "negeri_kod": "10",
+  "nama": "Hulu Selangor",
+  "nama_lain": [
+   "Ulu Selangor"
+  ],
+  "kod_disahkan": true,
+  "wikidata": "Q2741737",
+  "osm_relation_id": 10714199,
+  "susunan": 6,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1008",
+  "kod_pendek": "08",
+  "negeri_kod": "10",
+  "nama": "Petaling",
+  "nama_lain": [],
+  "kod_disahkan": true,
+  "wikidata": "Q2701266",
+  "osm_relation_id": 12391134,
+  "susunan": 7,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1009",
+  "kod_pendek": "09",
+  "negeri_kod": "10",
+  "nama": "Gombak",
+  "nama_lain": [],
+  "kod_disahkan": true,
+  "wikidata": "Q2219712",
+  "osm_relation_id": 12438352,
+  "susunan": 8,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ },
+ {
+  "kod": "1010",
+  "kod_pendek": "10",
+  "negeri_kod": "10",
+  "nama": "Sepang",
+  "nama_lain": [],
+  "kod_disahkan": true,
+  "wikidata": "Q911008",
+  "osm_relation_id": 10743315,
+  "susunan": 9,
+  "sumber": "data.gov.my — Senarai Kampung Mengikut Kategori di Semenanjung Malaysia (PLANMalaysia, 2021): digit 1-6 Kod Kampung = negeri+daerah+mukim",
+  "sumber_url": "https://archive.data.gov.my/data/dataset/senarai-kampung-mengikut-kategori-di-semenanjung-malaysia-dan-wilayah-persekutuan-labuan"
+ }
+]

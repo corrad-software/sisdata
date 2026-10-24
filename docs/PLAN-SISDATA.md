@@ -259,6 +259,22 @@ Ikut SRS Bab 15. Kerja dev yang perlu: jadual `staging_*` + `migrasi_larian` + l
 
 Juga: Laravel 13.24→13.38 & Next 16.3→16.4.3 kerana advisory kritikal.
 
+### Status G0 — dibina & digabung (2026-10-24, belum commit)
+
+Dibina serentak oleh 7 "developer" (subagent, satu worktree setiap seorang) atas kontrak `app/Modules/*/Contracts` yang ditetapkan dahulu, kemudian digabung + satu pusingan integrasi. 895 ujian lulus; `composer lint` bersih.
+
+| Modul | Kod SRS ada ujian | Ditangguh |
+| --- | --- | --- |
+| RBC | 25/27 | 23 (TLS/AES — infrastruktur), 24/25 (proses OWASP/dasar) |
+| AUD | 26/26 | — |
+| ADM | 28/29 | 25 (VAPT — serahan perolehan); DAST belum dalam CI |
+| NTF | 24/24 | — |
+| DMS | 26/26 | pratonton Office (perlu LibreOffice) |
+| WFE | 21/24 | 10, 11, 24 (aliran melalui AI → G5) |
+| Ref (data) | DAT-01/05/08 | kod/sempadan rasmi JUPEM/PTG |
+
+Isu terbuka: sempadan mukim anggaran; 5 kod mukim diteka; had muat naik PHP 50 MB (fail spatial 250 MB); MFA step-up WFE belum diuji dengan Keycloak sebenar; tiada hierarki penyelia sebenar (guna peranan lalai).
+
 ## 16. Langkah seterusnya (bila diluluskan)
 
 1. F0 langkah 1–3 (PostGIS, rangka modul, `/api/v1`) — boleh mula serta-merta.

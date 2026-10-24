@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Support\Fallbacks;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use SocialiteProviders\Keycloak\KeycloakExtendSocialite;
@@ -17,6 +18,8 @@ class AppServiceProvider extends ServiceProvider
         foreach (config('modules.enabled', []) as $provider) {
             $this->app->register($provider);
         }
+
+        Fallbacks::register($this->app);
     }
 
     /**

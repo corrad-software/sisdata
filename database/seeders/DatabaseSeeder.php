@@ -3,23 +3,26 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Modules\Rbc\Database\Seeders\RbcSeeder;
+use App\Modules\Rbc\Services\RoleService;
+use App\Modules\Rbc\Support\BaseRoles;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // MOD-RBC: base roles + permissions, admin@example.com as Pentadbir Sistem,
+        // SSO claim mapping rules.
+        $this->call(RbcSeeder::class);
 
-        User::factory()->create([
+        $test = User::query()->firstOrCreate(['email' => 'test@example.com'], User::factory()->raw([
             'name' => 'Test User',
             'email' => 'test@example.com',
-        ]);
+        ]));
+        app(RoleService::class)->assignRoleByCode($test, BaseRoles::PENGGUNA_PAPARAN);
     }
 }

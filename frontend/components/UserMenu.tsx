@@ -4,9 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/lib/auth';
 import type { User } from '@/lib/types';
+import { SessionGuard } from '@/app/(dashboard)/admin/rbc/_components/SessionGuard';
+import { ChangePasswordModal } from '@/app/(dashboard)/admin/rbc/_components/ChangePasswordModal';
 
 export function UserMenu({ user }: { user: User }) {
     const [open, setOpen] = useState(false);
+    const [changingPassword, setChangingPassword] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
@@ -34,15 +37,23 @@ export function UserMenu({ user }: { user: User }) {
     }
 
     return (
-        <div className="relative ms-2" ref={ref}>
+        <div className="relative ms-1 sm:ms-2 shrink-0" ref={ref}>
+            {/* SRS-RBC-18 idle warning + SRS-RBC-12 forced password change, on every dashboard page. */}
+            <SessionGuard user={user} />
+
             <button
                 type="button"
                 onClick={() => setOpen((v) => !v)}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-txt-black-500 bg-bg-white hover:text-txt-black-900 focus:outline-none transition ease-in-out duration-150"
+                aria-haspopup="menu"
+                aria-expanded={open}
+                className="inline-flex items-center px-2 sm:px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-txt-black-500 bg-bg-white hover:text-txt-black-900 focus:outline-none transition ease-in-out duration-150"
             >
-                <div>{user.name}</div>
+                <span className="sr-only sm:not-sr-only sm:max-w-[10rem] sm:truncate">{user.name}</span>
+                <svg className="h-5 w-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
                 <div className="ms-1">
-                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true">
                         <path
                             fillRule="evenodd"
                             clipRule="evenodd"
@@ -53,16 +64,41 @@ export function UserMenu({ user }: { user: User }) {
             </button>
 
             {open && (
-                <div className="absolute right-0 z-50 mt-2 w-48 rounded-md shadow-card bg-bg-white border border-otl-gray-200 py-1">
+                <div role="menu" className="absolute right-0 z-50 mt-2 w-56 rounded-md shadow-card bg-bg-white border border-otl-gray-200 py-1">
+                    <div className="px-4 py-2 text-body-xs text-txt-black-500 border-b border-otl-divider">
+                        <div className="truncate">{user.email}</div>
+                        {user.jenis_pengesahan === 'sso' && <div>Log masuk melalui SSO MAIS</div>}
+                    </div>
+                    {user.jenis_pengesahan === 'dalaman' && (
+                        <button
+                            type="button"
+                            role="menuitem"
+                            onClick={() => {
+                                setOpen(false);
+                                setChangingPassword(true);
+                            }}
+                            className="block w-full text-start px-4 py-2 text-body-sm text-txt-black-700 hover:bg-bg-washed"
+                        >
+                            Tukar Kata Laluan
+                        </button>
+                    )}
                     <button
                         type="button"
+                        role="menuitem"
                         onClick={handleLogout}
                         className="block w-full text-start px-4 py-2 text-body-sm text-txt-black-700 hover:bg-bg-washed"
                     >
-                        Log Out
+                        Log Keluar
                     </button>
                 </div>
             )}
+
+            <ChangePasswordModal
+                open={changingPassword}
+                forced={false}
+                onClose={() => setChangingPassword(false)}
+                onChanged={() => setChangingPassword(false)}
+            />
         </div>
     );
 }

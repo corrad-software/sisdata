@@ -15,7 +15,6 @@
   "accessTokenLifespan": 300,
   "ssoSessionIdleTimeout": 1800,
   "ssoSessionMaxLifespan": 36000,
-
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyDigits": 6,
@@ -23,17 +22,31 @@
   "otpPolicyLookAheadWindow": 1,
   "otpPolicyInitialCounter": 0,
   "otpPolicyCodeReusable": false,
-  "otpSupportedApplications": ["totpAppGoogleName", "totpAppMicrosoftAuthenticatorName", "totpAppFreeOTPName"],
-
+  "otpSupportedApplications": [
+    "totpAppGoogleName",
+    "totpAppMicrosoftAuthenticatorName",
+    "totpAppFreeOTPName"
+  ],
   "roles": {
     "realm": [
-      { "name": "pentadbir_sistem", "description": "Pentadbir Sistem SISDATA" },
-      { "name": "pegawai_daerah", "description": "Pegawai Daerah (Pejabat Agama Islam Daerah)" },
-      { "name": "pegawai_hq", "description": "Pegawai Ibu Pejabat MAIS" },
-      { "name": "pengurusan", "description": "Pengurusan Tertinggi MAIS" }
+      {
+        "name": "pentadbir_sistem",
+        "description": "Pentadbir Sistem SISDATA"
+      },
+      {
+        "name": "pegawai_daerah",
+        "description": "Pegawai Daerah (Pejabat Agama Islam Daerah)"
+      },
+      {
+        "name": "pegawai_hq",
+        "description": "Pegawai Ibu Pejabat MAIS"
+      },
+      {
+        "name": "pengurusan",
+        "description": "Pengurusan Tertinggi MAIS"
+      }
     ]
   },
-
   "clients": [
     {
       "clientId": "sisdata-web",
@@ -51,14 +64,30 @@
       "frontchannelLogout": true,
       "rootUrl": "http://localhost:3000",
       "baseUrl": "/admin",
-      "redirectUris": ["http://localhost:3000/auth/oidc/callback"],
-      "webOrigins": ["http://localhost:3000"],
+      "redirectUris": [
+        "http://localhost:3000/auth/oidc/callback",
+        "http://localhost:3000/auth/wfe/stepup/callback"
+      ],
+      "webOrigins": [
+        "http://localhost:3000"
+      ],
       "attributes": {
         "post.logout.redirect.uris": "http://localhost:3000/login",
         "pkce.code.challenge.method": "S256"
       },
-      "defaultClientScopes": ["basic", "acr", "web-origins", "profile", "roles", "email"],
-      "optionalClientScopes": ["offline_access", "address", "phone"],
+      "defaultClientScopes": [
+        "basic",
+        "acr",
+        "web-origins",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "offline_access",
+        "address",
+        "phone"
+      ],
       "protocolMappers": [
         {
           "name": "realm roles (roles claim)",
@@ -74,11 +103,58 @@
             "userinfo.token.claim": "true",
             "introspection.token.claim": "true"
           }
+        },
+        {
+          "name": "bahagian (SRS-RBC-02)",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "bahagian",
+            "claim.name": "bahagian",
+            "jsonType.label": "String",
+            "multivalued": "false",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "unit (SRS-RBC-02)",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "unit",
+            "claim.name": "unit",
+            "jsonType.label": "String",
+            "multivalued": "false",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "jawatan (SRS-RBC-02)",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "jawatan",
+            "claim.name": "jawatan",
+            "jsonType.label": "String",
+            "multivalued": "false",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
         }
       ]
     }
   ],
-
   "users": [
     {
       "id": "5a1e0000-0000-4000-8000-000000000001",
@@ -88,8 +164,27 @@
       "lastName": "Sistem",
       "enabled": true,
       "emailVerified": true,
-      "credentials": [{ "type": "password", "value": "Admin@12345", "temporary": false }],
-      "realmRoles": ["pentadbir_sistem"]
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin@12345",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "pentadbir_sistem"
+      ],
+      "attributes": {
+        "bahagian": [
+          "Bahagian ICT"
+        ],
+        "unit": [
+          "Unit Infrastruktur"
+        ],
+        "jawatan": [
+          "Pentadbir Sistem"
+        ]
+      }
     },
     {
       "id": "5a1e0000-0000-4000-8000-000000000002",
@@ -99,8 +194,27 @@
       "lastName": "binti Abdullah",
       "enabled": true,
       "emailVerified": true,
-      "credentials": [{ "type": "password", "value": "Sisdata@123", "temporary": false }],
-      "realmRoles": ["pegawai_daerah"]
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Sisdata@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "pegawai_daerah"
+      ],
+      "attributes": {
+        "bahagian": [
+          "Bahagian Pengurusan Hartanah"
+        ],
+        "unit": [
+          "Pejabat Agama Islam Daerah Petaling"
+        ],
+        "jawatan": [
+          "Penolong Pegawai Hartanah"
+        ]
+      }
     },
     {
       "id": "5a1e0000-0000-4000-8000-000000000003",
@@ -110,9 +224,30 @@
       "lastName": "bin Hassan",
       "enabled": true,
       "emailVerified": true,
-      "credentials": [{ "type": "password", "value": "Sisdata@123", "temporary": false }],
-      "realmRoles": ["pegawai_hq"],
-      "requiredActions": ["CONFIGURE_TOTP"]
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Sisdata@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "pegawai_hq"
+      ],
+      "requiredActions": [
+        "CONFIGURE_TOTP"
+      ],
+      "attributes": {
+        "bahagian": [
+          "Bahagian Wakaf"
+        ],
+        "unit": [
+          "Unit Pembangunan Wakaf"
+        ],
+        "jawatan": [
+          "Pegawai Wakaf"
+        ]
+      }
     },
     {
       "id": "5a1e0000-0000-4000-8000-000000000004",
@@ -122,8 +257,40 @@
       "lastName": "binti Ismail",
       "enabled": true,
       "emailVerified": true,
-      "credentials": [{ "type": "password", "value": "Sisdata@123", "temporary": false }],
-      "realmRoles": ["pengurusan"]
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Sisdata@123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "pengurusan"
+      ],
+      "attributes": {
+        "bahagian": [
+          "Pengurusan Tertinggi"
+        ],
+        "unit": [
+          "Pejabat Ketua Pegawai Eksekutif"
+        ],
+        "jawatan": [
+          "Pengarah"
+        ]
+      }
     }
-  ]
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\": [{\"name\": \"username\", \"displayName\": \"${username}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}, \"multivalued\": false, \"validations\": {\"length\": {\"min\": 3, \"max\": 255}, \"username-prohibited-characters\": {}, \"up-username-not-idn-homograph\": {}}}, {\"name\": \"email\", \"displayName\": \"${email}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}, \"multivalued\": false, \"validations\": {\"email\": {}, \"length\": {\"max\": 255}}, \"required\": {\"roles\": [\"user\"]}}, {\"name\": \"firstName\", \"displayName\": \"${firstName}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}, \"multivalued\": false, \"validations\": {\"length\": {\"max\": 255}, \"person-name-prohibited-characters\": {}}, \"required\": {\"roles\": [\"user\"]}}, {\"name\": \"lastName\", \"displayName\": \"${lastName}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\", \"user\"]}, \"multivalued\": false, \"validations\": {\"length\": {\"max\": 255}, \"person-name-prohibited-characters\": {}}, \"required\": {\"roles\": [\"user\"]}}, {\"name\": \"bahagian\", \"displayName\": \"Bahagian\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false, \"validations\": {\"length\": {\"max\": 150}}}, {\"name\": \"unit\", \"displayName\": \"Unit\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false, \"validations\": {\"length\": {\"max\": 150}}}, {\"name\": \"jawatan\", \"displayName\": \"Jawatan\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false, \"validations\": {\"length\": {\"max\": 150}}}], \"groups\": [{\"name\": \"user-metadata\", \"displayHeader\": \"User metadata\", \"displayDescription\": \"Attributes, which refer to user metadata\"}], \"unmanagedAttributePolicy\": \"ADMIN_VIEW\"}"
+          ]
+        }
+      }
+    ]
+  }
 }

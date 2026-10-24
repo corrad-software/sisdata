@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Modules\Rbc\Services\ClaimMapper;
+use App\Modules\Rbc\Services\LoginService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\Provider;
@@ -50,9 +51,11 @@ class OidcController extends Controller
             : $driver;
     }
 
-    public function callback(Request $request): RedirectResponse
+    public function callback(Request $request, LoginService $login, ClaimMapper $mapper): RedirectResponse
     {
         if ($request->filled('error')) {
+            $login->failSso($request, null, null, 'sso_ditolak');
+
             return $this->failed('ditolak');
         }
 
@@ -60,6 +63,7 @@ class OidcController extends Controller
             $oidcUser = $this->driver()->user();
         } catch (Throwable $e) {
             Log::warning('OIDC callback failed', ['exception' => $e->getMessage()]);
+            $login->failSso($request, null, null, 'sso_gagal');
 
             return $this->failed('gagal');
         }
@@ -68,6 +72,8 @@ class OidcController extends Controller
         $email = $oidcUser->getEmail() ? Str::lower($oidcUser->getEmail()) : null;
 
         if ($sub === '') {
+            $login->failSso($request, null, $email, 'sso_gagal');
+
             return $this->failed('gagal');
         }
 
@@ -79,29 +85,27 @@ class OidcController extends Controller
             // The email belongs to an account already linked to a *different*
             // IdP subject — never silently re-link it.
             if ($user && $user->oidc_sub !== null && $user->oidc_sub !== $sub) {
+                $login->failSso($request, $user, $email, 'sso_konflik');
+
                 return $this->failed('konflik');
             }
         }
 
         if (! $user) {
             if (! $email) {
+                $login->failSso($request, null, null, 'sso_tiada_emel');
+
                 return $this->failed('tiada_emel');
             }
 
-            $user = User::create([
+            // SRS-RBC-11: SSO-provisioned accounts have no SISDATA password at
+            // all; SRS-RBC-09: no role until a claim-mapping rule grants one.
+            $user = new User([
                 'name' => $oidcUser->getName() ?: ($oidcUser->getNickname() ?: $email),
                 'email' => $email,
-                // Unusable random password: SSO-provisioned accounts sign in
-                // through the IdP only.
-                'password' => Str::random(64),
-                'role' => 'user',
-                'is_active' => true,
+                'jenis_pengesahan' => 'sso',
             ]);
-            $user->forceFill(['email_verified_at' => now()]);
-        }
-
-        if (! $user->is_active) {
-            return $this->failed('tidak_aktif');
+            $user->forceFill(['email_verified_at' => now(), 'password' => null]);
         }
 
         if ($user->oidc_sub === null) {
@@ -110,17 +114,18 @@ class OidcController extends Controller
 
         $user->save();
 
-        Auth::login($user);
-        $request->session()->regenerate();
-
         $tokenBody = property_exists($oidcUser, 'accessTokenResponseBody')
             ? (array) $oidcUser->accessTokenResponseBody
             : [];
         $raw = method_exists($oidcUser, 'getRaw') ? (array) $oidcUser->getRaw() : [];
 
+        // SRS-RBC-02: identity claims (roles, bahagian, unit, jawatan) feed the
+        // admin-configured mapping rules; status is checked first (SRS-RBC-15).
+        if ($reason = $login->completeSso($request, $user, $raw, $mapper)) {
+            return $this->failed($reason);
+        }
+
         $request->session()->put(self::SESSION_ID_TOKEN, $tokenBody['id_token'] ?? '');
-        // Realm roles from the IdP ("roles" claim) — kept for the upcoming
-        // SISDATA role mapping; not used for authorization yet.
         $request->session()->put(self::SESSION_ROLES, array_values((array) ($raw['roles'] ?? [])));
 
         return redirect()->away(config('services.keycloak.after_login_redirect'));

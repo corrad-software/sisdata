@@ -1,0 +1,29 @@
+[
+ {
+  "kod": "10",
+  "nama": "Selangor",
+  "kod_iso": "MY-10",
+  "jenis": "negeri",
+  "susunan": 1,
+  "sumber": "Kod negeri JPN (Selangor=10, WP Kuala Lumpur=14, WP Putrajaya=16; sama dengan digit 1-2 Kod Kampung data.gov.my); kod ISO 3166-2:MY",
+  "sumber_url": "https://en.wikipedia.org/wiki/ISO_3166-2:MY"
+ },
+ {
+  "kod": "14",
+  "nama": "Wilayah Persekutuan Kuala Lumpur",
+  "kod_iso": "MY-14",
+  "jenis": "wilayah_persekutuan",
+  "susunan": 2,
+  "sumber": "Kod negeri JPN (Selangor=10, WP Kuala Lumpur=14, WP Putrajaya=16; sama dengan digit 1-2 Kod Kampung data.gov.my); kod ISO 3166-2:MY",
+  "sumber_url": "https://en.wikipedia.org/wiki/ISO_3166-2:MY"
+ },
+ {
+  "kod": "16",
+  "nama": "Wilayah Persekutuan Putrajaya",
+  "kod_iso": "MY-16",
+  "jenis": "wilayah_persekutuan",
+  "susunan": 3,
+  "sumber": "Kod negeri JPN (Selangor=10, WP Kuala Lumpur=14, WP Putrajaya=16; sama dengan digit 1-2 Kod Kampung data.gov.my); kod ISO 3166-2:MY",
+  "sumber_url": "https://en.wikipedia.org/wiki/ISO_3166-2:MY"
+ }
+]

@@ -1,5 +1,5 @@
 import { api } from './api';
-import type { User } from './types';
+import type { AccountStatus, User } from './types';
 
 export interface PaginatedUsers {
     data: User[];
@@ -14,10 +14,22 @@ export interface PaginatedUsers {
     links: { first: string | null; last: string | null; prev: string | null; next: string | null };
 }
 
-export function fetchUsers(search: string, page: number) {
+export interface UserFilters {
+    search?: string;
+    status?: AccountStatus | '';
+    peranan?: string;
+    bahagian?: string;
+    page?: number;
+}
+
+export function fetchUsers(filters: UserFilters | string, page = 1) {
+    const f: UserFilters = typeof filters === 'string' ? { search: filters, page } : filters;
     const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (page > 1) params.set('page', String(page));
+    if (f.search) params.set('search', f.search);
+    if (f.status) params.set('status', f.status);
+    if (f.peranan) params.set('peranan', f.peranan);
+    if (f.bahagian) params.set('bahagian', f.bahagian);
+    if ((f.page ?? 1) > 1) params.set('page', String(f.page));
     const qs = params.toString();
     return api.get<PaginatedUsers>(`/users${qs ? `?${qs}` : ''}`);
 }
@@ -26,8 +38,16 @@ export interface UserFormPayload {
     name: string;
     email: string;
     password?: string;
-    role: 'admin' | 'user';
-    is_active: boolean;
+    jenis_pengesahan?: 'dalaman' | 'sso';
+    /** Role ids (MOD-RBC). */
+    peranan?: number[];
+    status_akaun?: AccountStatus;
+    no_pekerja?: string | null;
+    bahagian?: string | null;
+    unit?: string | null;
+    jawatan?: string | null;
+    tarikh_mula_capaian?: string | null;
+    tarikh_tamat_capaian?: string | null;
 }
 
 export function createUser(payload: UserFormPayload) {

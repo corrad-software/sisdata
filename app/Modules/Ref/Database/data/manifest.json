@@ -1,0 +1,54 @@
+{
+    "sempadan_daerah": {
+        "sumber": "OpenStreetMap melalui Overpass API",
+        "sumber_url": "https://overpass-api.de/api/interpreter",
+        "lesen": "ODbL 1.0 — © OpenStreetMap contributors",
+        "atribusi": "https://www.openstreetmap.org/copyright",
+        "tarikh_data_osm": "2026-10-24T13:09:48Z",
+        "tarikh_proses": "2026-10-24",
+        "bilangan": 9,
+        "kaedah": "Overpass cache: daerah.json; simplified 0.0005°"
+    },
+    "sempadan_mukim_anggaran": {
+        "sumber": "OpenStreetMap melalui Overpass API",
+        "sumber_url": "https://overpass-api.de/api/interpreter",
+        "lesen": "ODbL 1.0 — © OpenStreetMap contributors",
+        "atribusi": "https://www.openstreetmap.org/copyright",
+        "tarikh_data_osm": "2026-10-24T13:11:48Z",
+        "tarikh_proses": "2026-10-24",
+        "bilangan": 54,
+        "kaedah": "Overpass cache: tempat.json; simplified 0.0005°",
+        "catatan": "ANGGARAN: sel Voronoi daripada satu titik tempat OSM bagi setiap mukim, dipotong mengikut sempadan daerah. BUKAN sempadan mukim yang diwartakan."
+    },
+    "sempadan_negeri": {
+        "sumber": "OpenStreetMap melalui Overpass API",
+        "sumber_url": "https://overpass-api.de/api/interpreter",
+        "lesen": "ODbL 1.0 — © OpenStreetMap contributors",
+        "atribusi": "https://www.openstreetmap.org/copyright",
+        "tarikh_data_osm": "2026-10-24T13:07:46Z",
+        "tarikh_proses": "2026-10-24",
+        "bilangan": 3,
+        "kaedah": "Overpass cache: negeri.json; simplified 0.0005°"
+    },
+    "sempadan_pbt": {
+        "sumber": "OpenStreetMap melalui Overpass API",
+        "sumber_url": "https://overpass-api.de/api/interpreter",
+        "lesen": "ODbL 1.0 — © OpenStreetMap contributors",
+        "atribusi": "https://www.openstreetmap.org/copyright",
+        "tarikh_data_osm": "2026-10-24T13:10:48Z",
+        "tarikh_proses": "2026-10-24",
+        "bilangan": 7,
+        "kaedah": "Overpass cache: pbt.json; simplified 0.0005°",
+        "catatan": "Hanya PBT yang mempunyai sempadan dalam OSM; sempadan OSM (Sinar Project) mungkin tidak sama dengan warta."
+    },
+    "tempat_ibadat": {
+        "sumber": "OpenStreetMap melalui Overpass API",
+        "sumber_url": "https://overpass-api.de/api/interpreter",
+        "lesen": "ODbL 1.0 — © OpenStreetMap contributors",
+        "atribusi": "https://www.openstreetmap.org/copyright",
+        "tarikh_data_osm": "2026-10-24T13:14:48Z",
+        "tarikh_proses": "2026-10-24",
+        "bilangan": 1433,
+        "kaedah": "Overpass: nwr(area MY-10)[amenity=place_of_worship][religion=muslim]; out center tags"
+    }
+}

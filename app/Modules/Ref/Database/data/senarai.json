@@ -1,0 +1,77 @@
+{
+ "ref_kategori_guna_tanah": {
+  "sumber": "Kanun Tanah Negara 1965 (Akta 828, semakan 2020) s.52 & s.53 — senarai permulaan, perlu disahkan MAIS",
+  "sumber_url": "https://www.agc.gov.my/",
+  "rows": [
+   {"kod": "PERTANIAN", "nama": "Pertanian", "rujukan_undang": "KTN s.52(1)(a), s.115", "keterangan": "Tanah yang dikenakan kategori kegunaan pertanian."},
+   {"kod": "BANGUNAN", "nama": "Bangunan", "rujukan_undang": "KTN s.52(1)(b), s.116", "keterangan": "Tanah yang dikenakan kategori kegunaan bangunan (kediaman, perniagaan dan lain-lain)."},
+   {"kod": "PERUSAHAAN", "nama": "Perusahaan", "rujukan_undang": "KTN s.52(1)(c), s.117", "keterangan": "Tanah yang dikenakan kategori kegunaan perusahaan (industri)."},
+   {"kod": "TIADA", "nama": "Tiada kategori", "rujukan_undang": "KTN s.53", "keterangan": "Tanah tanpa kategori kegunaan (contohnya hak milik lama sebelum KTN); tertakluk kepada syarat tersirat s.53."}
+  ]
+ },
+ "ref_jenis_hak_milik": {
+  "sumber": "Kanun Tanah Negara 1965 (Akta 828) — jenis hak milik dan lesen; senarai permulaan, perlu disahkan MAIS/PTG",
+  "sumber_url": "https://www.agc.gov.my/",
+  "rows": [
+   {"kod": "GRN", "singkatan": "GRN", "nama": "Geran", "peringkat": "negeri", "sementara": false, "hak_milik": true, "rujukan_undang": "KTN s.77", "keterangan": "Hak milik Pejabat Pendaftaran (selama-lamanya)."},
+   {"kod": "PN", "singkatan": "PN", "nama": "Pajakan Negeri", "peringkat": "negeri", "sementara": false, "hak_milik": true, "rujukan_undang": "KTN s.77", "keterangan": "Hak milik Pejabat Pendaftaran (tempoh pajakan)."},
+   {"kod": "GM", "singkatan": "GM", "nama": "Geran Mukim", "peringkat": "daerah", "sementara": false, "hak_milik": true, "rujukan_undang": "KTN s.77", "keterangan": "Hak milik Pejabat Tanah Daerah (selama-lamanya)."},
+   {"kod": "PM", "singkatan": "PM", "nama": "Pajakan Mukim", "peringkat": "daerah", "sementara": false, "hak_milik": true, "rujukan_undang": "KTN s.77", "keterangan": "Hak milik Pejabat Tanah Daerah (tempoh pajakan)."},
+   {"kod": "HSD", "singkatan": "HS(D)", "nama": "Hakmilik Sementara (Pejabat Pendaftaran)", "peringkat": "negeri", "sementara": true, "hak_milik": true, "rujukan_undang": "KTN s.176", "keterangan": "Hak milik sementara sebelum ukuran muktamad; lot bernombor PT."},
+   {"kod": "HSM", "singkatan": "HS(M)", "nama": "Hakmilik Sementara (Mukim)", "peringkat": "daerah", "sementara": true, "hak_milik": true, "rujukan_undang": "KTN s.176", "keterangan": "Hak milik sementara Pejabat Tanah Daerah; lot bernombor PT."},
+   {"kod": "TOL", "singkatan": "LPS", "nama": "Lesen Pendudukan Sementara (TOL)", "peringkat": "daerah", "sementara": true, "hak_milik": false, "rujukan_undang": "KTN s.65", "keterangan": "Lesen, bukan hak milik berdaftar."},
+   {"kod": "RIZAB", "singkatan": "RZB", "nama": "Tanah Rizab", "peringkat": "tiada", "sementara": false, "hak_milik": false, "rujukan_undang": "KTN s.62", "keterangan": "Tanah yang dirizabkan melalui warta; tiada dokumen hak milik."}
+  ]
+ },
+ "ref_jenis_dokumen": {
+  "sumber": "Senarai permulaan SISDATA (Bab 4.1, 7, 10, 15.2 SRS) — perlu disahkan MAIS",
+  "sumber_url": null,
+  "rows": [
+   {"kod": "SALINAN_HAKMILIK", "nama": "Salinan dokumen hak milik", "klasifikasi_lalai": "SULIT"},
+   {"kod": "CARIAN_RASMI", "nama": "Carian rasmi hak milik", "klasifikasi_lalai": "SULIT"},
+   {"kod": "PELAN_AKUI", "nama": "Pelan akui (PA)", "klasifikasi_lalai": "DALAMAN"},
+   {"kod": "PELAN_UKUR", "nama": "Pelan ukur / pelan hak milik", "klasifikasi_lalai": "DALAMAN"},
+   {"kod": "BORANG_14A", "nama": "Borang 14A — Pindah milik", "klasifikasi_lalai": "SULIT"},
+   {"kod": "BORANG_15A", "nama": "Borang 15A — Pajakan", "klasifikasi_lalai": "SULIT"},
+   {"kod": "BORANG_16A", "nama": "Borang 16A — Gadaian", "klasifikasi_lalai": "SULIT"},
+   {"kod": "DOKUMEN_WAKAF", "nama": "Dokumen ikrar / surat wakaf", "klasifikasi_lalai": "SULIT"},
+   {"kod": "PERINTAH_MAHKAMAH", "nama": "Perintah mahkamah", "klasifikasi_lalai": "RAHSIA"},
+   {"kod": "MINIT_MMKN", "nama": "Minit / keputusan MMKN", "klasifikasi_lalai": "SULIT"},
+   {"kod": "NOTIS_5A", "nama": "Notis 5A", "klasifikasi_lalai": "SULIT"},
+   {"kod": "BIL_CUKAI", "nama": "Bil cukai tanah / cukai taksiran", "klasifikasi_lalai": "DALAMAN"},
+   {"kod": "RESIT_BAYARAN", "nama": "Resit bayaran", "klasifikasi_lalai": "DALAMAN"},
+   {"kod": "PERJANJIAN_SEWA", "nama": "Perjanjian sewaan / pajakan", "klasifikasi_lalai": "SULIT"},
+   {"kod": "LAPORAN_PENILAIAN", "nama": "Laporan penilaian", "klasifikasi_lalai": "RAHSIA"},
+   {"kod": "LAPORAN_PEMANTAUAN", "nama": "Laporan pemantauan tapak", "klasifikasi_lalai": "DALAMAN"},
+   {"kod": "GAMBAR_TAPAK", "nama": "Gambar tapak", "klasifikasi_lalai": "DALAMAN"},
+   {"kod": "SURAT_MENYURAT", "nama": "Surat-menyurat", "klasifikasi_lalai": "DALAMAN"},
+   {"kod": "LAIN", "nama": "Lain-lain", "klasifikasi_lalai": "DALAMAN"}
+  ]
+ },
+ "ref_kategori_aduan": {
+  "sumber": "Senarai permulaan SISDATA (Modul 8 Aduan dan Isu Tanah) — perlu disahkan MAIS",
+  "sumber_url": null,
+  "rows": [
+   {"kod": "PENCEROBOHAN", "nama": "Pencerobohan tanah"},
+   {"kod": "BINAAN_HARAM", "nama": "Binaan tanpa kebenaran"},
+   {"kod": "PEMBUANGAN_SAMPAH", "nama": "Pembuangan sampah haram"},
+   {"kod": "KEROSAKAN_ASET", "nama": "Kerosakan aset / bangunan"},
+   {"kod": "PERTIKAIAN_SEMPADAN", "nama": "Pertikaian sempadan"},
+   {"kod": "ISU_PENYEWA", "nama": "Isu penyewa / pemajak"},
+   {"kod": "TUNGGAKAN", "nama": "Tunggakan sewa atau cukai"},
+   {"kod": "PENCEMARAN", "nama": "Pencemaran alam sekitar"},
+   {"kod": "KESELAMATAN", "nama": "Keselamatan dan kacau ganggu"},
+   {"kod": "LAIN", "nama": "Lain-lain"}
+  ]
+ },
+ "ref_klasifikasi_data": {
+  "sumber": "SRS SISDATA §4.2 Klasifikasi data",
+  "sumber_url": null,
+  "rows": [
+   {"kod": "AWAM", "nama": "Awam", "aras": 1, "keterangan": "Boleh dipaparkan kepada orang awam."},
+   {"kod": "DALAMAN", "nama": "Dalaman", "aras": 2, "keterangan": "Pegawai MAIS mengikut skop peranan."},
+   {"kod": "SULIT", "nama": "Sulit", "aras": 3, "keterangan": "Pegawai yang diberi kuasa khusus."},
+   {"kod": "RAHSIA", "nama": "Rahsia", "aras": 4, "keterangan": "Capaian terhad dan diaudit setiap paparan."}
+  ]
+ }
+}

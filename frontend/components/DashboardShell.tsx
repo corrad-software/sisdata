@@ -9,6 +9,8 @@ import { FontSizeToggle } from './ui/FontSizeToggle';
 import { ThemeToggle } from './ui/ThemeToggle';
 import { LanguageSwitcher } from './ui/LanguageSwitcher';
 import { NotificationBell } from './ui/NotificationBell';
+import { GlobalSearch } from './adm/GlobalSearch';
+import { MaintenanceBanner } from './adm/MaintenanceBanner';
 import type { User } from '@/lib/types';
 
 export function DashboardShell({
@@ -41,7 +43,9 @@ export function DashboardShell({
                         </svg>
                     </button>
 
-                    <div className="flex-1" />
+                    <div className="flex-1 min-w-0">
+                        <GlobalSearch />
+                    </div>
 
                     <div className="flex items-center gap-1">
                         <FontSizeToggle />
@@ -52,6 +56,8 @@ export function DashboardShell({
 
                     <UserMenu user={user} />
                 </header>
+
+                <MaintenanceBanner />
 
                 <main className="flex-1">{children}</main>
 

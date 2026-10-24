@@ -17,7 +17,7 @@ class StatusTest extends TestCase
         $this->actingAs($admin)
             ->getJson('/api/v1/platform/status')
             ->assertOk()
-            ->assertJsonPath('data.modules', ['platform'])
+            ->assertJsonPath('data.modules.0', 'platform')
             ->assertJsonStructure(['data' => ['extensions' => ['postgis', 'vector', 'pg_trgm']]]);
     }
 

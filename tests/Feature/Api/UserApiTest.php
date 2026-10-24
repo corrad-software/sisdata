@@ -56,7 +56,7 @@ class UserApiTest extends TestCase
         $response = $this->actingAs($user)->postJson('/api/v1/users', [
             'name' => 'New Person',
             'email' => 'new-person@example.com',
-            'password' => 'password123',
+            'password' => 'Kukuh#Laluan2026',
             'role' => 'admin',
         ]);
 
@@ -75,7 +75,7 @@ class UserApiTest extends TestCase
         $this->actingAs($user)
             ->postJson('/api/v1/users', ['name' => '', 'email' => '', 'password' => ''])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors(['name', 'email', 'password', 'role']);
+            ->assertJsonValidationErrors(['name', 'email', 'password']);
     }
 
     public function test_it_can_update_a_user(): void
