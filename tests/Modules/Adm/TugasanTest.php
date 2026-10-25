@@ -229,6 +229,9 @@ class TugasanTest extends AdmTestCase
         $job = $this->job(['ungkapan_cron' => '0 * * * *', 'toleransi_lewat_minit' => 10]);
         $job->forceFill(['created_at' => now()->subDay()])->saveQuietly();
         $stuck = TugasanLarian::query()->create(['id_tugasan' => $job->id, 'status' => 'berjalan', 'tarikh_mula' => now()->subHours(5)]);
+        // Jobs seeded by migrations were created at the real clock time; depending on
+        // when the suite runs they could also look "missed" at 10:30 — isolate this job.
+        Tugasan::query()->whereKeyNot($job->id)->update(['aktif' => false]);
 
         $this->travelTo(now()->setTime(10, 30));
         $this->artisan('adm:semak-tugasan')->assertSuccessful();

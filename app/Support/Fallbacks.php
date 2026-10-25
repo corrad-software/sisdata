@@ -9,12 +9,14 @@ use App\Modules\Aud\Contracts\AuditLogger;
 use App\Modules\Dsh\Contracts\KpiProviders;
 use App\Modules\Gis\Contracts\MapLayers;
 use App\Modules\Hkm\Contracts\TitleRegistry;
+use App\Modules\Kba\Contracts\KnowledgeBase;
 use App\Modules\Ntf\Contracts\NotificationTypes;
 use App\Modules\Ntf\Contracts\Notifier;
 use App\Modules\Pro\Contracts\LotRegistry;
 use App\Modules\Pro\Contracts\ProfileSections;
 use App\Modules\Rbc\Contracts\AccessControl;
 use App\Modules\Rbc\Contracts\PermissionRegistry;
+use App\Modules\Tkt\Contracts\TicketIntake;
 use App\Modules\Wfe\Contracts\WorkflowFlows;
 use Illuminate\Contracts\Foundation\Application;
 
@@ -41,5 +43,7 @@ class Fallbacks
         $app->singletonIf(MapLayers::class, Fallbacks\FallbackMapLayers::class);
         $app->singletonIf(KpiProviders::class, Fallbacks\FallbackKpiProviders::class);
         $app->bindIf(ComplaintIntake::class, Fallbacks\FallbackComplaintIntake::class);
+        $app->bindIf(KnowledgeBase::class, Fallbacks\FallbackKnowledgeBase::class);
+        $app->bindIf(TicketIntake::class, Fallbacks\FallbackTicketIntake::class);
     }
 }

@@ -1,0 +1,13 @@
+/*
+Theme Name: Hartanah Wakaf Selangor
+Theme URI: https://hartanahwakaf.mais.gov.my/
+Description: Tema rasmi Portal Hartanah Wakaf Selangor (Majlis Agama Islam Selangor) — responsif, dwibahasa (BM/EN), mematuhi WCAG 2.1 AA asas. Memerlukan pemalam SISDATA Connector.
+Author: SISDATA / Majlis Agama Islam Selangor
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 8.1
+License: Proprietary
+Text Domain: hartanah-wakaf-selangor
+*/
+
+/* Styles live in assets/css/main.css (enqueued by functions.php). */

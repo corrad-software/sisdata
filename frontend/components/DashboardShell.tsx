@@ -11,6 +11,7 @@ import { LanguageSwitcher } from './ui/LanguageSwitcher';
 import { NotificationBell } from './ui/NotificationBell';
 import { GlobalSearch } from './adm/GlobalSearch';
 import { MaintenanceBanner } from './adm/MaintenanceBanner';
+import { BantuanTiket } from './tkt/BantuanTiket';
 import type { User } from '@/lib/types';
 
 export function DashboardShell({
@@ -48,6 +49,7 @@ export function DashboardShell({
                     </div>
 
                     <div className="flex items-center gap-1">
+                        <BantuanTiket user={user} />
                         <FontSizeToggle />
                         <ThemeToggle />
                         <LanguageSwitcher />

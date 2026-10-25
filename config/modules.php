@@ -9,15 +9,19 @@ use App\Modules\Dms\DmsServiceProvider;
 use App\Modules\Dsh\DshServiceProvider;
 use App\Modules\Gis\GisServiceProvider;
 use App\Modules\Hkm\HkmServiceProvider;
+use App\Modules\Kba\KbaServiceProvider;
 use App\Modules\Kes\KesServiceProvider;
+use App\Modules\Lap\LapServiceProvider;
 use App\Modules\Ntf\NtfServiceProvider;
 use App\Modules\Per\PerServiceProvider;
 use App\Modules\Pjk\PjkServiceProvider;
 use App\Modules\Platform\PlatformServiceProvider;
 use App\Modules\Pro\ProServiceProvider;
 use App\Modules\Ptn\PtnServiceProvider;
+use App\Modules\Pws\PwsServiceProvider;
 use App\Modules\Rbc\RbcServiceProvider;
 use App\Modules\Ref\RefServiceProvider;
+use App\Modules\Tkt\TktServiceProvider;
 use App\Modules\Tsu\TsuServiceProvider;
 use App\Modules\Wfe\WfeServiceProvider;
 
@@ -52,5 +56,10 @@ return [
         KesServiceProvider::class,
         TsuServiceProvider::class,
         AstServiceProvider::class,
+        // G5 — wawasan & portal
+        KbaServiceProvider::class,
+        LapServiceProvider::class,
+        TktServiceProvider::class,
+        PwsServiceProvider::class,
     ],
 ];

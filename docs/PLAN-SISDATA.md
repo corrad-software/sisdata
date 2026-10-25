@@ -310,6 +310,17 @@ Pengajaran: disk hampir penuh (salinan SIEM JSONL 710 MB — dev kini `AUD_SIEM=
 
 Suite penuh: 2,317 ujian lulus. Insiden: disk penuh menyebabkan Postgres panik sekali (07:17 +08); pulih, data dan rantaian audit (58,361 rekod) disahkan utuh.
 
+### Status G5 — siap (2026-10-25) · semua 22 modul dibina
+
+| Modul | Kod SRS ada ujian | Catatan |
+| --- | --- | --- |
+| KBA | 21/22 | RAG pgvector + Ollama tempatan (nomic-embed-text, qwen2.5:1.5b), semakan grounding setiap ayat, tapisan capaian sebelum ranking. 22 = dokumentasi serahan |
+| LAP | 23/23 | Skema `laporan` (view berskop sesi), pembina ad hoc, laporan berjadual; Metabase OSS hanya view agregat + embed JWT berkunci daerah (SSO/sandbox Metabase = berbayar) |
+| TKT | 21/21 | Butang bantuan setiap skrin dengan konteks, cadangan KBA, SLA S1–S4 (angka andaian — §14 #9), L1→L2 vendor |
+| PWS | 22/28 | WordPress berasingan (`pws/`) + API awam berkunci klien. Belum: akaun awam + 2FA (05/09), muat turun resit (13), notifikasi status awam (26), CAPTCHA sebenar; 25/28 operasi |
+
+Suite penuh: 2,688 ujian lulus. RTM: lihat `docs/RTM.md`. Keperluan merentas (INF, INT, NFR, SEC) belum dipetakan ke ujian — kebanyakannya infrastruktur/proses dan pengujian prestasi/keselamatan untuk fasa UAT.
+
 ## 16. Langkah seterusnya (bila diluluskan)
 
 1. F0 langkah 1–3 (PostGIS, rangka modul, `/api/v1`) — boleh mula serta-merta.

@@ -36,8 +36,15 @@ final class BaseRoles
      */
     private const CLASSIFIED = ['*.sulit.*', '*.rahsia.*'];
 
-    /** Module settings that are administration, not operations, despite a *.kemas_kini key. */
-    private const MODULE_SETTINGS = ['dsh.widget.*'];
+    /**
+     * Module administration / other users' activity that wildcard rules must not
+     * hand to operational or view-only roles: dashboard settings, KBA analytics
+     * and feedback (they show other users' questions), KBA source management.
+     */
+    private const MODULE_SETTINGS = ['dsh.widget.*', 'kba.analitik.*', 'kba.maklum_balas.*', 'kba.sumber.kemas_kini', 'tkt.konfigurasi.*', 'tkt.aktiviti.*'];
+
+    /** SRS-TKT-01: every SISDATA user may open and follow their own support tickets. */
+    public const EVERYONE = ['tkt.tiket.lihat', 'tkt.tiket.cipta', 'tkt.tiket.kemas_kini'];
 
     /**
      * @return array<string, array{nama: string, keterangan: string, include: list<string>, exclude: list<string>}>
@@ -74,13 +81,13 @@ final class BaseRoles
                 'nama' => 'Pelulus',
                 'keterangan' => 'Menyemak, mengesahkan dan meluluskan transaksi, permohonan dan perubahan status mengikut kuasa yang ditetapkan.',
                 'include' => ['*.lihat', '*.lulus'],
-                'exclude' => [...self::PLATFORM_ADMIN, ...self::CLASSIFIED],
+                'exclude' => [...self::PLATFORM_ADMIN, ...self::CLASSIFIED, ...self::MODULE_SETTINGS],
             ],
             self::PENGGUNA_PAPARAN => [
                 'nama' => 'Pengguna Paparan',
                 'keterangan' => 'Melihat rekod, laporan dan dashboard tanpa kebenaran mengubah data.',
                 'include' => ['*.lihat'],
-                'exclude' => [...self::PLATFORM_ADMIN, ...self::CLASSIFIED],
+                'exclude' => [...self::PLATFORM_ADMIN, ...self::CLASSIFIED, ...self::MODULE_SETTINGS],
             ],
             self::JURUAUDIT => [
                 'nama' => 'Juruaudit',
@@ -103,6 +110,10 @@ final class BaseRoles
     public static function grantsByDefault(string $role, string $permission): bool
     {
         $definition = self::definitions()[$role] ?? null;
+
+        if ($definition !== null && in_array($permission, self::EVERYONE, true)) {
+            return true;
+        }
 
         return $definition !== null
             && Str::is($definition['include'], $permission)

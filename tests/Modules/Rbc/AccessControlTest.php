@@ -77,11 +77,11 @@ class AccessControlTest extends TestCase
         $this->assertNotContains('rbc.polisi.kemas_kini', $perms(BaseRoles::PENTADBIR_APLIKASI));
         // Juruaudit: read/export only.
         $this->assertContains('rbc.log_masuk.eksport', $perms(BaseRoles::JURUAUDIT));
-        foreach ($perms(BaseRoles::JURUAUDIT) as $key) {
+        foreach (array_diff($perms(BaseRoles::JURUAUDIT), BaseRoles::EVERYONE) as $key) { // support tickets are for everyone (SRS-TKT-01)
             $this->assertTrue(Str::endsWith($key, ['.lihat', '.eksport']), $key);
         }
         // Pengguna Paparan: only "lihat", never platform administration.
-        foreach ($perms(BaseRoles::PENGGUNA_PAPARAN) as $key) {
+        foreach (array_diff($perms(BaseRoles::PENGGUNA_PAPARAN), BaseRoles::EVERYONE) as $key) {
             $this->assertStringEndsWith('.lihat', $key);
             $this->assertFalse(Str::startsWith($key, ['rbc.', 'aud.', 'adm.']), $key);
         }
@@ -102,6 +102,17 @@ class AccessControlTest extends TestCase
         $this->assertFalse(BaseRoles::grantsByDefault(BaseRoles::PENTADBIR_APLIKASI, 'dms.sulit.lihat'));
         // Dashboard settings are administration, not an operations update.
         $this->assertFalse(BaseRoles::grantsByDefault(BaseRoles::PEGAWAI_OPERASI, 'dsh.widget.kemas_kini'));
+        // Other users' AI questions/feedback are not for view-only or operational roles.
+        foreach ([BaseRoles::PENGGUNA_PAPARAN, BaseRoles::PELULUS, BaseRoles::PEGAWAI_OPERASI] as $role) {
+            $this->assertFalse(BaseRoles::grantsByDefault($role, 'kba.analitik.lihat'), $role);
+            $this->assertFalse(BaseRoles::grantsByDefault($role, 'kba.maklum_balas.lihat'), $role);
+        }
+        $this->assertTrue(BaseRoles::grantsByDefault(BaseRoles::PENGGUNA_PAPARAN, 'kba.soalan.lihat'));
+        // SRS-TKT-01: every role can open a support ticket; ticket configuration stays with admins.
+        foreach (array_keys(BaseRoles::definitions()) as $role) {
+            $this->assertTrue(BaseRoles::grantsByDefault($role, 'tkt.tiket.cipta'), $role);
+        }
+        $this->assertFalse(BaseRoles::grantsByDefault(BaseRoles::PEGAWAI_OPERASI, 'tkt.konfigurasi.kemas_kini'));
     }
 
     public function test_SRS_RBC_05_a_newly_registered_module_gets_base_role_defaults_once(): void
