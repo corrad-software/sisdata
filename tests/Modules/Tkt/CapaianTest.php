@@ -49,6 +49,19 @@ class CapaianTest extends TktTestCase
         $this->assertCount(2, $this->actingAs($this->user(['tkt.semua.pantau']))->getJson('/api/v1/tkt/tiket')->assertOk()->json('data'));
     }
 
+    public function test_SRS_TKT_20_support_management_with_sulit_clearance_sees_every_ticket(): void
+    {
+        // tkt.semua.pantau + tkt.sulit.lihat (e.g. Pentadbir Sistem) left the support group empty, which the
+        // builder dropped — the list then held only the user's own tickets.
+        $a = $this->tiket(['modul' => 'gis', 'tajuk' => 'Peta tidak dipaparkan']);
+        $b = $this->tiket(['isu_keselamatan' => true, 'tajuk' => 'Akaun dicerobohi']);
+        $manager = $this->user(['tkt.tiket.lihat', 'tkt.semua.pantau', 'tkt.sulit.lihat']);
+
+        $ids = array_column($this->actingAs($manager)->getJson('/api/v1/tkt/tiket')->assertOk()->json('data'), 'id');
+        $this->assertEqualsCanonicalizing([$a->id, $b->id], $ids);
+        $this->actingAs($manager)->getJson("/api/v1/tkt/tiket/{$b->id}")->assertOk();
+    }
+
     public function test_SRS_TKT_20_classified_and_security_tickets_need_the_sulit_permission(): void
     {
         $tech = $this->ahli();

@@ -30,7 +30,7 @@ class ArkibApiController extends ProController
         $page = RekodArkib::query()->where('entiti', 'lot_tanah')
             ->whereIn('id_rekod', $visible)
             ->when($status !== null, fn ($q) => $q->where('status_arkib', $status))
-            ->orderByDesc('created_at')->paginate((int) $request->integer('per_page', 25));
+            ->orderByDesc('created_at')->paginate(min(200, max(1, $request->integer('per_page', 25))));
         $lotRows = LotTanah::query()->withoutGlobalScope('access')->whereIn('id', collect($page->items())->pluck('id_rekod'))->get(['id', 'no_lot', 'kod_mukim', 'kod_daerah', 'status_lot'])->keyBy('id');
 
         return response()->json([

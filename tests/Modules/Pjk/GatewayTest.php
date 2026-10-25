@@ -11,6 +11,7 @@ use App\Modules\Pjk\Models\Resit;
 use App\Modules\Pjk\Models\TransaksiGateway;
 use App\Modules\Pjk\Services\GatewayService;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\TestResponse;
@@ -179,6 +180,19 @@ class GatewayTest extends PjkTestCase
         $this->actingAs($officer)->getJson('/api/v1/pjk/gateway-ujian/'.$tx['no_rujukan'])->assertOk()->assertJsonPath('data.no_kontrak', $k->no_kontrak);
         $this->actingAs($officer)->postJson('/api/v1/pjk/gateway-ujian/'.$tx['no_rujukan'].'/simulasi', ['keputusan' => 'berjaya'])->assertOk()->assertJsonPath('data.status', 'berjaya')->assertJsonPath('panggilan_balik', 'berjaya');
         $this->actingAs($this->user(['pjk.kontrak.lihat']))->postJson('/api/v1/pjk/gateway-ujian/'.$tx['no_rujukan'].'/simulasi', ['keputusan' => 'berjaya'])->assertForbidden();
+    }
+
+    public function test_SRS_PJK_14_test_gateway_page_works_when_the_mock_cache_lost_its_state(): void
+    {
+        // UAT runs CACHE_STORE=array: the mock's per-transaction state is gone by the next request.
+        $officer = $this->user();
+        $k = $this->contract();
+        $tx = $this->actingAs($officer)->postJson("/api/v1/pjk/kontrak/{$k->id}/bayaran-dalam-talian", ['saluran' => 'fpx'])->json('data');
+        Cache::flush();
+        $this->actingAs($officer)->postJson('/api/v1/pjk/gateway-ujian/'.$tx['no_rujukan'].'/simulasi', ['keputusan' => 'berjaya'])->assertOk()->assertJsonPath('data.status', 'berjaya')->assertJsonPath('panggilan_balik', 'berjaya');
+        Cache::flush();
+        $this->actingAs($officer)->postJson('/api/v1/pjk/gateway-ujian/'.$tx['no_rujukan'].'/simulasi', ['keputusan' => 'berjaya'])->assertOk()->assertJsonPath('panggilan_balik', 'pendua');
+        $this->assertSame(1, LejarTransaksi::query()->where('kontrak_id', $k->id)->where('jenis', 'bayaran')->count());
     }
 
     public function test_SRS_PJK_14_portal_can_start_a_payment_for_a_contract(): void

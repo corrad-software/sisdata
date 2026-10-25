@@ -106,7 +106,10 @@ class KewanganController
         $tx = TransaksiGateway::query()->where('no_rujukan', $noRujukan)->firstOrFail();
         Kontrak::query()->findOrFail($tx->kontrak_id);
         $data = Validator::make($request->all(), ['keputusan' => ['required', Rule::in(['berjaya', 'gagal', 'dibatalkan', 'tiada_panggilan_balik', 'tamat_masa'])]])->validate();
-        $callback = $gateway->simulate($noRujukan, $data['keputusan']);
+        $callback = $gateway->simulate($noRujukan, $data['keputusan'], null, $tx->rujukan_gateway === null ? null : [
+            'no_rujukan' => $tx->no_rujukan, 'rujukan_gateway' => $tx->rujukan_gateway, 'amaun' => $tx->amaun, 'saluran' => $tx->saluran,
+            'tarikh' => $tx->masa_mula->format('Y-m-d'),
+        ]);
         $result = null;
         if ($callback !== null) {
             [, $result] = $service->callback($callback['body'], $callback['headers'], $request->ip());

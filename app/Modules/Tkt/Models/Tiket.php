@@ -241,6 +241,9 @@ class Tiket extends TktModel
                     if (! $sulit) {
                         $s->where('tkt_tiket.klasifikasi', '!=', 'sulit')->where('tkt_tiket.isu_keselamatan', false);
                     }
+                    if ($all && $sulit) {
+                        $s->whereRaw('1 = 1'); // an empty nested group is dropped by the builder — it would leave only "own tickets"
+                    }
                 });
             }
         });

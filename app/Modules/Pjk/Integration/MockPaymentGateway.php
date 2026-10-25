@@ -62,12 +62,24 @@ class MockPaymentGateway implements PaymentGateway
     /**
      * Simulate the payer finishing on the gateway page.
      *
+     * `$known` (no_rujukan, rujukan_gateway, amaun, saluran, tarikh) restores
+     * the mock's state when the cache no longer holds it — e.g. a per-request
+     * `array` cache store (UAT) or an evicted entry — so the test page keeps
+     * working; the signed callback is unchanged.
+     *
      * @param  string  $outcome  berjaya | gagal | dibatalkan | tiada_panggilan_balik | tamat_masa
+     * @param  array<string, string>|null  $known
      * @return array{body: string, headers: array<string, string>}|null the signed callback, or null when none is sent
      */
-    public function simulate(string $noRujukan, string $outcome, ?string $settledAmount = null): ?array
+    public function simulate(string $noRujukan, string $outcome, ?string $settledAmount = null, ?array $known = null): ?array
     {
         $tx = Cache::get(self::PREFIX.'tx:'.$noRujukan);
+        if ($tx === null && $known !== null && ($known['no_rujukan'] ?? null) === $noRujukan && isset($known['rujukan_gateway'], $known['amaun'])) {
+            $tx = ['status' => 'menunggu', 'amaun' => Wang::norm($known['amaun'])] + $known + ['amaun_penyelesaian' => Wang::norm($known['amaun']), 'tarikh' => CarbonImmutable::today()->format('Y-m-d')];
+            $index = Cache::get(self::PREFIX.'hari:'.$tx['tarikh'], []);
+            $index[] = $noRujukan;
+            Cache::put(self::PREFIX.'hari:'.$tx['tarikh'], array_values(array_unique($index)), now()->addDays(40));
+        }
         if ($tx === null) {
             return null;
         }

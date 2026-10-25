@@ -7,6 +7,20 @@ const nextConfig: NextConfig = {
     turbopack: {
         root: path.join(__dirname),
     },
+    // SRS-SEC-05: baseline browser hardening for every page (the API sets the same on its responses).
+    async headers() {
+        return [
+            {
+                source: '/((?!api/|sanctum/|auth/).*)',
+                headers: [
+                    { key: 'X-Content-Type-Options', value: 'nosniff' },
+                    { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+                    { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+                    { key: 'Permissions-Policy', value: 'camera=(self), geolocation=(self), microphone=()' },
+                ],
+            },
+        ];
+    },
     async rewrites() {
         return [
             { source: '/api/:path*', destination: `${backend}/api/:path*` },

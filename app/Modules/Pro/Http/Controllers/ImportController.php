@@ -80,7 +80,7 @@ class ImportController extends ProController
         $user = $this->user($request);
         $page = SesiImport::query()
             ->when(! $access->allows($user, 'pro.kualiti.lihat'), fn ($q) => $q->where('id_pengguna', $user->id))
-            ->orderByDesc('created_at')->paginate((int) $request->integer('per_page', 20));
+            ->orderByDesc('created_at')->paginate(min(200, max(1, $request->integer('per_page', 20))));
 
         return response()->json([
             'data' => collect($page->items())->map(fn (SesiImport $s) => $this->import->report($s)['ringkasan'])->values(),

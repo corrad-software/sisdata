@@ -55,6 +55,14 @@ class ErrorFormatTest extends TestCase
             ->assertJsonPath('code', 'NOT_FOUND');
     }
 
+    public function test_SRS_ADM_13_unauthenticated_api_call_without_json_accept_header_is_a_401_not_a_500(): void
+    {
+        // A plain curl / integration client: no "Accept: application/json".
+        $this->get('/api/v1/user')
+            ->assertUnauthorized()
+            ->assertJsonPath('code', 'UNAUTHENTICATED');
+    }
+
     public function test_SRS_ADM_13_validation_errors_keep_field_errors(): void
     {
         $this->postJson('/api/v1/login', [])

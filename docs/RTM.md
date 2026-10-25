@@ -1,6 +1,6 @@
 # RTM — SISDATA
 
-_Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting dengan tangan._
+_Dijana oleh `php artisan srs:rtm` pada 2026-10-25 03:36:32. Jangan sunting dengan tangan._
 
 | Modul | Keperluan | Ada ujian | Liputan |
 | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | DAT | 9 | 9 | 100% |
 | DMS | 26 | 26 | 100% |
 | DSH | 25 | 23 | 92% |
-| GEN | 9 | 3 | 33% |
+| GEN | 9 | 4 | 44% |
 | GIS | 35 | 29 | 82% |
 | HKM | 22 | 22 | 100% |
 | INF | 30 | 0 | 0% |
@@ -20,7 +20,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | KBA | 22 | 21 | 95% |
 | KES | 24 | 23 | 95% |
 | LAP | 23 | 23 | 100% |
-| NFR | 26 | 0 | 0% |
+| NFR | 26 | 1 | 3% |
 | NTF | 24 | 24 | 100% |
 | PER | 30 | 30 | 100% |
 | PJK | 28 | 28 | 100% |
@@ -28,7 +28,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | PTN | 24 | 24 | 100% |
 | PWS | 28 | 22 | 78% |
 | RBC | 27 | 24 | 88% |
-| SEC | 35 | 0 | 0% |
+| SEC | 35 | 4 | 11% |
 | TKT | 21 | 21 | 100% |
 | TSU | 27 | 24 | 88% |
 | WFE | 24 | 21 | 87% |
@@ -83,6 +83,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-ADM-12 | Perlu | `tests/Modules/Adm/LogTest.php::test_SRS_ADM_12_the_reference_shown_to_the_user_finds_the_log_entry` | — |
 | SRS-ADM-13 | Wajib | `tests/Feature/Api/ErrorFormatTest.php::test_SRS_ADM_13_server_errors_hide_internals_and_return_request_id` | — |
 | SRS-ADM-13 | Wajib | `tests/Feature/Api/ErrorFormatTest.php::test_SRS_ADM_13_unauthenticated_and_not_found_use_the_same_shape` | — |
+| SRS-ADM-13 | Wajib | `tests/Feature/Api/ErrorFormatTest.php::test_SRS_ADM_13_unauthenticated_api_call_without_json_accept_header_is_a_401_not_a_500` | — |
 | SRS-ADM-13 | Wajib | `tests/Feature/Api/ErrorFormatTest.php::test_SRS_ADM_13_validation_errors_keep_field_errors` | — |
 | SRS-ADM-14 | Wajib | `tests/Modules/Adm/LogTest.php::test_SRS_ADM_14_application_and_integration_logs_export_by_period` | — |
 | SRS-ADM-14 | Wajib | `tests/Modules/Adm/LogTest.php::test_SRS_ADM_14_retention_policy_prunes_old_rows_per_configured_period` | — |
@@ -419,6 +420,8 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-DSH-23 | Wajib | `tests/Modules/Dsh/PortalInboxTest.php::test_SRS_DSH_23_inbox_shows_my_tasks_deadlines_sla_status_and_notifications` | — |
 | SRS-DSH-24 | Wajib | `tests/Modules/Dsh/PortalInboxTest.php::test_SRS_DSH_24_global_search_includes_my_drafts_only` | — |
 | SRS-DSH-25 | Wajib | `tests/Modules/Dsh/PortalInboxTest.php::test_SRS_DSH_25_online_help_has_guides_faq_and_manual_for_the_current_screen` | — |
+| SRS-GEN-01 | Wajib | `tests/Architecture/RouteSecurityTest.php::test_SRS_GEN_01_every_api_route_requires_an_authenticated_principal_or_is_reviewed_public` | — |
+| SRS-GEN-01 | Wajib | `tests/Architecture/RouteSecurityTest.php::test_SRS_GEN_01_public_endpoints_still_exist_and_are_rate_limited` | — |
 | SRS-GEN-01 | Wajib | `tests/Modules/Pro/LotMasterTest.php::test_SRS_GEN_01_user_without_permission_is_refused` | — |
 | SRS-GEN-01 | Wajib | `tests/Modules/Rbc/AccessControlTest.php::test_SRS_GEN_01_every_rbc_and_user_route_authorises_through_the_gate` | — |
 | SRS-GEN-01 | Wajib | `tests/Modules/Ref/ReferenceApiTest.php::test_SRS_GEN_01_ref_api_requires_login_and_the_view_permission` | — |
@@ -431,7 +434,8 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-GEN-06 | Wajib | — | tiada ujian |
 | SRS-GEN-07 | Perlu | — | tiada ujian |
 | SRS-GEN-08 | Perlu | — | tiada ujian |
-| SRS-GEN-09 | Wajib | — | tiada ujian |
+| SRS-GEN-09 | Wajib | `tests/Feature/CrossCutting/MerentasModulTest.php::test_SRS_GEN_09_system_messages_are_in_malay` | — |
+| SRS-GEN-09 | Wajib | `tests/Feature/CrossCutting/TerjemahanTest.php::test_SRS_GEN_09_every_module_message_key_has_a_malay_translation` | — |
 | SRS-GIS-01 | Wajib | `tests/Modules/Gis/LayersTest.php::test_SRS_GIS_01_lot_layer_shows_lots_with_geometry_category_and_status` | — |
 | SRS-GIS-02 | Wajib | `tests/Modules/Gis/PlatformTest.php::test_SRS_GIS_02_platform_components_layer_management_search_attributes_filter_and_analysis` | — |
 | SRS-GIS-03 | Wajib | `tests/Modules/Gis/ImportEksportTest.php::test_SRS_GIS_03_geojson_in_cassini_is_reprojected_to_wgs84` | — |
@@ -705,7 +709,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-NFR-02 | ≤ 3 saat bagi 95% permintaan di bawah beban biasa | — | tiada ujian |
 | SRS-NFR-03 | ≤ 1.5 saat bagi 95% panggilan dalaman | — | tiada ujian |
 | SRS-NFR-04 | 200 pengguna aktif serentak tanpa penurunan melebihi 20% daripada sasaran masa tindak balas | — | tiada ujian |
-| SRS-NFR-05 | ≤ 5 saat bagi carian merentas keseluruhan portfolio lot dengan tapisan gabungan | — | tiada ujian |
+| SRS-NFR-05 | ≤ 5 saat bagi carian merentas keseluruhan portfolio lot dengan tapisan gabungan | `tests/Feature/CrossCutting/MerentasModulTest.php::test_SRS_NFR_05_list_endpoints_cap_the_page_size` | — |
 | SRS-NFR-06 | Fail 25 MB selesai dimuat naik dan diindeks dalam ≤ 30 saat | — | tiada ujian |
 | SRS-NFR-07 | Laporan piawai ≤ 10 saat; laporan berskala besar dijana di latar belakang dengan notifikasi apabila siap, tanpa menjejaskan prestasi transaksi | — | tiada ujian |
 | SRS-NFR-08 | Lapisan asas dengan satu lapisan tematik bagi kawasan satu daerah dipaparkan dalam ≤ 5 saat; jubin dicache | — | tiada ujian |
@@ -865,6 +869,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-PJK-14 | Wajib | `tests/Modules/Pjk/GatewayTest.php::test_SRS_PJK_14_acceptance_2_fpx_and_card_payments_credit_ledger_and_email_serial_receipts` | — |
 | SRS-PJK-14 | Wajib | `tests/Modules/Pjk/GatewayTest.php::test_SRS_PJK_14_gateway_outage_falls_back_to_counter_payment` | — |
 | SRS-PJK-14 | Wajib | `tests/Modules/Pjk/GatewayTest.php::test_SRS_PJK_14_test_gateway_page_simulation_goes_through_the_webhook` | — |
+| SRS-PJK-14 | Wajib | `tests/Modules/Pjk/GatewayTest.php::test_SRS_PJK_14_test_gateway_page_works_when_the_mock_cache_lost_its_state` | — |
 | SRS-PJK-14 | Wajib | `tests/Modules/Pjk/GatewayTest.php::test_SRS_PJK_14_portal_can_start_a_payment_for_a_contract` | — |
 | SRS-PJK-15 | Wajib | `tests/Modules/Pjk/GatewayTest.php::test_SRS_PJK_15_unique_reference_linked_to_contract_and_charges_with_statuses` | — |
 | SRS-PJK-15 | Wajib | `tests/Modules/Pjk/GatewayTest.php::test_SRS_PJK_15_idempotency_key_returns_the_same_transaction` | — |
@@ -1072,6 +1077,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-RBC-06 | Wajib | `tests/Modules/Rbc/RoleManagementTest.php::test_SRS_RBC_06_base_roles_cannot_be_deleted_and_used_roles_are_protected` | — |
 | SRS-RBC-06 | Wajib | `tests/Modules/Rbc/RoleManagementTest.php::test_SRS_RBC_06_role_management_requires_permission` | — |
 | SRS-RBC-06 | Wajib | `tests/Modules/Rbc/RoleManagementTest.php::test_SRS_RBC_06_admins_cannot_grant_permissions_they_do_not_hold` | — |
+| SRS-RBC-07 | Wajib | `tests/Feature/Console/SisdataDemoSeedTest.php::test_SRS_RBC_07_seeded_district_unit_mapping_uses_ref_district_codes` | — |
 | SRS-RBC-07 | Wajib | `tests/Modules/Pro/LotMasterTest.php::test_SRS_RBC_07_out_of_scope_district_lots_are_invisible_and_cannot_be_created` | — |
 | SRS-RBC-07 | Wajib | `tests/Modules/Rbc/AccessControlTest.php::test_SRS_RBC_07_officer_of_district_a_cannot_see_district_b` | — |
 | SRS-RBC-07 | Wajib | `tests/Modules/Rbc/AccessControlTest.php::test_SRS_RBC_07_scopes_combine_across_dimensions` | — |
@@ -1160,14 +1166,15 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-SEC-02 | Wajib | — | tiada ujian |
 | SRS-SEC-03 | Wajib | — | tiada ujian |
 | SRS-SEC-04 | Wajib | — | tiada ujian |
-| SRS-SEC-05 | Wajib | — | tiada ujian |
+| SRS-SEC-05 | Wajib | `tests/Feature/CrossCutting/MerentasModulTest.php::test_SRS_SEC_05_api_responses_carry_browser_hardening_headers` | — |
+| SRS-SEC-05 | Wajib | `tests/Feature/CrossCutting/MerentasModulTest.php::test_SRS_SEC_05_hsts_is_sent_only_over_https` | — |
 | SRS-SEC-06 | Wajib | — | tiada ujian |
 | SRS-SEC-07 | Wajib | — | tiada ujian |
 | SRS-SEC-08 | Wajib | — | tiada ujian |
-| SRS-SEC-09 | Wajib | — | tiada ujian |
+| SRS-SEC-09 | Wajib | `tests/Feature/CrossCutting/MerentasModulTest.php::test_SRS_SEC_09_local_passwords_are_stored_as_adaptive_hashes` | — |
 | SRS-SEC-10 | Wajib | — | tiada ujian |
-| SRS-SEC-11 | Wajib | — | tiada ujian |
-| SRS-SEC-12 | Wajib | — | tiada ujian |
+| SRS-SEC-11 | Wajib | `tests/Feature/CrossCutting/MerentasModulTest.php::test_SRS_SEC_11_session_cookie_is_http_only_and_same_site` | — |
+| SRS-SEC-12 | Wajib | `tests/Feature/CrossCutting/MerentasModulTest.php::test_SRS_SEC_12_state_changing_spa_request_without_csrf_token_is_refused` | — |
 | SRS-SEC-13 | Wajib | — | tiada ujian |
 | SRS-SEC-14 | Wajib | — | tiada ujian |
 | SRS-SEC-15 | Wajib | — | tiada ujian |
@@ -1230,6 +1237,7 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-TKT-19 | Wajib | `tests/Modules/Tkt/LaporanTest.php::test_SRS_TKT_19_report_is_generated_automatically_and_filed_in_dms` | — |
 | SRS-TKT-20 | Wajib | `tests/Modules/Tkt/CapaianTest.php::test_SRS_TKT_20_reporter_sees_only_own_tickets` | — |
 | SRS-TKT-20 | Wajib | `tests/Modules/Tkt/CapaianTest.php::test_SRS_TKT_20_support_sees_assigned_and_team_module_tickets_only` | — |
+| SRS-TKT-20 | Wajib | `tests/Modules/Tkt/CapaianTest.php::test_SRS_TKT_20_support_management_with_sulit_clearance_sees_every_ticket` | — |
 | SRS-TKT-20 | Wajib | `tests/Modules/Tkt/CapaianTest.php::test_SRS_TKT_20_classified_and_security_tickets_need_the_sulit_permission` | — |
 | SRS-TKT-21 | Wajib | `tests/Modules/Tkt/CapaianTest.php::test_SRS_TKT_21_handover_moves_open_tickets_without_losing_history` | — |
 | SRS-TSU-01 | Wajib | `tests/Modules/Tsu/UrusanTemplatTest.php::test_SRS_TSU_01_seven_urusan_types_each_have_their_own_staged_template` | — |
@@ -1313,6 +1321,8 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-WFE-19 | Wajib | `tests/Modules/Wfe/MfaStepUpTest.php::test_SRS_WFE_19_otp_evidence_can_be_required` | — |
 | SRS-WFE-19 | Wajib | `tests/Modules/Wfe/MfaStepUpTest.php::test_SRS_WFE_19_password_only_accounts_cannot_step_up` | — |
 | SRS-WFE-19 | Wajib | `tests/Modules/Wfe/MfaStepUpTest.php::test_SRS_WFE_19_return_path_cannot_be_an_open_redirect` | — |
+| SRS-WFE-19 | Wajib | `tests/Modules/Wfe/MfaStepUpTest.php::test_SRS_WFE_19_uat_bypass_parameter_is_ignored_outside_the_uat_environment` | — |
+| SRS-WFE-19 | Wajib | `tests/Modules/Wfe/MfaStepUpTest.php::test_SRS_WFE_19_uat_bypass_is_off_by_default_even_in_uat` | — |
 | SRS-WFE-20 | Wajib | `tests/Modules/Wfe/DecisionTest.php::test_SRS_WFE_20_final_outcome_dispatches_event_notifies_and_creates_follow_up` | — |
 | SRS-WFE-20 | Wajib | `tests/Modules/Wfe/DecisionTest.php::test_SRS_WFE_20_new_task_notifies_role_holders` | — |
 | SRS-WFE-20 | Wajib | `tests/Modules/Wfe/DemoFlowTest.php::test_SRS_WFE_20_seeded_demo_flow_runs_end_to_end` | — |
@@ -1325,4 +1335,4 @@ _Dijana oleh `php artisan srs:rtm` pada 2026-10-25 02:17:12. Jangan sunting deng
 | SRS-WFE-23 | Wajib | `tests/Modules/Wfe/MonitoringTest.php::test_SRS_WFE_23_performance_report_per_stage_bottleneck_escalation_backlog` | — |
 | SRS-WFE-24 | Perlu | — | tiada ujian |
 
-**558 daripada 699 keperluan** mempunyai sekurang-kurangnya satu ujian.
+**564 daripada 699 keperluan** mempunyai sekurang-kurangnya satu ujian.

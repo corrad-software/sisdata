@@ -135,6 +135,7 @@ class WfeServiceProvider extends ModuleServiceProvider
         $parameters->declare('wfe.mfa_sah_minit', 'int', 10, 'Tempoh sah pengesahan MFA step-up (minit)', true);
         $parameters->declare('wfe.mfa_wajib_otp', 'bool', false, 'Wajibkan bukti OTP (amr/acr) dalam token step-up', true);
         $parameters->declare('wfe.mfa_acr_diterima', 'json', ['mfa', 'otp', '2'], 'Nilai acr yang diterima sebagai MFA', true);
+        $parameters->declare('wfe.mfa_pintas_uat', 'bool', false, 'UAT SAHAJA (APP_ENV=uat): anggap MFA step-up sah tanpa SSO MAIS — diabaikan dalam persekitaran lain', true);
         $parameters->declare('wfe.mfa_acr_values', 'string', '', 'acr_values dihantar semasa step-up (kosong = tiada)', true);
         $parameters->declare('wfe.peranan_penyelia_lalai', 'string', 'admin', 'Peranan penyelia lalai jika hierarki tidak ditetapkan');
     }

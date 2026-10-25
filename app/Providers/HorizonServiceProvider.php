@@ -27,6 +27,7 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
      */
     protected function gate(): void
     {
-        Gate::define('viewHorizon', fn ($user = null) => $user?->role === 'admin');
+        // MOD-RBC permission, not the legacy users.role string (SRS-GEN-01).
+        Gate::define('viewHorizon', fn ($user = null) => $user !== null && $user->can('rbc.pentadbiran.akses'));
     }
 }

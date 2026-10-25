@@ -39,15 +39,20 @@ class RbcSeeder extends Seeder
             ['roles', 'pegawai_hq', $role(BaseRoles::PEGAWAI_OPERASI), null, null, 'Pegawai ibu pejabat → Pegawai Operasi'],
             ['roles', 'pengurusan', $role(BaseRoles::PENGGUNA_PAPARAN), null, null, 'Pengurusan tertinggi → Pengguna Paparan'],
             // Pejabat daerah units restrict records to their district (SRS-RBC-04/07).
-            ['unit', 'Pejabat Agama Islam Daerah Petaling', null, 'daerah', 'petaling', 'Unit PAID Petaling → skop daerah Petaling'],
-            ['unit', 'Pejabat Agama Islam Daerah Klang', null, 'daerah', 'klang', 'Unit PAID Klang → skop daerah Klang'],
+            // Scope values are MOD-REF district codes (ref_daerah.kod) — records carry kod_daerah.
+            ['unit', 'Pejabat Agama Islam Daerah Petaling', null, 'daerah', '1008', 'Unit PAID Petaling → skop daerah Petaling (1008)'],
+            ['unit', 'Pejabat Agama Islam Daerah Klang', null, 'daerah', '1001', 'Unit PAID Klang → skop daerah Klang (1001)'],
         ];
 
         foreach ($rules as $i => [$jenis, $nilai, $perananId, $skopJenis, $skopNilai, $keterangan]) {
-            PemetaanTuntutan::query()->firstOrCreate(
+            $rule = PemetaanTuntutan::query()->firstOrCreate(
                 ['jenis_tuntutan' => $jenis, 'nilai' => $nilai],
                 ['peranan_id' => $perananId, 'skop_jenis' => $skopJenis, 'skop_nilai' => $skopNilai, 'keutamaan' => ($i + 1) * 10, 'keterangan' => $keterangan],
             );
+            // Earlier seeds stored district names ("petaling"), which match no kod_daerah.
+            if ($rule->skop_jenis === 'daerah' && ! ctype_digit((string) $rule->skop_nilai)) {
+                $rule->forceFill(['skop_nilai' => $skopNilai, 'keterangan' => $keterangan])->save();
+            }
         }
     }
 }

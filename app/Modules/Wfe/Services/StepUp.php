@@ -30,12 +30,26 @@ class StepUp
 
     public function verifiedAt(Request $request): ?Carbon
     {
+        if ($this->uatBypass()) {
+            return now();
+        }
         if (! $request->hasSession()) {
             return null;
         }
         $at = $request->session()->get(self::SESSION_AT);
 
         return is_numeric($at) ? Carbon::createFromTimestamp((int) $at) : null;
+    }
+
+    /**
+     * UAT only: the UAT host is not registered with SSO MAIS, so testers sign
+     * in with passwords and cannot step up. The critical parameter
+     * wfe.mfa_pintas_uat stands in for the step-up there; it is ignored in
+     * every environment other than APP_ENV=uat.
+     */
+    public function uatBypass(): bool
+    {
+        return app()->environment('uat') && (bool) $this->parameters->get('wfe.mfa_pintas_uat', false);
     }
 
     public function isFresh(?Carbon $at): bool

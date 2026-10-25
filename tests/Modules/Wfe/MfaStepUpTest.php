@@ -4,9 +4,12 @@ namespace Tests\Modules\Wfe;
 
 use App\Models\User;
 use App\Modules\Adm\Contracts\Parameters;
+use App\Modules\Adm\Services\ParameterService;
 use App\Modules\Wfe\Models\Instans;
 use App\Modules\Wfe\Models\Tugasan;
+use App\Modules\Wfe\Services\Engine;
 use App\Modules\Wfe\Services\StepUp;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Laravel\Socialite\Facades\Socialite;
 use SocialiteProviders\Manager\OAuth2\User as OidcUser;
@@ -132,6 +135,39 @@ class MfaStepUpTest extends WfeTestCase
         $local = $this->user(null, [], null, ['oidc_sub' => null]);
         $this->actingAs($local)->get('/auth/wfe/stepup?kembali=//evil.example.com/x')
             ->assertRedirect('http://localhost:3000/admin/wfe/tugasan?mfa=tiada_sso');
+    }
+
+    public function test_SRS_WFE_19_uat_bypass_parameter_is_ignored_outside_the_uat_environment(): void
+    {
+        $this->app->make(ParameterService::class)->store('wfe.mfa_pintas_uat', true, 'ujian', null);
+        $stepUp = app(StepUp::class);
+
+        // APP_ENV=testing (as production or any non-UAT host): a real step-up is still needed.
+        $this->assertFalse($stepUp->uatBypass());
+        $this->act($this->approver, $this->task()->id, 'lulus')->assertForbidden()->assertJsonPath('code', 'MFA_DIPERLUKAN');
+
+        $this->app['env'] = 'uat';
+        try {
+            $this->assertTrue($stepUp->uatBypass());
+            $mfaAt = $stepUp->verifiedAt(Request::create('/'));
+            $this->assertTrue($stepUp->isFresh($mfaAt));
+            app(Engine::class)->decide($this->task(), $this->approver, 'lulus', null, ['mfa_at' => $mfaAt]);
+        } finally {
+            $this->app['env'] = 'testing';
+        }
+        $this->assertSame(Instans::LULUS, Instans::find($this->instanceId)->status);
+        $this->assertNotNull(Instans::find($this->instanceId)->sejarah()->where('peristiwa', 'lulus')->firstOrFail()->mfa_pada);
+    }
+
+    public function test_SRS_WFE_19_uat_bypass_is_off_by_default_even_in_uat(): void
+    {
+        $this->app['env'] = 'uat';
+        try {
+            $this->assertFalse(app(StepUp::class)->uatBypass());
+            $this->assertNull(app(StepUp::class)->verifiedAt(Request::create('/')));
+        } finally {
+            $this->app['env'] = 'testing';
+        }
     }
 
     private function fakeIdp(string $sub, int $authTime): void

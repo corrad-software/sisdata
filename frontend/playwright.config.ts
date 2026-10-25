@@ -4,6 +4,8 @@ import { defineConfig, devices } from '@playwright/test';
 // Playwright only manages the Next.js dev server here, not the API backend.
 export default defineConfig({
     testDir: './e2e',
+    // UAT scenarios write data — they run only via playwright.uat.config.ts against the UAT stack.
+    testIgnore: ['uat/**'],
     fullyParallel: false,
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 1 : 0,
