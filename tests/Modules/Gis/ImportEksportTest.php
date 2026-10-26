@@ -28,7 +28,12 @@ class ImportEksportTest extends GisTestCase
 
     protected function tearDown(): void
     {
-        File::deleteDirectory($this->tmp);
+        // setUp() skips the test before $tmp is assigned when GDAL is missing (e.g. CI). Touching the
+        // uninitialised property would throw here, before parent::tearDown() rolls the DB transaction
+        // back, leaving it open so a later test blocks forever waiting on its uncommitted seed rows.
+        if (isset($this->tmp)) {
+            File::deleteDirectory($this->tmp);
+        }
         parent::tearDown();
     }
 
