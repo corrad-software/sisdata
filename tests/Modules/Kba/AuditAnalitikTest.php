@@ -95,6 +95,9 @@ class AuditAnalitikTest extends KbaTestCase
 
     public function test_SRS_KBA_18_analytics_frequent_questions_gaps_citations_usage_and_weekly_digest(): void
     {
+        // The four questions below must share one timestamp: otherwise "most recent first" decides between
+        // the two equally frequent questions and the result depends on how fast the machine runs.
+        $this->freezeTime();
         $admin = $this->user(self::PENTADBIR);
         $user = $this->user(self::PENGGUNA, 'pegawai_operasi');
         $this->tanya($user, 'Berapakah had saiz fail dokumen pejabat?');
