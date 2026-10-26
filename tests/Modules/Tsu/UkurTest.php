@@ -142,6 +142,12 @@ class UkurTest extends TsuTestCase
 
     public function test_SRS_TSU_16_imports_geojson_dxf_and_shapefile_with_crs_validation(): void
     {
+        $gdal = new Process([(string) config('gis.ogr2ogr'), '--version']);
+        $gdal->run();
+        if (! $gdal->isSuccessful()) {
+            $this->markTestSkipped('GDAL ogr2ogr tidak dipasang.');
+        }
+
         [$u, $l, $officer] = $this->lantikan();
         $gis = $this->user(self::GIS);
         [$lat, $lng] = self::PUSAT_PETALING;
@@ -197,7 +203,7 @@ class UkurTest extends TsuTestCase
         $dir = storage_path('app/tmp/tsu-test-'.uniqid());
         @mkdir($dir, 0700, true);
         file_put_contents($dir.'/in.geojson', $geojson);
-        $p = new Process(['/opt/homebrew/bin/ogr2ogr', '-f', 'ESRI Shapefile', '-t_srs', 'EPSG:'.$srid, $dir.'/ukur.shp', $dir.'/in.geojson']);
+        $p = new Process([(string) config('gis.ogr2ogr'), '-f', 'ESRI Shapefile', '-t_srs', 'EPSG:'.$srid, $dir.'/ukur.shp', $dir.'/in.geojson']);
         $p->run();
         $this->assertTrue($p->isSuccessful(), $p->getErrorOutput());
         $zipPath = $dir.'.zip';

@@ -36,7 +36,7 @@ class Analitik
                 ROUND(100.0 * SUM(CASE WHEN l.status = 'berjaya' AND COALESCE(m.penilaian, 'membantu') = 'membantu' THEN 1 ELSE 0 END) / COUNT(*)) AS kadar_memuaskan,
                 MAX(l.modul) AS modul, MAX(l.cap_masa) AS terakhir")
             ->where('l.status', '<>', 'ditolak')
-            ->groupBy('l.prompt_dinormalkan')->orderByDesc('bilangan')->orderByDesc('terakhir')->limit(20)->get();
+            ->groupBy('l.prompt_dinormalkan')->orderByDesc('bilangan')->orderByDesc('terakhir')->orderBy('l.prompt_dinormalkan')->limit(20)->get();
 
         $dirujuk = DB::table(DB::raw('(SELECT (e->>\'id_sumber\')::bigint AS id_sumber FROM kba_log_prompt l, jsonb_array_elements(l.senarai_sumber_dipetik) e WHERE l.cap_masa BETWEEN ? AND ?) x'))
             ->addBinding([$dari, $hingga], 'from')

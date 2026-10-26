@@ -31,12 +31,15 @@ jobs:
         image: postgis/postgis:17-3.6
         env:
           POSTGRES_DB: myds_laravel_test
-          POSTGRES_USER: myds
-          POSTGRES_PASSWORD: myds_ci
+          # Bootstrap superuser only. The application connects as the non-superuser role `myds`
+          # created below, as in local dev and production: a superuser bypasses the privilege
+          # checks that SRS-AUD-08 (append-only audit records) tests.
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres_ci
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U myds -d myds_laravel_test"
+          --health-cmd "pg_isready -U postgres -d myds_laravel_test"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 20
@@ -94,6 +97,20 @@ jobs:
       # `apt-get update` failed with "does not have a Release file".
       - name: Add pgvector to the PostGIS service
         run: docker exec ${{ job.services.postgres.id }} sh -c "apt-get update -qq && apt-get install -y -qq postgresql-17-pgvector"
+
+      # Mirrors infra/bin/sisdata-db-setup.sh: the app role is a normal user that owns the database;
+      # PostGIS/pgvector are not trusted extensions, so a superuser creates them up front.
+      - name: Create the non-superuser application role
+        run: |
+          PSQL="docker exec ${{ job.services.postgres.id }} psql -U postgres -v ON_ERROR_STOP=1"
+          $PSQL -d postgres -c "CREATE ROLE myds LOGIN PASSWORD 'myds_ci'"
+          $PSQL -d postgres -c "ALTER DATABASE myds_laravel_test OWNER TO myds"
+          $PSQL -d myds_laravel_test -c "CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS vector; CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+
+      # Command-line tools the DMS (PDF text), GIS and TSU (GDAL) tests drive. Without them those
+      # tests either skip or cannot find the indexed text, so they would not be exercised in CI.
+      - name: Install poppler-utils and gdal-bin
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils gdal-bin
 
       - name: Tests (PostgreSQL + PostGIS)
         run: |

@@ -173,10 +173,11 @@ final class FailUkur
         $zip = $dir.'/input.zip';
         copy((string) $file->getRealPath(), $zip);
         $out = $dir.'/out.geojson';
-        $bin = dirname((string) config('pro.ogr2ogr', '/opt/homebrew/bin/ogr2ogr'));
+        $ogrinfo = (string) config('gis.ogrinfo', 'ogrinfo');
+        $ogr2ogr = (string) config('gis.ogr2ogr', 'ogr2ogr');
 
         try {
-            $info = new Process([$bin.'/ogrinfo', '-so', '-al', '/vsizip/'.$zip]);
+            $info = new Process([$ogrinfo, '-so', '-al', '/vsizip/'.$zip]);
             $info->setTimeout(60);
             $info->run();
             if (! $info->isSuccessful()) {
@@ -190,7 +191,7 @@ final class FailUkur
                     throw ValidationException::withMessages(['sistem_koordinat' => [__('tsu::tsu.ukur.crs_tidak_sepadan', ['fail' => $fileSrid, 'diisytihar' => $declared])]]);
                 }
             }
-            $args = [$bin.'/ogr2ogr', '-f', 'GeoJSON', '-t_srs', 'EPSG:4326'];
+            $args = [$ogr2ogr, '-f', 'GeoJSON', '-t_srs', 'EPSG:4326'];
             if (! $hasPrj) {
                 $args = [...$args, '-s_srs', 'EPSG:'.$declared];
             }
