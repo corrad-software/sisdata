@@ -150,11 +150,33 @@ function LogAksesItems({ items }: { items: ProfilItem[] }) {
     );
 }
 
+/** Keys that best name a row, in order — sections from other modules don't all send `label`/`nilai`. */
+const LABEL_KEYS = ['label', 'nama', 'tajuk', 'no_kontrak', 'no_rujukan', 'no_hak_milik', 'no_aset', 'kod_aset', 'no_kes', 'no_aduan', 'kategori', 'jenis'];
+const SKIP_KEYS = new Set(['id', 'link', 'pautan', 'kod', 'tahap', 'klasifikasi', 'lot_id', 'medan']);
+
+function humanise(key: string): string {
+    const s = key.replace(/_/g, ' ');
+    return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/** Label + value for a row: explicit `label`/`nilai` when sent, otherwise derived from the row's own fields. */
+function deriveRow(it: ProfilItem): { label: string; nilai: unknown } {
+    if (str(it.label)) return { label: str(it.label), nilai: it.nilai };
+    const labelKey = LABEL_KEYS.find((k) => str(it[k]) !== '');
+    const rest = Object.entries(it)
+        .filter(([k, v]) => k !== labelKey && !SKIP_KEYS.has(k) && v !== null && v !== undefined && v !== '' && typeof v !== 'object')
+        .slice(0, 4)
+        .map(([k, v]) => `${humanise(k)}: ${fmtNilai(v)}`);
+    return { label: labelKey ? str(it[labelKey]) : '—', nilai: 'nilai' in it ? it.nilai : rest.join(' · ') || null };
+}
+
 function GenericItems({ items }: { items: ProfilItem[] }) {
     return (
         <InfoList
-            items={items.map((it, i) => {
-                const href = pautanUi(str(it.link));
+            items={items.map((raw, i) => {
+                const derived = deriveRow(raw);
+                const it: ProfilItem = { ...raw, label: derived.label, nilai: derived.nilai };
+                const href = pautanUi(str(it.link ?? it.pautan));
                 const kod = str(it.kod);
                 const value =
                     kod && it.label && /pengesahan/i.test(str(it.label)) ? (

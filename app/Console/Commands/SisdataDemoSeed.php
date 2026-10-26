@@ -45,7 +45,8 @@ class SisdataDemoSeed extends Command
     protected $signature = 'sisdata:demo-seed
         {--force : Run even though lot_tanah already has rows (steps are idempotent or additive)}
         {--tanpa-kba : Skip kba:index-baseline (needs the local Ollama embedding model)}
-        {--pintas-mfa-uat : APP_ENV=uat only: switch on the UAT MFA bypass parameters (wfe.mfa_pintas_uat, kes.mfa_wajib=false)}';
+        {--pintas-mfa-uat : APP_ENV=uat only: switch on the UAT MFA bypass parameters (wfe.mfa_pintas_uat, kes.mfa_wajib=false)}
+        {--hanya-akses : On an existing DB: only (re)create demo users, their roles/scopes, the extra flows and approver-group members — no module data}';
 
     protected $description = 'Isi pangkalan data kosong dengan data demo SISDATA (pengguna, peranan, data rujukan, data sampel setiap modul, aliran kelulusan)';
 
@@ -57,6 +58,29 @@ class SisdataDemoSeed extends Command
         'siti.aminah@mais.test' => [[BaseRoles::PEGAWAI_OPERASI, BaseRoles::PELULUS], ['1008']],
         'mohd.faizal@mais.test' => [[BaseRoles::PEGAWAI_OPERASI, BaseRoles::PELULUS, self::PERANAN_PERUNDANGAN], []],
         'nurul.huda@mais.test' => [[BaseRoles::PENGGUNA_PAPARAN, BaseRoles::PELULUS], []],
+        // One account per RFP base role (SRS-RBC-05) so every access level can be tried.
+        'pentadbir.sistem@mais.test' => [[BaseRoles::PENTADBIR_SISTEM], []],
+        'pentadbir.aplikasi@mais.test' => [[BaseRoles::PENTADBIR_APLIKASI], []],
+        'pegawai.operasi@mais.test' => [[BaseRoles::PEGAWAI_OPERASI], []],
+        'pegawai.klang@mais.test' => [[BaseRoles::PEGAWAI_OPERASI], ['1001']],
+        'pelulus@mais.test' => [[BaseRoles::PELULUS], []],
+        'paparan@mais.test' => [[BaseRoles::PENGGUNA_PAPARAN], []],
+        'juruaudit@mais.test' => [[BaseRoles::JURUAUDIT], []],
+        'pihak.luar@mais.test' => [[BaseRoles::PEMEGANG_TARUH_TERHAD], []],
+        'perundangan@mais.test' => [[BaseRoles::PEGAWAI_OPERASI, self::PERANAN_PERUNDANGAN], []],
+    ];
+
+    /** Display names for demo accounts that only exist in SISDATA (the first three come from the Keycloak realm). */
+    private const NAMA_DEMO = [
+        'pentadbir.sistem@mais.test' => 'Demo Pentadbir Sistem',
+        'pentadbir.aplikasi@mais.test' => 'Demo Pentadbir Aplikasi',
+        'pegawai.operasi@mais.test' => 'Demo Pegawai Operasi (semua daerah)',
+        'pegawai.klang@mais.test' => 'Demo Pegawai Operasi Daerah Klang',
+        'pelulus@mais.test' => 'Demo Pelulus',
+        'paparan@mais.test' => 'Demo Pengguna Paparan',
+        'juruaudit@mais.test' => 'Demo Juruaudit',
+        'pihak.luar@mais.test' => 'Demo Pemegang Taruh Terhad',
+        'perundangan@mais.test' => 'Demo Pegawai Perundangan',
     ];
 
     /** Demo role holding the explicitly-granted classified KES keys (never given by wildcard). */
@@ -94,6 +118,17 @@ class SisdataDemoSeed extends Command
 
             return self::FAILURE;
         }
+        if ($this->option('hanya-akses')) {
+            $failed = [];
+            $this->seed(WfeSeeder::class, $failed);
+            $this->demoUsers($roles);
+            $this->extraFlows($definitions);
+            $this->fillApproverGroups();
+            $this->components->info('Pengguna demo, peranan dan ahli kumpulan pelulus dikemas kini.');
+
+            return $failed === [] ? self::SUCCESS : self::FAILURE;
+        }
+
         if (! $this->option('force') && DB::table('lot_tanah')->exists()) {
             $this->components->error('Pangkalan data ini sudah ada lot (lot_tanah). Gunakan --force untuk teruskan juga.');
 
@@ -202,6 +237,9 @@ class SisdataDemoSeed extends Command
 
         foreach (self::PENGGUNA_DEMO as $email => [$codes, $districts]) {
             $user = User::query()->where('email', $email)->first();
+            if ($user === null && isset(self::NAMA_DEMO[$email])) {
+                $user = User::query()->forceCreate(['name' => self::NAMA_DEMO[$email], 'email' => $email, 'password' => Hash::make(self::KATA_LALUAN_DEMO), 'role' => 'user']);
+            }
             if ($user === null) {
                 continue;
             }

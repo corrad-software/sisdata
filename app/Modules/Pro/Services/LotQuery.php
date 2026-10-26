@@ -59,6 +59,7 @@ class LotQuery
             $key = NoLot::key($q);
             $query->where(fn (Builder $w) => $w
                 ->where('lot_tanah.no_lot', 'ilike', '%'.$q.'%')
+                ->orWhere('lot_tanah.nama_hartanah', 'ilike', '%'.$q.'%')
                 ->orWhere('lot_tanah.no_lot_normal', 'like', '%'.$key.'%')
                 ->orWhere('lot_tanah.kunci_asal', $q));
         }

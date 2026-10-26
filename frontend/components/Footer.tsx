@@ -1,5 +1,5 @@
 export function Footer({
-    siteTitle = 'MYDS-Laravel',
+    siteTitle = 'SISDATA',
     footerText,
 }: {
     siteTitle?: string;

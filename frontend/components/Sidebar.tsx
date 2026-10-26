@@ -570,7 +570,7 @@ function KitchenSinkNavGroup({ collapsed }: { collapsed: boolean }) {
 export function Sidebar({
     open,
     onClose,
-    siteTitle = 'MYDS-Laravel',
+    siteTitle = 'SISDATA',
     permissions,
 }: {
     open: boolean;

@@ -4,7 +4,7 @@ import type { Settings } from './types';
 const backend = process.env.INTERNAL_API_URL ?? 'http://127.0.0.1:8000';
 
 const DEFAULT_SETTINGS: Settings = {
-    site_title: 'MYDS-Laravel',
+    site_title: 'SISDATA',
     footer_text: null,
     primary_color: '#2563EB',
     site_logo_url: null,

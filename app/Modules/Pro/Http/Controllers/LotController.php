@@ -356,6 +356,7 @@ class LotController extends ProController
 
         return $request->validate([
             'no_lot' => [$req, 'nullable', 'string', 'max:50'],
+            'nama_hartanah' => ['sometimes', 'nullable', 'string', 'max:200'],
             'kod_mukim' => [$req, 'nullable', 'string', 'max:6'],
             'kod_daerah' => ['sometimes', 'nullable', 'string', 'max:4'],
             'keluasan' => [$req, 'nullable'],

@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $id
  * @property string $no_lot
  * @property string|null $no_lot_normal
+ * @property string|null $nama_hartanah
  * @property string $kod_mukim
  * @property string $kod_daerah
  * @property string $kod_negeri
@@ -61,7 +62,7 @@ class LotTanah extends ProModel
     /** Fields an officer edits through the lot form / import (everything else is system-managed). */
     public const EDITABLE = [
         'no_lot', 'kod_mukim', 'kod_daerah', 'keluasan', 'unit_keluasan', 'kategori_guna_tanah', 'zoning',
-        'syarat_nyata', 'bahagian_pemilik', 'status_lot', 'klasifikasi', 'id_data_owner', 'id_data_steward', 'tag', 'catatan',
+        'syarat_nyata', 'nama_hartanah', 'bahagian_pemilik', 'status_lot', 'klasifikasi', 'id_data_owner', 'id_data_steward', 'tag', 'catatan',
     ];
 
     public const STATUS = ['draf', 'aktif', 'tidak_aktif', 'digabung', 'arkib'];

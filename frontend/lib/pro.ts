@@ -53,6 +53,7 @@ export interface SpatialFlag {
 export interface LotRingkas {
     id: string;
     no_lot: string | null;
+    nama_hartanah?: string | null;
     kod_negeri: string | null;
     kod_daerah: string | null;
     nama_daerah: string | null;

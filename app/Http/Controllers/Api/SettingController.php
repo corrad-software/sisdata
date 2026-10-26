@@ -23,7 +23,7 @@ class SettingController extends Controller
 
         return response()->json([
             'data' => [
-                'site_title' => Setting::get('site_title') ?: config('app.name', 'MYDS-Laravel'),
+                'site_title' => Setting::get('site_title') ?: config('app.name', 'SISDATA'),
                 'footer_text' => Setting::get('footer_text'),
                 'primary_color' => $primaryColor,
                 'site_logo_url' => $siteLogo ? asset('storage/'.$siteLogo) : null,

@@ -25,11 +25,11 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
             <Masthead />
 
             <div className="flex-1 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-                <div>
-                    <Link href="/">
-                        <ApplicationLogo className="w-16 h-16 fill-current text-primary-600" />
-                    </Link>
-                </div>
+                <Link href="/" className="flex flex-col items-center gap-2 text-center px-6">
+                    <ApplicationLogo className="w-16 h-16 fill-current text-primary-600" />
+                    <span className="font-heading font-semibold text-heading-2xs text-txt-black-900">{settings.site_title}</span>
+                    <span className="text-body-sm text-txt-black-500">Sistem Pengurusan Data Hartanah MAIS</span>
+                </Link>
 
                 <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-bg-white shadow-card overflow-hidden sm:rounded-lg border border-otl-gray-200">
                     {children}

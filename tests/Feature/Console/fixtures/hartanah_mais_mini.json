@@ -1,0 +1,177 @@
+{
+ "meta": {
+  "tajuk": "Hartanah MAIS / PWS / LZS — data awam (SISDATA demo)",
+  "versi": "2026-10-25",
+  "tarikh_capaian": "2026-10-25",
+  "atribusi": "Map data © OpenStreetMap contributors, ODbL 1.0 — https://www.openstreetmap.org/copyright",
+  "lesen": "Entri/geometri OSM: ODbL 1.0 (pangkalan data terbitan). Fakta daripada laman rasmi MAIS/PWS/LZS, warta dan berita: fakta sahaja dengan URL sumber.",
+  "nota": "Fikstur ujian: 3 baris disalin daripada database/data/mais/hartanah_mais.json",
+  "bilangan": 3
+ },
+ "hartanah": [
+  {
+   "kunci": "MAIS-074",
+   "nama": "Stesen Minyak Wakaf Petron Sungai Merab (PWS)",
+   "jenis": "komersial",
+   "aliran": "wakaf",
+   "alamat": "Lot PT 69581, HSM 28476, Mukim Dengkil, Sungai Merab, Sepang",
+   "kod_daerah": "1010",
+   "kod_mukim": "101001",
+   "lokasi_kaedah": "dalam",
+   "lat": 2.980559,
+   "lon": 101.738215,
+   "geocode": "nominatim",
+   "status_sewa": "tidak",
+   "geometri": null,
+   "fakta": [
+    {
+     "medan": "keluasan",
+     "nilai": "1.25 ekar",
+     "sumber": "https://www.sinarharian.com.my/article/762334/edisi/selangor-kl/pws-bina-stesen-minyak-wakaf-pertama-kos-rm9-juta-hasil-dana-orang-ramai",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "kos_pembangunan",
+     "nilai": "RM9 juta (bangunan, infrastruktur, perunding dll.), dibiayai sepenuhnya dana wakaf tunai orang ramai",
+     "sumber": "https://www.sinarharian.com.my/article/762334/edisi/selangor-kl/pws-bina-stesen-minyak-wakaf-pertama-kos-rm9-juta-hasil-dana-orang-ramai",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "tarikh_operasi",
+     "nilai": "Mula beroperasi 29 Disember 2025",
+     "sumber": "https://www.sinarharian.com.my/article/762334/edisi/selangor-kl/pws-bina-stesen-minyak-wakaf-pertama-kos-rm9-juta-hasil-dana-orang-ramai",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "komponen",
+     "nilai": "Stesen minyak lengkap dengan restoran makanan segera dua tingkat",
+     "sumber": "https://www.sinarharian.com.my/article/762334/edisi/selangor-kl/pws-bina-stesen-minyak-wakaf-pertama-kos-rm9-juta-hasil-dana-orang-ramai",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "operator",
+     "nilai": "WS Energy 1 Sdn Bhd (anak syarikat milik penuh PWS); kerjasama Petron Malaysia, konsep Dealer-Owned Dealer-Operated (DODO)",
+     "sumber": "https://www.sinarharian.com.my/article/762334/edisi/selangor-kl/pws-bina-stesen-minyak-wakaf-pertama-kos-rm9-juta-hasil-dana-orang-ramai",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "pemilik_tanah",
+     "nilai": "Tanah wakaf milik MAIS",
+     "sumber": "https://www.sinarharian.com.my/article/762334/edisi/selangor-kl/pws-bina-stesen-minyak-wakaf-pertama-kos-rm9-juta-hasil-dana-orang-ramai",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "penerima_manfaat",
+     "nilai": "50% manfaat kepada Masjid Sungai Ramal Luar mengikut niat pewakaf",
+     "sumber": "https://www.kosmo.com.my/?p=880004",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "status_projek",
+     "nilai": "Beroperasi; disenaraikan sebagai projek PWS \"Petron Sungai Merab, Kajang\"",
+     "sumber": "https://www.wakafselangor.gov.my/project/stesen-minyak-ilm-bangi-reko-kajang/",
+     "tarikh_capaian": "2026-10-25"
+    }
+   ],
+   "sumber_url": [
+    "https://www.sinarharian.com.my/article/762334/edisi/selangor-kl/pws-bina-stesen-minyak-wakaf-pertama-kos-rm9-juta-hasil-dana-orang-ramai",
+    "https://www.kosmo.com.my/?p=880004",
+    "https://www.wakafselangor.gov.my/project/stesen-minyak-ilm-bangi-reko-kajang/",
+    "https://www.utusan.com.my/berita/2024/12/sabak-bernam-catat-jumlah-hartanah-wakaf-terbesar/"
+   ],
+   "asal": "web",
+   "catatan_sumber": "Media menyebut lokasi sebagai Sungai Merab, Kajang/Sepang; lot dalam Mukim Dengkil (Daerah Sepang). Disebut sebagai stesen minyak pertama di atas tanah wakaf di Selangor/Malaysia.",
+   "keluasan_m2": 5058.6,
+   "tarikh_capaian": "2026-10-25"
+  },
+  {
+   "kunci": "MAIS-080",
+   "nama": "Masjid Al-Firdaus",
+   "jenis": "masjid",
+   "aliran": "tidak_dinyatakan",
+   "alamat": "Jenjarom",
+   "kod_daerah": "1002",
+   "kod_mukim": "100206",
+   "lokasi_kaedah": "dalam",
+   "lat": 2.886284,
+   "lon": 101.491183,
+   "geocode": "osm",
+   "status_sewa": "tidak_diketahui",
+   "geometri": {
+    "osm": "way/239043655",
+    "garis_bangunan": true,
+    "geojson": {
+     "type": "Polygon",
+     "coordinates": [
+      [
+       [
+        101.491098,
+        2.886417
+       ],
+       [
+        101.491019,
+        2.88624
+       ],
+       [
+        101.491226,
+        2.886149
+       ],
+       [
+        101.491304,
+        2.886326
+       ],
+       [
+        101.491098,
+        2.886417
+       ]
+      ]
+     ]
+    }
+   },
+   "fakta": [],
+   "sumber_url": [
+    "https://www.openstreetmap.org/way/239043655",
+    "https://www.wikidata.org/wiki/Q20457176"
+   ],
+   "asal": "osm",
+   "catatan_sumber": "Dipilih kerana: amenity=place_of_worship+religion=muslim, name=Masjid Al-Firdaus",
+   "tarikh_capaian": "2026-10-25"
+  },
+  {
+   "kunci": "MAIS-016",
+   "nama": "Cawangan LZS Banting",
+   "jenis": "bangunan_pejabat",
+   "aliran": "zakat_lzs",
+   "alamat": "No. 19, Jalan Sri Pekan 5, Medan Sri Pekan, 42700 Banting",
+   "kod_daerah": "1002",
+   "kod_mukim": "100202",
+   "lokasi_kaedah": "dalam",
+   "lat": 2.661691,
+   "lon": 101.560892,
+   "geocode": "nominatim",
+   "status_sewa": "tidak_diketahui",
+   "geometri": null,
+   "fakta": [
+    {
+     "medan": "fungsi",
+     "nilai": "Pejabat cawangan Lembaga Zakat Selangor",
+     "sumber": "https://www.zakatselangor.com.my/cawangan-lzs/",
+     "tarikh_capaian": "2026-10-25"
+    },
+    {
+     "medan": "daerah_rasmi",
+     "nilai": "Taksonomi daerah LZS: Kuala Langat",
+     "sumber": "https://www.zakatselangor.com.my/wp-json/wp/v2/cawangan?per_page=100",
+     "tarikh_capaian": "2026-10-25"
+    }
+   ],
+   "sumber_url": [
+    "https://www.zakatselangor.com.my/cawangan-lzs/",
+    "https://www.zakatselangor.com.my/wp-json/wp/v2/cawangan?per_page=100"
+   ],
+   "asal": "web",
+   "catatan_sumber": "Premis rumah kedai; status milik/sewa tidak dinyatakan.",
+   "tarikh_capaian": "2026-10-25"
+  }
+ ]
+}

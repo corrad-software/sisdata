@@ -237,6 +237,7 @@ export default function LotListPage() {
                                             <td className="whitespace-nowrap">
                                                 <Link href={`/admin/pro/lot/${l.id}`} className="font-medium text-txt-primary hover:underline">
                                                     {l.no_lot ?? '—'}
+                                                    {l.nama_hartanah && <span className="block text-body-xs font-normal text-txt-black-500">{l.nama_hartanah}</span>}
                                                 </Link>
                                                 {l.sintetik && (
                                                     <span className="ms-2">

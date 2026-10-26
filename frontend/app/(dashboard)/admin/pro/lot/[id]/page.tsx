@@ -179,7 +179,7 @@ function ProfilPage() {
         }
     }
 
-    const title = lot?.no_lot || 'Profil Hartanah 360°';
+    const title = lot?.nama_hartanah || lot?.no_lot || 'Profil Hartanah 360°';
 
     return (
         <>
@@ -192,6 +192,7 @@ function ProfilPage() {
                         {lot && (
                             <>
                                 <p className="text-body-sm text-txt-black-700">
+                                    {lot.nama_hartanah && lot.no_lot ? `${lot.no_lot} · ` : ''}
                                     {lot.nama_mukim ?? lot.kod_mukim ?? '—'}, {lot.nama_daerah ?? lot.kod_daerah ?? '—'}
                                 </p>
                                 <div className="flex flex-wrap items-center gap-2">

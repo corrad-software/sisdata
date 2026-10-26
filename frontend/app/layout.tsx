@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
         title: settings.site_title,
-        description: 'MYDS Laravel starter',
+        description: 'SISDATA — Sistem Pengurusan Data Hartanah MAIS',
     };
 }
 

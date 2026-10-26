@@ -3,6 +3,7 @@
 return [
     'medan' => [
         'id' => 'ID',
+        'nama_hartanah' => 'Nama hartanah',
         'no_lot' => 'No. Lot',
         'kod_mukim' => 'Mukim',
         'kod_mukim_kod' => 'Kod Mukim',

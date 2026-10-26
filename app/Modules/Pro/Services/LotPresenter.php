@@ -19,6 +19,7 @@ class LotPresenter
         $row = [
             'id' => $lot->id,
             'no_lot' => $lot->no_lot,
+            'nama_hartanah' => $lot->nama_hartanah,
             'kod_negeri' => $lot->kod_negeri,
             'kod_daerah' => $lot->kod_daerah,
             'nama_daerah' => $this->ref->namaDaerah($lot->kod_daerah),
