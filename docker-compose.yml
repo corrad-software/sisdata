@@ -1,0 +1,183 @@
+# SISDATA on Coolify (one Docker Compose resource).
+#
+# Only `frontend` is public. The browser talks to Next.js; Next.js proxies
+# /api, /sanctum, /auth and /storage to the Laravel container.
+#
+# Coolify generates SERVICE_* values (passwords, APP_KEY, the public URL).
+# The defaults after `:-` are for `docker compose` on a laptop only.
+# Before the first Coolify deploy, open Environment Variables and confirm
+# SERVICE_PASSWORD_* and SERVICE_REALBASE64_32_APPKEY are filled in.
+#
+# Domain: on the frontend service set https://your.domain:3000
+# The :3000 suffix is the container port, not the public port.
+
+x-api-build: &api-build
+  image: sisdata-api
+  build:
+    context: .
+    dockerfile: docker/api/Dockerfile
+  restart: unless-stopped
+  environment: &api-env
+    APP_NAME: SISDATA
+    APP_ENV: production
+    APP_DEBUG: "false"
+    APP_KEY: "base64:${SERVICE_REALBASE64_32_APPKEY:-YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE=}"
+    APP_URL: ${SERVICE_URL_FRONTEND_3000:-http://localhost:3000}
+    FRONTEND_URL: ${SERVICE_URL_FRONTEND_3000:-http://localhost:3000}
+    APP_LOCALE: ms
+    APP_FALLBACK_LOCALE: en
+    LOG_CHANNEL: stderr
+    LOG_LEVEL: info
+    DB_CONNECTION: pgsql
+    DB_HOST: postgres
+    DB_PORT: "5432"
+    DB_DATABASE: sisdata
+    DB_USERNAME: sisdata
+    DB_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES:-sisdata-local-db-password}
+    REDIS_CLIENT: predis
+    REDIS_HOST: redis
+    REDIS_PASSWORD: ${SERVICE_PASSWORD_64_REDIS:-sisdata-local-redis-password}
+    REDIS_PORT: "6379"
+    CACHE_STORE: redis
+    QUEUE_CONNECTION: redis
+    SESSION_DRIVER: database
+    SESSION_ENCRYPT: "true"
+    SESSION_COOKIE: sisdata-session
+    AUTH_PASSWORD_LOGIN: "true"
+    FILESYSTEM_DISK: local
+    DOKUMEN_S3_ENDPOINT: http://minio:9000
+    DOKUMEN_S3_KEY: sisdata
+    DOKUMEN_S3_SECRET: ${SERVICE_PASSWORD_64_MINIO:-sisdata-local-minio-password}
+    DOKUMEN_S3_BUCKET: sisdata-dokumen
+    DOKUMEN_S3_REGION: us-east-1
+    DOKUMEN_S3_PATH_STYLE: "true"
+    DMS_SCANNER: ${DMS_SCANNER:-fake}
+    MAIL_MAILER: log
+    SISDATA_RUN_SEED: ${SISDATA_RUN_SEED:-true}
+  volumes:
+    - sisdata-storage:/var/www/html/storage
+
+services:
+  postgres:
+    build:
+      context: ./docker/postgres
+    image: sisdata-postgres
+    environment:
+      POSTGRES_USER: sisdata
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_64_POSTGRES:-sisdata-local-db-password}
+      POSTGRES_DB: sisdata
+    volumes:
+      - sisdata-postgres:/var/lib/postgresql/data
+    shm_size: 256mb
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${SERVICE_PASSWORD_64_REDIS:-sisdata-local-redis-password}"]
+    environment:
+      REDIS_PASSWORD: ${SERVICE_PASSWORD_64_REDIS:-sisdata-local-redis-password}
+    volumes:
+      - sisdata-redis:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" --no-auth-warning ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  minio:
+    image: minio/minio:latest
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: sisdata
+      MINIO_ROOT_PASSWORD: ${SERVICE_PASSWORD_64_MINIO:-sisdata-local-minio-password}
+    volumes:
+      - sisdata-minio:/data
+    expose:
+      - "9000"
+      - "9001"
+    restart: unless-stopped
+
+  api:
+    <<: *api-build
+    command: ["web"]
+    expose:
+      - "8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/up"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 300s
+
+  horizon:
+    <<: *api-build
+    command: ["horizon"]
+    stop_grace_period: 30s
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "artisan", "horizon:status"]
+      interval: 20s
+      timeout: 15s
+      retries: 8
+      start_period: 40s
+
+  scheduler:
+    <<: *api-build
+    command: ["scheduler"]
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -v grep | grep -q 'schedule:work'"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  frontend:
+    image: sisdata-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        INTERNAL_API_URL: http://api:8080
+        FRONTEND_URL: ${SERVICE_URL_FRONTEND_3000:-http://localhost:3000}
+        SESSION_COOKIE_NAME: sisdata-session
+    environment:
+      SERVICE_URL_FRONTEND_3000:
+      INTERNAL_API_URL: http://api:8080
+      FRONTEND_URL: ${SERVICE_URL_FRONTEND_3000:-http://localhost:3000}
+      SESSION_COOKIE_NAME: sisdata-session
+    expose:
+      - "3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  sisdata-postgres:
+  sisdata-redis:
+  sisdata-minio:
+  sisdata-storage:

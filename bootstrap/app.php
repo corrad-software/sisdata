@@ -23,6 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->statefulApi();
 
+        // TLS ends at the Coolify proxy. Next.js then calls this API on the
+        // Docker network, so the client IP and scheme arrive in X-Forwarded-*.
+        $middleware->trustProxies(at: '*');
+
         // There is no web "login" route (Next.js owns /login): an API call
         // without "Accept: application/json" must get the JSON 401, not a
         // 500 from building route('login').

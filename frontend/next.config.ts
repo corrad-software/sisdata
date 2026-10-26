@@ -4,6 +4,8 @@ import type { NextConfig } from 'next';
 const backend = process.env.INTERNAL_API_URL ?? 'http://127.0.0.1:8000';
 
 const nextConfig: NextConfig = {
+    // Docker image runs the traced server from .next/standalone.
+    output: 'standalone',
     turbopack: {
         root: path.join(__dirname),
     },
@@ -28,6 +30,8 @@ const nextConfig: NextConfig = {
             // SRS-RBC-01: SSO MAIS OIDC redirect/callback, handled by Laravel
             // but kept on this origin so the session cookie lands on :3000.
             { source: '/auth/:path*', destination: `${backend}/auth/:path*` },
+            // Branding files live on Laravel's public disk (asset('storage/...')).
+            { source: '/storage/:path*', destination: `${backend}/storage/:path*` },
         ];
     },
 };

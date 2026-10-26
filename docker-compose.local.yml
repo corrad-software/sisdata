@@ -1,0 +1,11 @@
+# Laptop only. Coolify must use docker-compose.yml by itself.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
+
+services:
+  frontend:
+    ports:
+      - "3000:3000"
+  minio:
+    ports:
+      - "9001:9001"
