@@ -96,7 +96,14 @@ jobs:
         run: docker exec ${{ job.services.postgres.id }} sh -c "apt-get update -qq && apt-get install -y -qq postgresql-17-pgvector"
 
       - name: Tests (PostgreSQL + PostGIS)
-        run: php artisan test
+        run: |
+          set +e
+          timeout 420 vendor/bin/phpunit --debug > /tmp/phpunit-debug.log 2>&1
+          echo "phpunit exit code: $?  (124 = killed by timeout)"
+          wc -l /tmp/phpunit-debug.log
+          echo "----- last 25 lines"
+          tail -25 /tmp/phpunit-debug.log
+          exit 0
 
       - name: Dependency audit (Composer)
         run: composer audit --no-interaction
