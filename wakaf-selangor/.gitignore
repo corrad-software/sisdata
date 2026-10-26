@@ -1,0 +1,16 @@
+# Jejak hanya tema tersuai dan alat sokongan.
+# Teras WordPress, pemalam, tema lalai, muat naik dan wp-config.php diurus berasingan.
+/*
+!/.gitignore
+!/README.md
+!/DEPLOYMENT.md
+!/dev-router.php
+!/tools/
+!/wp-content/
+/wp-content/*
+!/wp-content/themes/
+/wp-content/themes/*
+!/wp-content/themes/wakaf-selangor/
+
+.DS_Store
+node_modules/
