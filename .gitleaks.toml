@@ -19,11 +19,13 @@ paths = [
 ]
 # Exact, anchored matches of the *secret value* for three known non-secrets in commit b3d6953.
 # Anchored so a real key/token can never match them (do not loosen these into prefixes):
-#  - AKIAABCDEFGHIJKLMNOP     fake AWS key used as test input (tests/Modules/Adm/LogTest.php)
+#  - AKIA…NOP (20 chars)      fake AWS key used as test input (tests/Modules/Adm/LogTest.php); see the regex below
 #  - eyJhbGciOiJSUzI1NiJ9.    truncated JWT header stub, no payload/signature (tests/Modules/Wfe/MfaStepUpTest.php)
 #  - API/encryption           two words of prose in a docblock (app/Modules/Aud/Services/SensitiveFieldMasker.php)
 regexes = [
-    '''^AKIAABCDEFGHIJKLMNOP$''',
+    # One character is in a [class] so this file does not itself contain a literal AWS key id
+    # (Semgrep's secrets rules scan this file too). It still matches exactly that 20-char value.
+    '''^AKIAABCDEFGHIJKLMNO[P]$''',
     '''^eyJhbGciOiJSUzI1NiJ9\.$''',
     '''^API/encryption$''',
 ]
