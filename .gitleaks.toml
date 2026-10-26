@@ -17,3 +17,13 @@ paths = [
     '''^composer\.lock$''',
     '''^frontend/package-lock\.json$''',
 ]
+# Exact, anchored matches of the *secret value* for three known non-secrets in commit b3d6953.
+# Anchored so a real key/token can never match them (do not loosen these into prefixes):
+#  - AKIAABCDEFGHIJKLMNOP     fake AWS key used as test input (tests/Modules/Adm/LogTest.php)
+#  - eyJhbGciOiJSUzI1NiJ9.    truncated JWT header stub, no payload/signature (tests/Modules/Wfe/MfaStepUpTest.php)
+#  - API/encryption           two words of prose in a docblock (app/Modules/Aud/Services/SensitiveFieldMasker.php)
+regexes = [
+    '''^AKIAABCDEFGHIJKLMNOP$''',
+    '''^eyJhbGciOiJSUzI1NiJ9\.$''',
+    '''^API/encryption$''',
+]
