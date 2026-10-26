@@ -39,18 +39,18 @@ class KontraktorController extends Controller
     public function update(Request $request, int $kontraktor): JsonResponse
     {
         $c = AsetKontraktor::query()->findOrFail($kontraktor);
-        $c->fill($this->rules($request, false))->save();
+        $c->fill($this->rules($request, false, $kontraktor))->save();
 
         return response()->json(['data' => $this->present->kontraktor($c), 'message' => __('ast::ast.kontraktor_disimpan')]);
     }
 
     /** @return array<string, mixed> */
-    private function rules(Request $request, bool $create): array
+    private function rules(Request $request, bool $create, ?int $ignoreId = null): array
     {
         return $request->validate([
             'nama_syarikat' => [$create ? 'required' : 'sometimes', 'string', 'max:200'], 'no_pendaftaran' => ['nullable', 'string', 'max:40'],
             'no_telefon' => ['nullable', 'string', 'max:30'], 'emel' => ['nullable', 'email', 'max:150'], 'bidang' => ['nullable', 'array', 'max:20'], 'bidang.*' => ['string', 'max:40'],
-            'tarikh_tamat_pendaftaran' => ['nullable', 'date'], 'id_pengguna' => ['nullable', 'integer', 'exists:users,id', Rule::unique('aset_kontraktor', 'id_pengguna')->ignore($request->route('kontraktor'))],
+            'tarikh_tamat_pendaftaran' => ['nullable', 'date'], 'id_pengguna' => ['nullable', 'integer', 'exists:users,id', Rule::unique('aset_kontraktor', 'id_pengguna')->ignore($ignoreId)],
             'status_aktif' => ['sometimes', 'boolean'],
         ]);
     }
