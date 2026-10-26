@@ -44,7 +44,7 @@ export function Pagination({ currentPage, lastPage, onEachSide = 1, onPageChange
     }
 
     return (
-        <nav role="navigation" aria-label="Pagination Navigation">
+        <nav role="navigation" aria-label="Navigasi halaman">
             <div className="flex gap-2 items-center justify-between sm:hidden">
                 <button
                     type="button"
@@ -52,7 +52,7 @@ export function Pagination({ currentPage, lastPage, onEachSide = 1, onPageChange
                     disabled={onFirstPage}
                     className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-white border border-gray-300 leading-5 rounded-md hover:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-600 disabled:hover:bg-white"
                 >
-                    Previous
+                    Sebelumnya
                 </button>
                 <button
                     type="button"
@@ -60,7 +60,7 @@ export function Pagination({ currentPage, lastPage, onEachSide = 1, onPageChange
                     disabled={!hasMorePages}
                     className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-white border border-gray-300 leading-5 rounded-md hover:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-600 disabled:hover:bg-white"
                 >
-                    Next
+                    Seterusnya
                 </button>
             </div>
 
@@ -68,8 +68,8 @@ export function Pagination({ currentPage, lastPage, onEachSide = 1, onPageChange
                 {total !== undefined && (
                     <div>
                         <p className="text-sm text-gray-700 leading-5">
-                            Showing <span className="font-medium">{firstItem}</span> to{' '}
-                            <span className="font-medium">{lastItem}</span> of <span className="font-medium">{total}</span> results
+                            Memaparkan <span className="font-medium">{firstItem}</span> hingga{' '}
+                            <span className="font-medium">{lastItem}</span> daripada <span className="font-medium">{total}</span> rekod
                         </p>
                     </div>
                 )}
@@ -80,7 +80,7 @@ export function Pagination({ currentPage, lastPage, onEachSide = 1, onPageChange
                             type="button"
                             onClick={() => go(currentPage - 1)}
                             disabled={onFirstPage}
-                            aria-label="Previous"
+                            aria-label="Sebelumnya"
                             className="inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md leading-5 hover:bg-gray-100 disabled:cursor-not-allowed"
                         >
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -113,7 +113,7 @@ export function Pagination({ currentPage, lastPage, onEachSide = 1, onPageChange
                                     key={el}
                                     type="button"
                                     onClick={() => go(el)}
-                                    aria-label={`Go to page ${el}`}
+                                    aria-label={`Pergi ke halaman ${el}`}
                                     className="inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:bg-gray-100"
                                 >
                                     {el}
@@ -125,7 +125,7 @@ export function Pagination({ currentPage, lastPage, onEachSide = 1, onPageChange
                             type="button"
                             onClick={() => go(currentPage + 1)}
                             disabled={!hasMorePages}
-                            aria-label="Next"
+                            aria-label="Seterusnya"
                             className="inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:bg-gray-100 disabled:cursor-not-allowed"
                         >
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

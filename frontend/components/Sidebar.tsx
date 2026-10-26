@@ -598,7 +598,8 @@ export function Sidebar({
                     type="button"
                     onClick={toggle}
                     className="hidden lg:flex absolute -right-3 top-12 h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-primary-600 text-white shadow-card hover:bg-bg-white hover:text-primary-600 z-10"
-                    title={collapsed ? 'Expand menu' : 'Collapse menu'}
+                    title={collapsed ? 'Kembangkan menu' : 'Kuncupkan menu'}
+                    aria-label={collapsed ? 'Kembangkan menu' : 'Kuncupkan menu'}
                 >
                     <svg
                         className={`h-3.5 w-3.5 transition-transform ${collapsed ? 'rotate-180' : ''}`}
@@ -613,31 +614,35 @@ export function Sidebar({
 
                 <div className="h-16 flex items-center justify-between px-6 border-b border-primary-600">
                     <Link href="/admin" className="flex items-center gap-2 min-w-0">
-                        <ApplicationLogo className="h-8 w-auto flex-shrink-0 fill-current text-white" />
+                        <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-white p-1">
+                            <ApplicationLogo className="h-full w-full" />
+                        </span>
                         <span className={`truncate text-body-sm font-semibold text-white ${collapsed ? 'lg:hidden' : ''}`}>
                             {siteTitle}
                         </span>
                     </Link>
-                    <button type="button" className="lg:hidden text-primary-100 hover:text-white" onClick={onClose}>
+                    <button type="button" className="lg:hidden text-primary-100 hover:text-white" onClick={onClose} aria-label="Tutup menu">
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
 
-                <nav className="flex-1 px-3 py-4 space-y-1">
+                <nav className="flex-1 px-3 py-4 space-y-1" aria-label="Menu utama" data-panduan="sidebar">
                     <SidebarLink
                         href="/admin"
-                        label="Dashboard"
+                        panduan="nav-utama"
+                        label="Papan Pemuka"
                         activeMatch={(p) => p === '/admin'}
                         icon={<DashboardIcon collapsed={collapsed} />}
                     >
-                        Dashboard
+                        Papan Pemuka
                     </SidebarLink>
 
                     {can('dsh.dashboard.lihat') && (
                         <SidebarLink
                             href="/admin/dsh/inbox"
+                            panduan="nav-inbox"
                             label="Inbox Tugasan"
                             activeMatch={(p) => p.startsWith('/admin/dsh')}
                             icon={<InboxIcon collapsed={collapsed} />}
@@ -649,17 +654,19 @@ export function Sidebar({
                     {can('rbc.pengguna.lihat') && (
                         <SidebarLink
                             href="/admin/users"
-                            label="Users"
+                            panduan="nav-users"
+                            label="Pengguna"
                             activeMatch={(p) => p.startsWith('/admin/users')}
                             icon={<UsersIcon collapsed={collapsed} />}
                         >
-                            Users
+                            Pengguna
                         </SidebarLink>
                     )}
 
                     {can('rbc.peranan.lihat') && (
                         <SidebarLink
                             href="/admin/rbc/peranan"
+                            panduan="nav-rbc"
                             label="Capaian"
                             activeMatch={(p) => p.startsWith('/admin/rbc')}
                             icon={<AccessIcon collapsed={collapsed} />}
@@ -672,17 +679,19 @@ export function Sidebar({
                     {can('settings.manage') && (
                         <SidebarLink
                             href="/admin/settings"
-                            label="Settings"
+                            panduan="nav-settings"
+                            label="Tetapan"
                             activeMatch={(p) => p.startsWith('/admin/settings')}
                             icon={<SettingsIcon collapsed={collapsed} />}
                         >
-                            Settings
+                            Tetapan
                         </SidebarLink>
                     )}
 
                     {can('gis.peta.lihat') && (
                         <SidebarLink
                             href="/admin/gis"
+                            panduan="nav-gis"
                             label="Peta GIS"
                             activeMatch={(p) => p.startsWith('/admin/gis')}
                             icon={<GlobeIcon collapsed={collapsed} />}
@@ -694,6 +703,7 @@ export function Sidebar({
                     {can('pro.lot.lihat') && (
                         <SidebarLink
                             href="/admin/pro"
+                            panduan="nav-pro"
                             label="Profil Hartanah"
                             activeMatch={(p) => p.startsWith('/admin/pro')}
                             icon={<MapIcon collapsed={collapsed} />}
@@ -705,6 +715,7 @@ export function Sidebar({
                     {can('hkm.hak_milik.lihat') && (
                         <SidebarLink
                             href="/admin/hkm/hak-milik"
+                            panduan="nav-hkm"
                             label="Hak Milik Tanah"
                             activeMatch={(p) => p.startsWith('/admin/hkm')}
                             icon={<TitleIcon collapsed={collapsed} />}
@@ -716,6 +727,7 @@ export function Sidebar({
                     {can('per.kes.lihat') && (
                         <SidebarLink
                             href="/admin/per"
+                            panduan="nav-per"
                             label="Rekod Pemerolehan"
                             activeMatch={(p) => p.startsWith('/admin/per')}
                             icon={<AcquisitionIcon collapsed={collapsed} />}
@@ -727,6 +739,7 @@ export function Sidebar({
                     {can('pjk.kontrak.lihat') && (
                         <SidebarLink
                             href="/admin/pjk/kontrak"
+                            panduan="nav-pjk"
                             label="Pajakan & Kontrak"
                             activeMatch={(p) => p.startsWith('/admin/pjk')}
                             icon={<LeaseIcon collapsed={collapsed} />}
@@ -738,6 +751,7 @@ export function Sidebar({
                     {can('cki.bil.lihat') && (
                         <SidebarLink
                             href="/admin/cki/ringkasan"
+                            panduan="nav-cki"
                             label="Cukai Tanah"
                             activeMatch={(p) => p.startsWith('/admin/cki')}
                             icon={<TaxIcon collapsed={collapsed} />}
@@ -749,6 +763,7 @@ export function Sidebar({
                     {can('ptn.lawatan.lihat') && (
                         <SidebarLink
                             href="/admin/ptn"
+                            panduan="nav-ptn"
                             label="Pemantauan Tanah"
                             activeMatch={(p) => p.startsWith('/admin/ptn')}
                             icon={<InspectIcon collapsed={collapsed} />}
@@ -760,6 +775,7 @@ export function Sidebar({
                     {can('ast.aset.lihat') && (
                         <SidebarLink
                             href="/admin/ast"
+                            panduan="nav-ast"
                             label="Aset Fizikal"
                             activeMatch={(p) => p.startsWith('/admin/ast')}
                             icon={<AssetIcon collapsed={collapsed} />}
@@ -771,6 +787,7 @@ export function Sidebar({
                     {can('tsu.urusan.lihat') && (
                         <SidebarLink
                             href="/admin/tsu/urusan"
+                            panduan="nav-tsu"
                             label="Tukar Syarat & Ukur"
                             activeMatch={(p) => p.startsWith('/admin/tsu')}
                             icon={<SurveyIcon collapsed={collapsed} />}
@@ -782,6 +799,7 @@ export function Sidebar({
                     {can('kes.kes.lihat') && (
                         <SidebarLink
                             href="/admin/kes/kes"
+                            panduan="nav-kes"
                             label="Kes Mahkamah"
                             activeMatch={(p) => p.startsWith('/admin/kes')}
                             icon={<GavelIcon collapsed={collapsed} />}
@@ -793,6 +811,7 @@ export function Sidebar({
                     {can('adu.aduan.lihat') && (
                         <SidebarLink
                             href="/admin/adu"
+                            panduan="nav-adu"
                             label="Aduan & Isu Tanah"
                             activeMatch={(p) => p.startsWith('/admin/adu')}
                             icon={<ComplaintIcon collapsed={collapsed} />}
@@ -804,6 +823,7 @@ export function Sidebar({
                     {can('lap.laporan.lihat') && (
                         <SidebarLink
                             href="/admin/lap"
+                            panduan="nav-lap"
                             label="Laporan & Analitik"
                             activeMatch={(p) => p.startsWith('/admin/lap')}
                             icon={<ReportIcon collapsed={collapsed} />}
@@ -815,6 +835,7 @@ export function Sidebar({
                     {can('pws.pemantauan.lihat') && (
                         <SidebarLink
                             href="/admin/pws"
+                            panduan="nav-pws"
                             label="Portal Wakaf"
                             activeMatch={(p) => p.startsWith('/admin/pws')}
                             icon={<PortalIcon collapsed={collapsed} />}
@@ -826,6 +847,7 @@ export function Sidebar({
                     {can('tkt.tiket.lihat') && (
                         <SidebarLink
                             href="/admin/tkt/tiket"
+                            panduan="nav-tkt"
                             label="Tiket Sokongan"
                             activeMatch={(p) => p.startsWith('/admin/tkt')}
                             icon={<TicketIcon collapsed={collapsed} />}
@@ -837,6 +859,7 @@ export function Sidebar({
                     {can('kba.soalan.lihat') && (
                         <SidebarLink
                             href="/admin/kba"
+                            panduan="nav-kba"
                             label="Pangkalan Pengetahuan"
                             activeMatch={(p) => p.startsWith('/admin/kba')}
                             icon={<KnowledgeIcon collapsed={collapsed} />}
@@ -848,6 +871,7 @@ export function Sidebar({
                     {can('wfe.tugasan.lihat') && (
                         <SidebarLink
                             href="/admin/wfe/tugasan"
+                            panduan="nav-wfe"
                             label="Workflow"
                             activeMatch={(p) => p.startsWith('/admin/wfe')}
                             icon={<WorkflowIcon collapsed={collapsed} />}
@@ -859,6 +883,7 @@ export function Sidebar({
                     {can('dms.dokumen.lihat') && (
                         <SidebarLink
                             href="/admin/dms"
+                            panduan="nav-dms"
                             label="Dokumen Digital"
                             activeMatch={(p) => p.startsWith('/admin/dms')}
                             icon={<DocumentIcon collapsed={collapsed} />}
@@ -869,6 +894,7 @@ export function Sidebar({
 
                     <SidebarLink
                         href="/admin/notifikasi"
+                        panduan="nav-notifikasi"
                         label="Notifikasi"
                         activeMatch={(p) => p.startsWith('/admin/notifikasi')}
                         icon={<BellIcon collapsed={collapsed} />}
@@ -879,6 +905,7 @@ export function Sidebar({
                     {can('aud.rekod.lihat') && (
                         <SidebarLink
                             href="/admin/aud"
+                            panduan="nav-aud"
                             label="Audit Trail"
                             activeMatch={(p) => p.startsWith('/admin/aud')}
                             icon={<AuditIcon collapsed={collapsed} />}
@@ -890,6 +917,7 @@ export function Sidebar({
                     {can('adm.parameter.lihat') && (
                         <SidebarLink
                             href="/admin/pentadbiran"
+                            panduan="nav-pentadbiran"
                             label="Pentadbiran Sistem"
                             activeMatch={(p) => p.startsWith('/admin/pentadbiran')}
                             icon={<AdminIcon collapsed={collapsed} />}
@@ -898,15 +926,19 @@ export function Sidebar({
                         </SidebarLink>
                     )}
 
-                    <KitchenSinkNavGroup collapsed={collapsed} />
+                    {/* Developer component reference — not for MAIS users (pages stay reachable by URL). */}
+                    {can('rbc.pentadbiran.akses') && process.env.NEXT_PUBLIC_APP_ENV !== 'production' && (
+                        <KitchenSinkNavGroup collapsed={collapsed} />
+                    )}
 
                     <SidebarLink
                         href="/admin/about"
-                        label="About"
+                        panduan="nav-about"
+                        label="Perihal SISDATA"
                         activeMatch={(p) => p.startsWith('/admin/about')}
                         icon={<AboutIcon collapsed={collapsed} />}
                     >
-                        About
+                        Perihal SISDATA
                     </SidebarLink>
                 </nav>
             </aside>

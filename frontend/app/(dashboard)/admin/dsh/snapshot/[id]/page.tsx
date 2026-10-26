@@ -22,7 +22,7 @@ export default function SnapshotPage({ params }: { params: Promise<{ id: string 
         <PageContainer>
             <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                    <h1 className="font-heading text-heading-xs font-semibold text-txt-black-900">Snapshot aras {ARAS_LABEL[s.aras]}</h1>
+                    <h1 className="font-heading text-heading-xs font-semibold text-txt-black-900">Syot kilat aras {ARAS_LABEL[s.aras]}</h1>
                     <p className="text-body-xs text-txt-black-500">
                         Dijana pada {fmtMasa(s.dijana_pada)} ({s.sumber === 'berjadual' ? 'berjadual' : 'manual'}) · penapis:{' '}
                         {Object.keys(s.penapis).length ? Object.entries(s.penapis).map(([k, v]) => `${k}=${v}`).join(', ') : 'tiada'}

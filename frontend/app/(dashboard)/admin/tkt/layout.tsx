@@ -33,7 +33,7 @@ export default function TktLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Navigasi tiket sokongan" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Navigasi tiket sokongan" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

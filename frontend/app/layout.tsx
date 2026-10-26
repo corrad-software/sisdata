@@ -17,7 +17,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     const settings = await getServerSettings();
 
     return (
-        <html lang="en">
+        <html lang="ms">
             <head>
                 {settings.site_favicon_url && <link rel="icon" href={settings.site_favicon_url} />}
                 {/* Rendered after the compiled globals.css stylesheet so the `*` selector

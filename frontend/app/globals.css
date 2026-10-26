@@ -21,3 +21,120 @@
         font-size: 125%;
     }
 }
+
+/*
+ * SRS-GEN-08 — driver.js popover restyled to MYDS (components/PanduanInteraktif.tsx).
+ * Two-class selectors so they beat driver.css's own `.driver-popover { all: unset }`.
+ */
+.driver-popover.sisdata-panduan {
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    color: rgb(var(--txt-black-900));
+    background-color: rgb(var(--bg-white));
+    border: 1px solid rgb(var(--otl-gray-200));
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px -8px rgb(0 0 0 / 0.35);
+    padding: 1rem 1.125rem;
+    min-width: 260px;
+    max-width: min(360px, calc(100vw - 2rem));
+}
+
+.driver-popover.sisdata-panduan .driver-popover-title {
+    font-family: Poppins, Inter, ui-sans-serif, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    padding-right: 1.5rem;
+}
+
+.driver-popover.sisdata-panduan .driver-popover-description {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: rgb(var(--txt-black-700));
+}
+
+.driver-popover.sisdata-panduan .driver-popover-close-btn {
+    color: rgb(var(--txt-black-500));
+    top: 0.375rem;
+    right: 0.375rem;
+}
+
+.driver-popover.sisdata-panduan .driver-popover-close-btn:hover,
+.driver-popover.sisdata-panduan .driver-popover-close-btn:focus-visible {
+    color: rgb(var(--txt-black-900));
+}
+
+.driver-popover.sisdata-panduan .driver-popover-footer {
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.driver-popover.sisdata-panduan .driver-popover-progress-text {
+    font-size: 0.75rem;
+    color: rgb(var(--txt-black-500));
+    white-space: nowrap;
+}
+
+.driver-popover.sisdata-panduan .driver-popover-footer-btn {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgb(var(--otl-gray-300));
+    background-color: rgb(var(--bg-white));
+    color: rgb(var(--txt-black-900));
+    text-shadow: none;
+}
+
+.driver-popover.sisdata-panduan .driver-popover-footer-btn:hover {
+    background-color: rgb(var(--bg-washed));
+}
+
+.driver-popover.sisdata-panduan .driver-popover-next-btn {
+    background-color: rgba(var(--_primary-600) / 1);
+    border-color: rgba(var(--_primary-600) / 1);
+    color: #fff;
+}
+
+.driver-popover.sisdata-panduan .driver-popover-next-btn:hover {
+    background-color: rgba(var(--_primary-700) / 1);
+}
+
+.driver-popover.sisdata-panduan .driver-popover-footer-btn:focus-visible,
+.driver-popover.sisdata-panduan .sisdata-panduan-langkau:focus-visible {
+    outline: 2px solid rgba(var(--_primary-300) / 1);
+    outline-offset: 2px;
+}
+
+.driver-popover.sisdata-panduan .sisdata-panduan-langkau {
+    all: unset;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgb(var(--txt-black-500));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.driver-popover.sisdata-panduan .sisdata-panduan-langkau:hover {
+    color: rgb(var(--txt-black-900));
+}
+
+.driver-popover.sisdata-panduan .driver-popover-arrow-side-top { border-top-color: rgb(var(--bg-white)); }
+.driver-popover.sisdata-panduan .driver-popover-arrow-side-bottom { border-bottom-color: rgb(var(--bg-white)); }
+.driver-popover.sisdata-panduan .driver-popover-arrow-side-left { border-left-color: rgb(var(--bg-white)); }
+.driver-popover.sisdata-panduan .driver-popover-arrow-side-right { border-right-color: rgb(var(--bg-white)); }
+
+/* driver.css fades the SVG overlay in with a CSS animation; Chromium can keep the
+   first (transparent) frame composited, leaving the page undimmed. No overlay fade. */
+body.driver-fade svg.driver-overlay {
+    animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .driver-popover.sisdata-panduan,
+    .driver-overlay {
+        animation: none !important;
+        transition: none !important;
+    }
+}

@@ -43,7 +43,7 @@ const LAPORAN: Record<string, { label: string; lajur: Array<[string, string]>; i
     },
     berulang: { label: 'Aduan berulang (lot)', lajur: [['no_lot', 'No. lot'], ['bilangan', 'Bilangan'], ['terbuka', 'Terbuka'], ['kategori', 'Kategori utama'], ['terakhir', 'Terakhir']] },
     kawasan_panas: { label: 'Kawasan panas (mukim)', lajur: [['mukim', 'Mukim'], ['daerah', 'Daerah'], ['jumlah', 'Jumlah'], ['terbuka', 'Terbuka'], ['kategori_utama', 'Kategori utama']] },
-    trend: { label: 'Trend bulanan', lajur: [['bulan', 'Bulan'], ['diterima', 'Diterima'], ['ditutup', 'Ditutup']] },
+    trend: { label: 'Tren bulanan', lajur: [['bulan', 'Bulan'], ['diterima', 'Diterima'], ['ditutup', 'Ditutup']] },
     saluran: { label: 'Saluran penerimaan', lajur: [['label', 'Saluran'], ['jumlah', 'Jumlah'], ['aktif', 'Aktif'], ['ditutup', 'Ditutup']] },
     bukan_mais: { label: 'Bukan tanah MAIS', lajur: [['no_rujukan_aduan', 'No. rujukan'], ['tarikh_terima', 'Tarikh'], ['daerah', 'Daerah'], ['kategori', 'Kategori'], ['status', 'Status'], ['agensi', 'Agensi disyorkan'], ['jawapan_dihantar', 'Jawapan dihantar']] },
     resolusi: { label: 'Resolusi', lajur: [['label', 'Kategori resolusi'], ['jumlah', 'Jumlah']] },

@@ -118,7 +118,7 @@ export function DashboardEksekutif() {
         <>
             {d.aras_tersedia.length > 1 && (
                 <div className="border-b border-otl-divider bg-bg-white">
-                    <nav aria-label="Aras dashboard" className="-mb-px flex flex-nowrap gap-6 overflow-x-auto px-4 sm:px-6 lg:px-8">
+                    <nav data-panduan="dsh-aras" aria-label="Aras dashboard" className="-mb-px flex flex-nowrap gap-6 overflow-x-auto px-4 sm:px-6 lg:px-8">
                         {d.aras_tersedia.map((a) => (
                             <button
                                 key={a}
@@ -150,7 +150,7 @@ export function DashboardEksekutif() {
                             </span>
                         </p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2" data-panduan="dsh-tindakan">
                         <Button variant="secondary" size="sm" onClick={() => { setSegar(true); qc.invalidateQueries({ queryKey: ['dsh'] }); setTimeout(() => setSegar(false), 500); }}>
                             Muat semula
                         </Button>
@@ -174,7 +174,7 @@ export function DashboardEksekutif() {
                                     Eksport Excel
                                 </AnchorButton>
                                 <Button variant="secondary" size="sm" onClick={() => snapshot.mutate()} disabled={snapshot.isPending}>
-                                    Jana snapshot
+                                    Jana syot kilat
                                 </Button>
                             </>
                         )}
@@ -203,7 +203,9 @@ export function DashboardEksekutif() {
                     </div>
                 )}
 
-                <PenapisBar value={p} onChange={setP} />
+                <div data-panduan="dsh-penapis">
+                    <PenapisBar value={p} onChange={setP} />
+                </div>
                 {d.terhad && <Alert type="warning">Daerah yang dipilih berada di luar skop capaian anda; tiada data dipaparkan untuknya.</Alert>}
 
                 {d.kebenaran.ai && <AiPanel aras={d.aras} p={p} />}
@@ -211,7 +213,7 @@ export function DashboardEksekutif() {
                 {visible.length === 0 ? (
                     <Alert type="info">Tiada widget untuk dipaparkan. Klik “Ubah susun atur” untuk memaparkan semula widget.</Alert>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" data-panduan="dsh-widget">
                         {visible.map((w) => (
                             <div key={w.kod} className={`min-w-0 ${SPAN[Math.max(1, Math.min(4, w.saiz))] ?? ''}`}>
                                 <WidgetView w={w} d={d} p={p} />
@@ -305,7 +307,7 @@ function LanggananModal({ onClose, aras, p }: { onClose: () => void; aras: Aras;
             <div className="space-y-3 p-5">
                 <h2 className="font-heading text-heading-2xs font-semibold text-txt-black-900">Langgan ringkasan dashboard</h2>
                 <p className="text-body-xs text-txt-black-500">
-                    Snapshot KPI aras {ARAS_LABEL[aras]} dengan penapis semasa dijana mengikut jadual dan ringkasannya dihantar melalui notifikasi/e-mel. Angka berklasifikasi Sulit/Rahsia tidak dimasukkan dalam e-mel.
+                    Syot kilat KPI aras {ARAS_LABEL[aras]} dengan penapis semasa dijana mengikut jadual dan ringkasannya dihantar melalui notifikasi/e-mel. Angka berklasifikasi Sulit/Rahsia tidak dimasukkan dalam e-mel.
                 </p>
                 {current && <Alert type="info">Langganan aktif: {current.kekerapan}, terakhir dihantar {fmtMasa(current.terakhir_dihantar)}.</Alert>}
                 <label className="block text-body-sm text-txt-black-900">

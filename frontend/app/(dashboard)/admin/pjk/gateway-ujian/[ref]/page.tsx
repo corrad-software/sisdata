@@ -45,7 +45,7 @@ export default function GatewayUjianPage({ params }: { params: Promise<{ ref: st
     return (
         <PageContainer>
             <Alert type="warning">
-                <strong>Persekitaran ujian payment gateway.</strong> Halaman ini mensimulasikan laman bank / gateway (FPX atau kad). Panggilan balik ditandatangani (HMAC) dan melalui webhook yang sama seperti gateway sebenar.
+                <strong>Persekitaran ujian gerbang pembayaran.</strong> Halaman ini mensimulasikan laman bank / gateway (FPX atau kad). Panggilan balik ditandatangani (HMAC) dan melalui webhook yang sama seperti gateway sebenar.
             </Alert>
             {error && <p className="text-txt-danger">{ralat(error)}</p>}
             {t && (

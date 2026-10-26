@@ -50,7 +50,7 @@ function Barisan() {
                 title="Barisan aduan"
                 actions={
                     can('adu.aduan.cipta') && (
-                        <LinkButton href="/admin/adu/aduan/baharu" size="sm">
+                        <LinkButton href="/admin/adu/aduan/baharu" size="sm" data-panduan="adu-rekod">
                             Rekod aduan
                         </LinkButton>
                     )
@@ -58,7 +58,7 @@ function Barisan() {
             >
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Field label="Carian" htmlFor="b-q" className="sm:col-span-2">
-                        <input id="b-q" type="search" className={inputClass} placeholder="No. rujukan, keterangan atau lokasi" value={f.q} onChange={(e) => set('q')(e.target.value)} />
+                        <input id="b-q" data-panduan="adu-carian" type="search" className={inputClass} placeholder="No. rujukan, keterangan atau lokasi" value={f.q} onChange={(e) => set('q')(e.target.value)} />
                     </Field>
                     <Field label="Status" htmlFor="b-st">
                         <Select id="b-st" value={f.status} onChange={set('status')} options={statusOptions} empty="Semua" />
@@ -88,7 +88,7 @@ function Barisan() {
                         <Select id="b-ku" value={f.keutamaan} onChange={set('keutamaan')} options={ref?.keutamaan ?? []} empty="Semua" />
                     </Field>
                 </div>
-                <div className="flex flex-wrap gap-2" role="group" aria-label="Penapis pantas">
+                <div className="flex flex-wrap gap-2" role="group" aria-label="Penapis pantas" data-panduan="adu-penapis-pantas">
                     {TOGOL.map(([k, l]) => (
                         <button
                             key={k}
@@ -111,6 +111,7 @@ function Barisan() {
                 </p>
                 <div className="overflow-x-auto">
                     <Table
+                        panduan="adu-senarai"
                         head={
                             <>
                                 <th>Aduan</th>

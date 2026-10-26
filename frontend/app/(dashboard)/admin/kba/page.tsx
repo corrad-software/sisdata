@@ -179,7 +179,7 @@ export default function TanyaPage() {
     return (
         <PageContainer>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
-                <aside className="order-2 space-y-3 lg:order-1">
+                <aside className="order-2 space-y-3 lg:order-1" data-panduan="kba-sisi">
                     <div className="flex items-center justify-between">
                         <h3 className="font-heading text-body-md font-semibold text-txt-black-900">Sejarah perbualan</h3>
                         <Button
@@ -223,10 +223,10 @@ export default function TanyaPage() {
                         <div className="rounded-lg border border-otl-gray-200 bg-bg-white p-6 space-y-3">
                             <h3 className="font-heading text-body-lg font-semibold text-txt-black-900">Tanya Pangkalan Pengetahuan SISDATA</h3>
                             <p className="text-body-sm text-txt-black-700">
-                                Tanya dalam Bahasa Melayu atau English — soalan operasi, capaian atau aliran proses. Jawapan hanya berdasarkan sumber yang anda dibenarkan baca, dengan
+                                Tanya dalam Bahasa Melayu atau Bahasa Inggeris — soalan operasi, capaian atau aliran proses. Jawapan hanya berdasarkan sumber yang anda dibenarkan baca, dengan
                                 petikan yang boleh diklik. Jika tiada sumber mencukupi, sistem akan menyatakannya.
                             </p>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2" data-panduan="kba-contoh">
                                 {CONTOH.map((c) => (
                                     <button key={c} type="button" className="rounded-full border border-otl-gray-300 px-3 py-1 text-body-xs text-txt-black-700 hover:bg-bg-washed" onClick={() => setSoalan(c)}>
                                         {c}
@@ -240,7 +240,7 @@ export default function TanyaPage() {
                     ))}
                     <div ref={bawah} />
                     {ralatMesej && <Alert type="error">{ralatMesej}</Alert>}
-                    <form onSubmit={submit} className="sticky bottom-0 flex flex-col gap-2 rounded-lg border border-otl-gray-200 bg-bg-white p-3 shadow-card sm:flex-row">
+                    <form onSubmit={submit} data-panduan="kba-soalan" className="sticky bottom-0 flex flex-col gap-2 rounded-lg border border-otl-gray-200 bg-bg-white p-3 shadow-card sm:flex-row">
                         <label htmlFor="soalan" className="sr-only">
                             Soalan
                         </label>
@@ -249,7 +249,7 @@ export default function TanyaPage() {
                             rows={2}
                             maxLength={1000}
                             className={`${inputClass} resize-none`}
-                            placeholder="Tulis soalan anda… / Ask your question…"
+                            placeholder="Tulis soalan anda…"
                             value={soalan}
                             onChange={(e) => setSoalan(e.target.value)}
                             onKeyDown={(e) => {

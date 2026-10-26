@@ -30,7 +30,7 @@ export default function RbcLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Menu capaian" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Menu capaian" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {TABS.map(({ key, label }) => (
                         <Link
                             key={key}

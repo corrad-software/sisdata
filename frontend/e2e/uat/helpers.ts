@@ -104,6 +104,15 @@ export interface Session {
 /** A fresh, isolated browser context signed in as `who` (UI and API share the session). */
 export async function signIn(browser: Browser, who: UserKey): Promise<Session> {
     const context = await browser.newContext({ baseURL: BASE_URL, locale: 'ms-MY', timezoneId: 'Asia/Kuala_Lumpur' });
+    // SRS-GEN-08: no interactive guide bubbles over the scenarios (webdriver already suppresses
+    // auto-start; this flag makes it explicit per browser context).
+    await context.addInitScript(() => {
+        try {
+            window.localStorage.setItem('sisdata.panduan.mati', '1');
+        } catch {
+            // no storage on about:blank
+        }
+    });
     const api = await apiLogin(context.request, who);
     const page = await context.newPage();
     return { context, page, api };

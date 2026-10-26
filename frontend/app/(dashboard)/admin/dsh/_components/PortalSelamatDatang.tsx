@@ -27,7 +27,7 @@ export function PortalSelamatDatang({ name }: { name: string }) {
                     <Spinner />
                 </div>
             ) : (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-panduan="portal-pautan">
                     {Object.entries(groups).map(([g, links]) => (
                         <section key={g} className="rounded-lg border border-otl-gray-200 bg-bg-white p-4 shadow-card">
                             <h2 className="text-body-sm font-semibold text-txt-black-900">{g}</h2>

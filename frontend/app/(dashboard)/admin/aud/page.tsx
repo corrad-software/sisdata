@@ -119,7 +119,7 @@ export default function AuditSearchPage() {
     return (
         <>
             <PageContainer>
-                <form onSubmit={submit} className="bg-bg-white shadow-card rounded-lg border border-otl-gray-200 p-4 sm:p-6 space-y-4" aria-label="Penapis carian audit">
+                <form onSubmit={submit} data-panduan="aud-penapis" className="bg-bg-white shadow-card rounded-lg border border-otl-gray-200 p-4 sm:p-6 space-y-4" aria-label="Penapis carian audit">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {text('pengguna', 'Pengguna (emel)', 'text', 'cth. pegawai@mais.gov.my')}
                         {text('id_pengguna', 'ID pengguna', 'number')}
@@ -157,7 +157,7 @@ export default function AuditSearchPage() {
                         <p className="text-body-sm text-txt-black-500" aria-live="polite">
                             {meta ? `${meta.total} rekod dijumpai` : 'Memuatkan…'}
                         </p>
-                        <div className="flex flex-wrap gap-2" role="group" aria-label="Eksport hasil carian">
+                        <div className="flex flex-wrap gap-2" role="group" aria-label="Eksport hasil carian" data-panduan="aud-eksport">
                             {EXPORTS.map((x) => (
                                 <Button key={x.format} variant="outline" size="sm" disabled={exporting !== null} onClick={() => exportAs(x.format)}>
                                     {exporting === x.format ? 'Menjana…' : `Eksport ${x.label}`}
@@ -178,6 +178,7 @@ export default function AuditSearchPage() {
                     )}
 
                     <Table
+                        panduan="aud-senarai"
                         head={
                             <>
                                 <th>Tarikh & masa</th>

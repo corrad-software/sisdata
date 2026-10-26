@@ -7,11 +7,11 @@ export interface BreadcrumbItem {
 
 export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
     return (
-        <nav aria-label="Breadcrumb" className="flex">
+        <nav aria-label="Laluan navigasi" className="flex">
             <ol className="flex flex-wrap items-center gap-1.5 text-body-xs">
                 <li>
                     <Link href="/admin" className="text-txt-black-500 hover:text-txt-black-900">
-                        Home
+                        Utama
                     </Link>
                 </li>
 

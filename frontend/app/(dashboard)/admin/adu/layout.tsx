@@ -8,7 +8,7 @@ import { useCan } from '@/lib/adu';
 
 /** MOD-ADU section: page header + full-width section nav (same pattern as MOD-HKM). */
 const SECTIONS: Array<{ key: string; href: string; label: string; perms: string[] }> = [
-    { key: 'dashboard', href: '/admin/adu', label: 'Dashboard', perms: ['adu.laporan.lihat'] },
+    { key: 'dashboard', href: '/admin/adu', label: 'Papan Pemuka', perms: ['adu.laporan.lihat'] },
     { key: 'aduan', href: '/admin/adu/aduan', label: 'Barisan Aduan', perms: ['adu.aduan.lihat'] },
     { key: 'baharu', href: '/admin/adu/aduan/baharu', label: 'Rekod Aduan', perms: ['adu.aduan.cipta'] },
     { key: 'laporan', href: '/admin/adu/laporan', label: 'Laporan & Analitik', perms: ['adu.laporan.lihat'] },
@@ -32,7 +32,7 @@ export default function AduLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Navigasi aduan" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Navigasi aduan" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

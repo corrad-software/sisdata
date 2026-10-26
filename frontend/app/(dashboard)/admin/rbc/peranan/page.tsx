@@ -65,7 +65,7 @@ export default function RolesPage() {
             <Card
                 title="Senarai peranan"
                 actions={
-                    <Button onClick={() => open({ kind: 'create' })}>Tambah Peranan</Button>
+                    <Button onClick={() => open({ kind: 'create' })} data-panduan="peranan-tambah">Tambah Peranan</Button>
                 }
             >
                 <p className="mb-4 text-body-sm text-txt-black-500">
@@ -73,6 +73,7 @@ export default function RolesPage() {
                 </p>
                 <ScrollX>
                     <Table
+                        panduan="peranan-senarai"
                         head={
                             <>
                                 <th>Peranan</th>

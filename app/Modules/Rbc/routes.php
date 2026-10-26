@@ -4,6 +4,7 @@ use App\Modules\Rbc\Http\Controllers\AlertController;
 use App\Modules\Rbc\Http\Controllers\ClaimMappingController;
 use App\Modules\Rbc\Http\Controllers\LoginLogController;
 use App\Modules\Rbc\Http\Controllers\MatrixController;
+use App\Modules\Rbc\Http\Controllers\PanduanController;
 use App\Modules\Rbc\Http\Controllers\PasswordController;
 use App\Modules\Rbc\Http\Controllers\PolicyController;
 use App\Modules\Rbc\Http\Controllers\RecertificationController;
@@ -24,6 +25,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('sesi/status', [SessionController::class, 'status'])->name('sesi.status');
     Route::post('sesi/lanjut', [SessionController::class, 'extend'])->name('sesi.lanjut');
     Route::post('kata-laluan', [PasswordController::class, 'update'])->name('kata_laluan.tukar');
+
+    // Own interactive guide preferences (SRS-GEN-08) — no user id: own record only.
+    Route::get('panduan', [PanduanController::class, 'show'])->name('panduan.show');
+    Route::put('panduan', [PanduanController::class, 'update'])->name('panduan.update');
 
     // Permission catalogue (for the role editor).
     Route::get('kebenaran', [RoleController::class, 'catalogue'])->middleware('can:rbc.peranan.lihat')->name('kebenaran.index');

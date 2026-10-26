@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { toast } from 'sonner';
 import { login } from '@/lib/auth';
 import { ApiError } from '@/lib/api';
@@ -47,7 +46,7 @@ export function LoginForm({
             } else if (error instanceof ApiError && error.status === 403) {
                 toast.error(error.message);
             } else {
-                toast.error('Something went wrong. Please try again.');
+                toast.error('Ralat tidak dijangka berlaku. Sila cuba lagi.');
             }
         } finally {
             setSubmitting(false);
@@ -56,8 +55,8 @@ export function LoginForm({
 
     return (
         <>
-            <h2 className="mb-1 font-heading text-heading-xs font-semibold text-txt-black-900">Log in to your account</h2>
-            <p className="mb-6 text-body-sm text-txt-black-500">Welcome back! Please enter your details.</p>
+            <h2 className="mb-1 font-heading text-heading-xs font-semibold text-txt-black-900">Log Masuk ke Akaun Anda</h2>
+            <p className="mb-6 text-body-sm text-txt-black-500">Selamat datang ke SISDATA. Sila log masuk untuk meneruskan.</p>
 
             {sessionNotice && !ssoError && (
                 <Alert type="warning" className="mb-4">
@@ -94,7 +93,7 @@ export function LoginForm({
 
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <FieldInput
-                            label="Email"
+                            label="E-mel"
                             type="email"
                             name="email"
                             value={email}
@@ -104,7 +103,7 @@ export function LoginForm({
                             error={errors.email?.[0]}
                         />
                         <FieldInput
-                            label="Password"
+                            label="Kata Laluan"
                             type="password"
                             name="password"
                             value={password}
@@ -121,19 +120,18 @@ export function LoginForm({
                                 onChange={(e) => setRemember(e.target.checked)}
                                 className="rounded border-otl-gray-300 text-primary-600 focus:ring-fr-primary"
                             />
-                            <span className="text-body-sm text-txt-black-900">Remember me</span>
+                            <span className="text-body-sm text-txt-black-900">Ingat saya</span>
                         </label>
 
                         <Button variant="secondary" type="submit" className="w-full" disabled={submitting}>
-                            Log in
+                            Log Masuk
                         </Button>
                     </form>
 
-                    <p className="mt-6 text-center text-body-sm text-txt-black-500">
-                        {"Don't have an account? "}
-                        <Link href="/register" className="font-medium text-primary-600 hover:text-primary-700">
-                            Register
-                        </Link>
+                    {/* SRS-GEN-09: SISDATA is internal to MAIS — accounts come from SSO MAIS or an
+                        administrator, so no self-registration link (the /register route still exists). */}
+                    <p className="mt-6 text-center text-body-xs text-txt-black-500">
+                        Belum mempunyai akaun? Sila hubungi pentadbir sistem SISDATA.
                     </p>
                 </>
             )}

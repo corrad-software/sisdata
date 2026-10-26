@@ -186,7 +186,7 @@ function ProfilPage() {
             <div className="bg-bg-white border-b border-otl-divider px-4 sm:px-6 py-4 space-y-3">
                 <Breadcrumb items={[{ label: 'Profil Hartanah', href: '/admin/pro/lot' }, { label: 'Lot Tanah', href: '/admin/pro/lot' }, { label: lot?.no_lot ?? 'Profil' }]} />
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="space-y-2 min-w-0">
+                    <div className="space-y-2 min-w-0" data-panduan="pro-profil">
                         <p className="text-body-xs font-medium uppercase tracking-wide text-txt-black-500">Profil Hartanah 360°</p>
                         <h2 className="font-heading font-semibold text-heading-2xs text-txt-black-900 leading-tight break-words">{title}</h2>
                         {lot && (
@@ -205,7 +205,7 @@ function ProfilPage() {
                         )}
                     </div>
                     {lot && (
-                        <div className="flex flex-wrap gap-2 print:hidden">
+                        <div className="flex flex-wrap gap-2 print:hidden" data-panduan="pro-tindakan">
                             {can('pro.lot.kemas_kini') && !archived && <LinkButton href={`/admin/pro/lot/${id}/kemas-kini`}>Kemas kini</LinkButton>}
                             <Button variant="secondary" onClick={cetak}>
                                 Cetak
@@ -238,7 +238,7 @@ function ProfilPage() {
 
             {tabs.length > 0 && (
                 <div className="bg-bg-white border-b border-otl-divider print:hidden">
-                    <nav aria-label="Tab profil hartanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                    <nav data-panduan="pro-tab" aria-label="Tab profil hartanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                         {tabs.map((t) => (
                             <Link
                                 key={t.kod}
@@ -273,7 +273,7 @@ function ProfilPage() {
                             )}
                             <TabContent profil={data} tab={active} />
                         </div>
-                        <div className="space-y-6 min-w-0">
+                        <div className="space-y-6 min-w-0" data-panduan="pro-garis-masa">
                             <Card title="Garis masa">
                                 <GarisMasa items={data.garis_masa} />
                             </Card>

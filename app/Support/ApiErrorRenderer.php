@@ -68,7 +68,7 @@ class ApiErrorRenderer
                 401, 'UNAUTHENTICATED', __('Unauthenticated.'), null,
             ],
             $e instanceof AuthorizationException => [
-                403, 'FORBIDDEN', $e->getMessage() ?: __('This action is unauthorized.'), null,
+                403, 'FORBIDDEN', $e->getMessage() !== '' ? __($e->getMessage()) : __('This action is unauthorized.'), null,
             ],
             $e instanceof ModelNotFoundException => [
                 404, 'NOT_FOUND', __('Record not found.'), null,
@@ -76,7 +76,7 @@ class ApiErrorRenderer
             $e instanceof HttpExceptionInterface => [
                 $e->getStatusCode(),
                 $this->codeForStatus($e->getStatusCode()),
-                $e->getMessage() ?: $this->messageForStatus($e->getStatusCode()),
+                $this->httpMessage($e),
                 null,
             ],
             default => [
@@ -99,12 +99,33 @@ class ApiErrorRenderer
         };
     }
 
+    /**
+     * SRS-GEN-09: framework-generated HTTP messages ("CSRF token mismatch.",
+     * "The route … could not be found.", "Too Many Attempts.") are English and
+     * not meant for users — replace them with the Malay default for the status.
+     * Messages an app passes to abort() are kept (and translated if a key exists).
+     */
+    private function httpMessage(HttpExceptionInterface $e): string
+    {
+        $message = $e->getMessage();
+        $status = $e->getStatusCode();
+
+        if ($message === '' || in_array($status, [405, 419, 429], true)
+            || str_starts_with($message, 'The route ') || str_starts_with($message, 'No query results')) {
+            return $this->messageForStatus($status);
+        }
+
+        return __($message);
+    }
+
     private function messageForStatus(int $status): string
     {
         return match ($status) {
             404 => __('Record not found.'),
             419 => __('Your session has expired. Please refresh the page.'),
+            405 => __('This action is not supported.'),
             429 => __('Too many requests. Please try again shortly.'),
+            503 => __('The system is temporarily unavailable. Please try again later.'),
             default => __('Request failed.'),
         };
     }

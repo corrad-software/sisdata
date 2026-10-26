@@ -32,7 +32,7 @@ function extensionOf(name: string) {
 
 export function FileUpload({
     title,
-    formats = 'JPG, PNG & PDF',
+    formats = 'JPG, PNG dan PDF',
     maxSizeMb = 25,
     name,
     multiple = true,
@@ -51,7 +51,7 @@ export function FileUpload({
 
         for (const file of incoming) {
             if (file.size > maxSizeMb * 1024 * 1024) {
-                setError(`Please upload file smaller than ${maxSizeMb}MB.`);
+                setError(`Sila muat naik fail yang lebih kecil daripada ${maxSizeMb}MB.`);
                 continue;
             }
             accepted.push(file);
@@ -75,8 +75,8 @@ export function FileUpload({
             <div className="flex items-start justify-between gap-4">
                 <div>
                     {title && <h4 className="text-body-sm font-semibold text-txt-black-900">{title}</h4>}
-                    <p className="text-body-xs text-txt-black-500">File types: {formats}</p>
-                    <p className="text-body-xs text-txt-black-500">Max file size: {maxSizeMb}MB</p>
+                    <p className="text-body-xs text-txt-black-500">Jenis fail: {formats}</p>
+                    <p className="text-body-xs text-txt-black-500">Saiz fail maksimum: {maxSizeMb}MB</p>
                 </div>
 
                 <button
@@ -92,7 +92,7 @@ export function FileUpload({
                             d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
                         />
                     </svg>
-                    Upload
+                    Muat Naik
                 </button>
 
                 <input
@@ -112,7 +112,7 @@ export function FileUpload({
             {loading && (
                 <div className="mt-3 flex items-center gap-2.5 rounded-md border border-otl-gray-200 px-3 py-2.5">
                     <Spinner size="sm" className="flex-shrink-0 text-txt-black-500" />
-                    <span className="text-body-sm text-txt-black-500">Uploading...</span>
+                    <span className="text-body-sm text-txt-black-500">Sedang memuat naik...</span>
                 </div>
             )}
 
@@ -141,7 +141,7 @@ export function FileUpload({
                                     type="button"
                                     onClick={() => removeFile(index)}
                                     className="ms-1 flex-shrink-0 text-danger-600 hover:text-danger-700"
-                                    aria-label="Remove file"
+                                    aria-label="Buang fail"
                                 >
                                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -155,7 +155,7 @@ export function FileUpload({
 
             {previousFiles.length > 0 && (
                 <div className="mt-3 border-t border-otl-gray-200 pt-3">
-                    <p className="mb-2 text-body-xs text-txt-black-500">Previously uploaded</p>
+                    <p className="mb-2 text-body-xs text-txt-black-500">Dimuat naik sebelum ini</p>
                     <div className="flex flex-wrap gap-3">
                         {previousFiles.map((file, index) => (
                             <div
@@ -173,7 +173,7 @@ export function FileUpload({
                                     <button
                                         type="button"
                                         className="ms-1 flex-shrink-0 text-danger-600 hover:text-danger-700"
-                                        aria-label="Remove file"
+                                        aria-label="Buang fail"
                                     >
                                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

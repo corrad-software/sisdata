@@ -35,7 +35,7 @@ export default function KatalogPage() {
     return (
         <PageContainer>
             <Card>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" data-panduan="lap-penapis">
                     <Field label="Kategori" htmlFor="kat">
                         <select id="kat" className={inputClass} value={kategori} onChange={(e) => setKategori(e.target.value)}>
                             <option value="">Semua kategori</option>
@@ -51,7 +51,7 @@ export default function KatalogPage() {
                     </Field>
                 </div>
                 <p className="text-body-sm text-txt-black-500">
-                    Hanya laporan yang anda dibenarkan dipaparkan. Setiap laporan dijana mengikut skop capaian anda (row-level security pada pangkalan data).
+                    Hanya laporan yang anda dibenarkan dipaparkan. Setiap laporan dijana mengikut skop capaian anda (keselamatan peringkat baris pada pangkalan data).
                 </p>
             </Card>
 
@@ -65,7 +65,7 @@ export default function KatalogPage() {
 
             {[...byCat.entries()].map(([cat, items]) => (
                 <Card key={cat} title={KATEGORI_LABEL[cat] ?? cat}>
-                    <ul className="divide-y divide-otl-gray-200">
+                    <ul className="divide-y divide-otl-gray-200" data-panduan="lap-katalog">
                         {items.map((k) => (
                             <li key={k.kod} className="py-3 flex flex-col sm:flex-row sm:items-start gap-3 justify-between">
                                 <div className="min-w-0 space-y-1">
@@ -81,7 +81,7 @@ export default function KatalogPage() {
                                         Sumber: {k.sumber_data ?? '—'} · Pemilik: {k.pemilik ?? '—'}
                                     </p>
                                 </div>
-                                <div className="flex gap-2 shrink-0">
+                                <div className="flex gap-2 shrink-0" data-panduan="lap-jana">
                                     {k.boleh_buka &&
                                         (k.jenis === 'modul' && k.pautan ? (
                                             <Link href={k.pautan} className="inline-flex items-center rounded-md border border-otl-gray-300 px-3 py-1.5 text-body-sm font-medium text-txt-black-700 hover:bg-bg-washed">

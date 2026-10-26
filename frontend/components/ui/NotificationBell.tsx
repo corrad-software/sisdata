@@ -62,12 +62,13 @@ export function NotificationBell() {
     }
 
     return (
-        <div className="relative" ref={ref}>
+        <div className="relative" ref={ref} data-panduan="notifikasi">
             <button
                 type="button"
                 onClick={() => setOpen((o) => !o)}
                 className="relative inline-flex items-center justify-center rounded-md p-2 text-txt-black-500 hover:text-txt-black-900 hover:bg-bg-washed focus:outline-none focus-visible:ring-2 focus-visible:ring-fr-primary transition ease-in-out duration-150"
                 aria-label={unread > 0 ? `Notifikasi, ${unread} belum dibaca` : 'Notifikasi'}
+                title="Notifikasi"
                 aria-expanded={open}
                 aria-haspopup="true"
                 data-testid="ntf-bell"

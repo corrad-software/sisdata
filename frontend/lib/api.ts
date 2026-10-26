@@ -3,7 +3,7 @@ export class ApiError extends Error {
     errors?: Record<string, string[]>;
 
     constructor(status: number, body: { message?: string; errors?: Record<string, string[]> } | null) {
-        super(body?.message ?? 'Request failed');
+        super(body?.message ?? 'Permintaan gagal. Sila cuba lagi.');
         this.status = status;
         this.errors = body?.errors;
     }

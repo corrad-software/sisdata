@@ -130,7 +130,7 @@ function Analitik() {
             </Card>
 
             <Card
-                title="Cadangan tindakan (smart recommendation)"
+                title="Cadangan tindakan pintar"
                 actions={
                     <select aria-label="Status cadangan" className={inputClass} value={statusCad} onChange={(e) => setStatusCad(e.target.value as typeof statusCad)}>
                         <option value="baharu">Menunggu keputusan</option>

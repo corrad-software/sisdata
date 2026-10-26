@@ -26,7 +26,7 @@ export default function AduDashboard() {
     return (
         <PageContainer>
             <Card>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" data-panduan="adu-penapis">
                     <Field label="Dari" htmlFor="d-dari">
                         <input id="d-dari" type="date" className={inputClass} value={f.dari} onChange={(e) => set('dari')(e.target.value)} />
                     </Field>
@@ -47,7 +47,7 @@ export default function AduDashboard() {
 
             {error && <p className="text-body-sm text-txt-danger">{ralat(error)}</p>}
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4" data-panduan="adu-ringkasan">
                 <Link href="/admin/adu/aduan?status=terbuka">
                     <StatCard label="Aduan aktif" value={angka(data?.aktif)} />
                 </Link>
@@ -71,7 +71,7 @@ export default function AduDashboard() {
                 <Card title="Mengikut daerah">
                     <HorizontalBarChart data={(data?.mengikut_daerah ?? []).map((r) => ({ label: r.label ?? '—', value: r.jumlah }))} color="bg-primary-400" />
                 </Card>
-                <Card title="Trend 12 bulan">
+                <Card title="Tren 12 bulan">
                     <MultiLineChart
                         labels={(data?.trend ?? []).map((t) => t.bulan.slice(2))}
                         series={[

@@ -8,7 +8,7 @@ import { useCan } from '@/lib/tsu';
 
 /** MOD-TSU section: page header + full-width section nav (same pattern as MOD-ADU / MOD-PTN). */
 const SECTIONS: Array<{ key: string; href: string; label: string; perms: string[] }> = [
-    { key: 'dashboard', href: '/admin/tsu', label: 'Dashboard', perms: ['tsu.laporan.lihat'] },
+    { key: 'dashboard', href: '/admin/tsu', label: 'Papan Pemuka', perms: ['tsu.laporan.lihat'] },
     { key: 'urusan', href: '/admin/tsu/urusan', label: 'Urusan Tanah', perms: ['tsu.urusan.lihat'] },
     { key: 'baharu', href: '/admin/tsu/urusan/baharu', label: 'Daftar Urusan', perms: ['tsu.urusan.cipta'] },
     { key: 'panel', href: '/admin/tsu/panel', label: 'Panel Jurukur', perms: ['tsu.panel.lihat'] },
@@ -34,7 +34,7 @@ export default function TsuLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Navigasi urusan tanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Navigasi urusan tanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

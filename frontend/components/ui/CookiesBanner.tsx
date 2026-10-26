@@ -27,15 +27,15 @@ export function CookiesBanner({ fixed = true }: { fixed?: boolean }) {
         >
             <div className="mx-auto flex max-w-4xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-body-sm text-txt-black-700">
-                    We use cookies to improve your experience on this site. By continuing to browse, you agree to our
-                    use of cookies.
+                    Kami menggunakan kuki untuk menambah baik pengalaman anda di laman ini. Dengan terus melayari, anda bersetuju
+                    dengan penggunaan kuki.
                 </p>
                 <div className="flex flex-shrink-0 gap-2">
                     <Button variant="secondary" size="sm" type="button" onClick={() => respond('rejected')}>
-                        Reject
+                        Tolak
                     </Button>
                     <Button variant="primary" size="sm" type="button" onClick={() => respond('accepted')}>
-                        Accept
+                        Terima
                     </Button>
                 </div>
             </div>

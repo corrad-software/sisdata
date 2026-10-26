@@ -49,6 +49,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $cubaan_gagal
  * @property Carbon|null $cubaan_gagal_pertama
  * @property Carbon|null $dikunci_hingga
+ * @property array<string, mixed>|null $tetapan_panduan SRS-GEN-08 guide prefs {aktif, selesai}
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -106,6 +107,7 @@ class User extends Authenticatable
             'tarikh_tamat_capaian' => 'date',
             'tarikh_log_masuk_akhir' => 'datetime',
             'tarikh_diaktifkan_semula' => 'datetime',
+            'tetapan_panduan' => 'array',
             'kata_laluan_ditukar_pada' => 'datetime',
             'cubaan_gagal_pertama' => 'datetime',
             'dikunci_hingga' => 'datetime',

@@ -105,7 +105,7 @@ class AuthController extends Controller
         abort_unless(
             config('auth.password_login'),
             403,
-            'Log masuk menggunakan kata laluan telah dinyahdayakan. Sila log masuk melalui SSO MAIS.'
+            __('Password login has been disabled. Please sign in with SSO MAIS.')
         );
     }
 

@@ -32,7 +32,7 @@ export default function RegisterPage() {
             if (error instanceof ApiError && error.errors) {
                 setErrors(error.errors);
             } else {
-                toast.error('Something went wrong. Please try again.');
+                toast.error('Ralat tidak dijangka berlaku. Sila cuba lagi.');
             }
         } finally {
             setSubmitting(false);
@@ -41,12 +41,12 @@ export default function RegisterPage() {
 
     return (
         <>
-            <h2 className="mb-1 font-heading text-heading-xs font-semibold text-txt-black-900">Create your account</h2>
-            <p className="mb-6 text-body-sm text-txt-black-500">Fill in your details to get started.</p>
+            <h2 className="mb-1 font-heading text-heading-xs font-semibold text-txt-black-900">Daftar Akaun</h2>
+            <p className="mb-6 text-body-sm text-txt-black-500">Isikan maklumat anda untuk bermula.</p>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
                 <FieldInput
-                    label="Name"
+                    label="Nama"
                     name="name"
                     value={name}
                     onChange={setName}
@@ -56,7 +56,7 @@ export default function RegisterPage() {
                     error={errors.name?.[0]}
                 />
                 <FieldInput
-                    label="Email"
+                    label="E-mel"
                     type="email"
                     name="email"
                     value={email}
@@ -66,7 +66,7 @@ export default function RegisterPage() {
                     error={errors.email?.[0]}
                 />
                 <FieldInput
-                    label="Password"
+                    label="Kata Laluan"
                     type="password"
                     name="password"
                     value={password}
@@ -76,7 +76,7 @@ export default function RegisterPage() {
                     error={errors.password?.[0]}
                 />
                 <FieldInput
-                    label="Confirm Password"
+                    label="Sahkan Kata Laluan"
                     type="password"
                     name="password_confirmation"
                     value={passwordConfirmation}
@@ -87,14 +87,14 @@ export default function RegisterPage() {
                 />
 
                 <Button variant="primary" type="submit" className="w-full" disabled={submitting}>
-                    Register
+                    Daftar
                 </Button>
             </form>
 
             <p className="mt-6 text-center text-body-sm text-txt-black-500">
-                Already have an account?{' '}
+                Sudah mempunyai akaun?{' '}
                 <Link href="/login" className="font-medium text-primary-600 hover:text-primary-700">
-                    Log in
+                    Log Masuk
                 </Link>
             </p>
         </>

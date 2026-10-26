@@ -11,10 +11,12 @@ interface SidebarLinkProps {
     icon?: ReactNode;
     label?: string;
     activeMatch?: (pathname: string) => boolean;
+    /** Stable `data-panduan` target for the interactive guide (lib/panduan.ts). */
+    panduan?: string;
     children: ReactNode;
 }
 
-export function SidebarLink({ href, icon, label, activeMatch, children }: SidebarLinkProps) {
+export function SidebarLink({ href, icon, label, activeMatch, panduan, children }: SidebarLinkProps) {
     const pathname = usePathname();
     const collapsed = useSidebarStore((s) => s.collapsed);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -30,7 +32,7 @@ export function SidebarLink({ href, icon, label, activeMatch, children }: Sideba
     }`;
 
     return (
-        <div className="relative" onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)}>
+        <div className="relative" data-panduan={panduan} onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)}>
             <Link href={href} className={classes}>
                 {icon && <span className="flex-shrink-0">{icon}</span>}
                 <span className={`truncate ${collapsed ? 'lg:hidden' : ''}`}>{children}</span>

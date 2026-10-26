@@ -118,7 +118,7 @@ function MetadataModal({ target, onClose }: { target: Target | null; onClose: ()
                         </div>
                     )}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {text('data_owner', 'Data owner')}
+                        {text('data_owner', 'Pemilik data')}
                         {text('data_steward', 'Data steward')}
                     </div>
                     <SelectField id="km-klas" label="Klasifikasi" value={f.klasifikasi} onChange={set('klasifikasi')} options={KLAS_OPTIONS} placeholder={null} required error={errors.klasifikasi} />
@@ -253,7 +253,7 @@ function KamusData() {
                                         <th className="hidden sm:table-cell">Jenis</th>
                                         <th className="hidden lg:table-cell">Kunci</th>
                                         <th>Klasifikasi</th>
-                                        <th className="hidden xl:table-cell">Owner / steward</th>
+                                        <th className="hidden xl:table-cell">Pemilik / penjaga data</th>
                                         <th>
                                             <span className="sr-only">Tindakan</span>
                                         </th>

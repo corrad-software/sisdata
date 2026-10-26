@@ -24,14 +24,24 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
         <div className="min-h-screen flex flex-col bg-bg-washed">
             <Masthead />
 
-            <div className="flex-1 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-                <Link href="/" className="flex flex-col items-center gap-2 text-center px-6">
-                    <ApplicationLogo className="w-16 h-16 fill-current text-primary-600" />
-                    <span className="font-heading font-semibold text-heading-2xs text-txt-black-900">{settings.site_title}</span>
-                    <span className="text-body-sm text-txt-black-500">Sistem Pengurusan Data Hartanah MAIS</span>
+            <div className="relative flex-1 flex flex-col sm:justify-center items-center py-8 overflow-hidden">
+                {/* Bangunan MAIS, blurred and darkened so the form stays readable. */}
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-0 scale-110 bg-cover bg-center blur-md"
+                    style={{ backgroundImage: "url('/branding/latar-log-masuk.jpg')" }}
+                />
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[#0b1f3a]/70 via-[#0b1f3a]/55 to-[#0b1f3a]/75" />
+
+                <Link href="/" className="relative flex flex-col items-center gap-2 text-center px-6">
+                    <span className="flex h-24 w-24 items-center justify-center rounded-2xl bg-white/95 p-2 shadow-card">
+                        <ApplicationLogo className="h-full w-full" />
+                    </span>
+                    <span className="font-heading font-semibold text-heading-xs text-white drop-shadow">{settings.site_title}</span>
+                    <span className="text-body-sm text-white/90 drop-shadow">Sistem Pengurusan Data Hartanah MAIS</span>
                 </Link>
 
-                <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-bg-white shadow-card overflow-hidden sm:rounded-lg border border-otl-gray-200">
+                <div className="relative w-full sm:max-w-md mt-6 px-6 py-4 bg-bg-white shadow-card overflow-hidden sm:rounded-lg border border-otl-gray-200">
                     {children}
                 </div>
             </div>

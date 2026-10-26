@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\User;
 use App\Modules\Rbc\Contracts\AccessControl;
 use App\Modules\Rbc\Services\LoginService;
+use App\Modules\Rbc\Services\PanduanService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -40,6 +41,8 @@ class UserResource extends JsonResource
             'tarikh_tamat_capaian' => $this->tarikh_tamat_capaian?->toDateString(),
             'dikunci' => $this->dikunci_hingga?->isFuture() ?? false,
             'perlu_tukar_kata_laluan' => $isSelf && $request->hasSession() && (bool) $request->session()->get(LoginService::MUST_CHANGE_KEY),
+            // SRS-GEN-08: own interactive guide preferences only (saves the frontend a call).
+            'tetapan_panduan' => $this->when($isSelf, fn () => app(PanduanService::class)->forUser($this->resource)),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

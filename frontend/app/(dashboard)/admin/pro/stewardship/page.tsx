@@ -114,7 +114,7 @@ function StewardshipModal({ entry, open, onClose }: { entry: Stewardship | null;
                     {text('jawatan_data_steward', 'Jawatan data steward')}
                     {text('bahagian_data_steward', 'Bahagian data steward')}
                 </div>
-                <UserPicker id="st-owner" label="Pegawai data owner" value={owner} onChange={setOwner} error={errors.id_data_owner} />
+                <UserPicker id="st-owner" label="Pegawai pemilik data" value={owner} onChange={setOwner} error={errors.id_data_owner} />
                 <UserPicker id="st-steward" label="Pegawai data steward" value={steward} onChange={setSteward} error={errors.id_data_steward} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <SelectField
@@ -194,7 +194,7 @@ export default function StewardshipPage() {
                     </>
                 }
             >
-                <p className="text-body-sm text-txt-black-500">Data owner dan data steward bagi setiap komponen data induk. Tugasan kualiti data dihalakan kepada steward mengikut daftar ini.</p>
+                <p className="text-body-sm text-txt-black-500">Pemilik data dan data steward bagi setiap komponen data induk. Tugasan kualiti data dihalakan kepada steward mengikut daftar ini.</p>
                 {error ? (
                     <Alert type="error">{errorMessage(error)}</Alert>
                 ) : (
@@ -203,7 +203,7 @@ export default function StewardshipPage() {
                             head={
                                 <>
                                     <th>Komponen data</th>
-                                    <th className="hidden md:table-cell">Data owner</th>
+                                    <th className="hidden md:table-cell">Pemilik data</th>
                                     <th>Data steward</th>
                                     <th className="hidden lg:table-cell">Skop</th>
                                     <th className="hidden sm:table-cell">Status</th>

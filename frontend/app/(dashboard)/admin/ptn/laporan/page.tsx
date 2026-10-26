@@ -115,7 +115,7 @@ function LaporanPage() {
             )}
             {data && kod === 'risiko' && (
                 <>
-                    <Card title="Risk rating mengikut daerah">
+                    <Card title="Penarafan risiko mengikut daerah">
                         <StackedBarChart data={data.mengikut_daerah.map((r: Row) => ({ label: String(r.label), values: { Hijau: Number(r.hijau), Kuning: Number(r.kuning), Merah: Number(r.merah) } }))} colors={{ Hijau: WARNA_BG.hijau, Kuning: WARNA_BG.kuning, Merah: WARNA_BG.merah }} />
                         <Senarai rows={data.mengikut_daerah} cols={[['label', 'Daerah'], ['jumlah', 'Lot'], ['hijau', 'Hijau'], ['kuning', 'Kuning'], ['merah', 'Merah'], ['purata', 'Purata skor']]} />
                     </Card>

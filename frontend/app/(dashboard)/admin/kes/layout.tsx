@@ -9,7 +9,7 @@ import { useCan } from '@/lib/kes';
 
 /** MOD-KES section: page header + full-width section nav (same pattern as MOD-ADU / MOD-HKM). */
 const SECTIONS: Array<{ key: string; href: string; label: string; perms: string[] }> = [
-    { key: 'dashboard', href: '/admin/kes', label: 'Dashboard', perms: ['kes.laporan.lihat'] },
+    { key: 'dashboard', href: '/admin/kes', label: 'Papan Pemuka', perms: ['kes.laporan.lihat'] },
     { key: 'kes', href: '/admin/kes/kes', label: 'Daftar Kes', perms: ['kes.kes.lihat'] },
     { key: 'baharu', href: '/admin/kes/kes/baharu', label: 'Daftar Kes Baharu', perms: ['kes.kes.cipta'] },
     { key: 'kalendar', href: '/admin/kes/kalendar', label: 'Kalendar Perundangan', perms: ['kes.kes.lihat'] },
@@ -41,7 +41,7 @@ export default function KesLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Navigasi kes mahkamah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Navigasi kes mahkamah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

@@ -38,5 +38,8 @@
     "A system error occurred. Please contact the administrator and quote the reference ID.": "Ralat sistem berlaku. Sila hubungi pentadbir dan nyatakan ID rujukan.",
     "Your session has expired. Please refresh the page.": "Sesi anda telah tamat. Sila muat semula halaman.",
     "Too many requests. Please try again shortly.": "Terlalu banyak permintaan. Sila cuba sebentar lagi.",
-    "Request failed.": "Permintaan gagal."
+    "Request failed.": "Permintaan gagal.",
+    "This action is not supported.": "Tindakan ini tidak disokong.",
+    "The system is temporarily unavailable. Please try again later.": "Sistem tidak tersedia buat sementara waktu. Sila cuba sebentar lagi.",
+    "Password login has been disabled. Please sign in with SSO MAIS.": "Log masuk menggunakan kata laluan telah dinyahdayakan. Sila log masuk melalui SSO MAIS."
 }

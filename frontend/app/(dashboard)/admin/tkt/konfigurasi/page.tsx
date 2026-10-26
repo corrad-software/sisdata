@@ -82,7 +82,7 @@ export default function KonfigurasiPage() {
                         e.preventDefault();
                         run.mutate(() => tktApi.simpan('sla', { keterukan: Number(sla.keterukan), ambang_respons: Number(sla.ambang_respons), ambang_penyelesaian: Number(sla.ambang_penyelesaian), waktu_perkhidmatan: sla.waktu_perkhidmatan, ambang_amaran_peratus: Number(sla.ambang_amaran_peratus), tarikh_berkuat_kuasa: sla.tarikh_berkuat_kuasa, catatan: sla.catatan, hierarki_eskalasi: sla.hierarki }), { onSuccess: () => setSla(null) });
                     }}>
-                        <p className="text-body-sm font-medium">Versi baharu — Severity {sla.keterukan}</p>
+                        <p className="text-body-sm font-medium">Versi baharu — Tahap keterukan {sla.keterukan}</p>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <Field label="Respons (minit)" htmlFor="s-r"><input id="s-r" type="number" min={1} className={inputClass} value={sla.ambang_respons} onChange={(e) => setSla({ ...sla, ambang_respons: e.target.value })} /></Field>
                             <Field label="Penyelesaian (minit)" htmlFor="s-p"><input id="s-p" type="number" min={1} className={inputClass} value={sla.ambang_penyelesaian} onChange={(e) => setSla({ ...sla, ambang_penyelesaian: e.target.value })} /></Field>
@@ -156,7 +156,7 @@ export default function KonfigurasiPage() {
 
             <Card title="Peraturan penugasan automatik">
                 <div className="overflow-x-auto">
-                    <Table head={<><th>Modul</th><th>Kategori</th><th>Severity</th><th>Pasukan</th><th>Keutamaan</th><th /></>}>
+                    <Table head={<><th>Modul</th><th>Kategori</th><th>Tahap keterukan</th><th>Pasukan</th><th>Keutamaan</th><th /></>}>
                         {data.peraturan.map((r) => (
                             <tr key={r.id} className={r.aktif ? '' : 'opacity-50'}>
                                 <td>{r.modul ?? 'Semua'}</td>
@@ -173,7 +173,7 @@ export default function KonfigurasiPage() {
                     <form className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-2" onSubmit={(e) => { e.preventDefault(); run.mutate(() => tktApi.simpan('peraturan', { modul: aturan.modul || null, kategori: aturan.kategori || null, keterukan: aturan.keterukan ? Number(aturan.keterukan) : null, id_pasukan: Number(aturan.id_pasukan), keutamaan: Number(aturan.keutamaan) })); }}>
                         <Field label="Modul" htmlFor="r-m"><Select id="r-m" value={aturan.modul} onChange={(v) => setAturan({ ...aturan, modul: v })} options={ref?.modul ?? []} empty="Semua" /></Field>
                         <Field label="Kategori" htmlFor="r-k"><Select id="r-k" value={aturan.kategori} onChange={(v) => setAturan({ ...aturan, kategori: v })} options={ref?.kategori ?? []} empty="Semua" /></Field>
-                        <Field label="Severity" htmlFor="r-s"><Select id="r-s" value={aturan.keterukan} onChange={(v) => setAturan({ ...aturan, keterukan: v })} options={ref?.keterukan ?? []} empty="Semua" /></Field>
+                        <Field label="Tahap keterukan" htmlFor="r-s"><Select id="r-s" value={aturan.keterukan} onChange={(v) => setAturan({ ...aturan, keterukan: v })} options={ref?.keterukan ?? []} empty="Semua" /></Field>
                         <Field label="Pasukan" htmlFor="r-p"><Select id="r-p" value={aturan.id_pasukan} onChange={(v) => setAturan({ ...aturan, id_pasukan: v })} options={teams} empty="Pilih" required /></Field>
                         <Field label="Keutamaan" htmlFor="r-u"><input id="r-u" type="number" className={inputClass} value={aturan.keutamaan} onChange={(e) => setAturan({ ...aturan, keutamaan: e.target.value })} /></Field>
                         <div className="flex items-end"><Button type="submit" size="sm">Tambah</Button></div>

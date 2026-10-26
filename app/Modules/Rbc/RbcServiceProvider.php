@@ -17,6 +17,7 @@ use App\Modules\Rbc\Http\Middleware\RecordAccessDenied;
 use App\Modules\Rbc\Http\Middleware\RequirePasswordChange;
 use App\Modules\Rbc\Listeners\DetectRepeatedDenials;
 use App\Modules\Rbc\Services\MockGeoIpLocator;
+use App\Modules\Rbc\Services\PanduanService;
 use App\Modules\Rbc\Services\PermissionCatalogue;
 use App\Modules\Rbc\Services\PermissionSync;
 use App\Modules\Rbc\Services\RbcAccessControl;
@@ -103,6 +104,7 @@ class RbcServiceProvider extends ModuleServiceProvider
 
         $this->app->make(PermissionRegistry::class)->register('rbc', 'Pengguna, Peranan dan Capaian', self::PERMISSIONS);
         $this->app->make(SecurityPolicy::class)->declareToAdm();
+        $this->app->make(PanduanService::class)->declareToAdm();
 
         $this->bootGate();
         $this->bootMiddleware();

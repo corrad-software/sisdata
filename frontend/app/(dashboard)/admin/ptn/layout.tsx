@@ -34,7 +34,7 @@ export default function PtnLayout({ children }: { children: ReactNode }) {
                 <h2 className="font-heading font-semibold text-heading-2xs text-txt-black-900 leading-tight">{label}</h2>
             </div>
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Navigasi pemantauan tanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Navigasi pemantauan tanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

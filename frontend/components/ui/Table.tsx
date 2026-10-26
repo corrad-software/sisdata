@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
 
-export function Table({ head, children }: { head: ReactNode; children: ReactNode }) {
+/** `panduan` = stable `data-panduan` target for the interactive guide (lib/panduan.ts). */
+export function Table({ head, children, panduan }: { head: ReactNode; children: ReactNode; panduan?: string }) {
     return (
-        <div className="overflow-x-auto rounded-lg border border-otl-gray-200 shadow-card">
+        <div data-panduan={panduan} className="overflow-x-auto rounded-lg border border-otl-gray-200 shadow-card">
             <table className="min-w-full divide-y divide-otl-gray-200 text-left text-body-sm">
                 <thead className="bg-bg-washed">
                     <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:font-semibold [&>th]:text-txt-black-700 [&>th]:whitespace-nowrap">

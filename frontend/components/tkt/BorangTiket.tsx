@@ -278,7 +278,7 @@ export function BorangTiket({ konteksAwal, peranan, onSelesai, onNavigasi }: { k
             </div>
             <label className="flex items-start gap-2 text-body-sm text-txt-black-700">
                 <input type="checkbox" className="mt-0.5 rounded border-otl-gray-300" checked={d.isu_keselamatan} onChange={(e) => set('isu_keselamatan', e.target.checked)} />
-                Ini isu keselamatan (cth. akaun dicerobohi, data terdedah) — dihadkan kepada pegawai yang dibenarkan dan dianggap Severity 1.
+                Ini isu keselamatan (cth. akaun dicerobohi, data terdedah) — dihadkan kepada pegawai yang dibenarkan dan dianggap tahap keterukan 1.
             </label>
 
             <section className="rounded-md border border-otl-gray-200 p-3 space-y-2">
@@ -330,7 +330,7 @@ export function BorangTiket({ konteksAwal, peranan, onSelesai, onNavigasi }: { k
             )}
 
             <div className="flex flex-wrap items-center justify-end gap-2">
-                <Badge variant="neutral">Severity {keterukan}</Badge>
+                <Badge variant="neutral">Tahap keterukan {keterukan}</Badge>
                 <Button type="submit" disabled={hantar || d.tajuk.trim().length < 5 || d.penerangan.trim().length < 10}>
                     {hantar ? 'Menghantar…' : 'Hantar tiket'}
                 </Button>

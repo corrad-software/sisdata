@@ -21,7 +21,7 @@ export default function AuditLayout({ children }: { children: ReactNode }) {
             <PageHeader title="Audit Trail" breadcrumbs={[{ label: 'Audit Trail', href: '/admin/aud' }, { label: active.label }]} />
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Seksyen audit trail" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Seksyen audit trail" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {TABS.map((tab) => (
                         <Link
                             key={tab.href}

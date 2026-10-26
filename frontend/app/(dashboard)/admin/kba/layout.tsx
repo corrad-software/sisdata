@@ -33,7 +33,7 @@ export default function KbaLayout({ children }: { children: ReactNode }) {
                 <h2 className="font-heading text-heading-2xs font-semibold leading-tight text-txt-black-900">{label}</h2>
             </div>
             <div className="border-b border-otl-divider bg-bg-white">
-                <nav aria-label="Navigasi Pangkalan Pengetahuan" className="-mb-px flex flex-nowrap gap-6 overflow-x-auto px-4 sm:px-6 lg:px-8">
+                <nav data-panduan="modul-nav" aria-label="Navigasi Pangkalan Pengetahuan" className="-mb-px flex flex-nowrap gap-6 overflow-x-auto px-4 sm:px-6 lg:px-8">
                     {visible.map((s) => (
                         <Link
                             key={s.key || 'utama'}

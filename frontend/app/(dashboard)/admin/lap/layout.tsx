@@ -14,7 +14,7 @@ const SECTIONS: Array<{ key: string; href: string; label: string; perms: string[
     { key: 'carian', href: '/admin/lap/carian', label: 'Carian Pintar', perms: ['lap.laporan.lihat'] },
     { key: 'jadual', href: '/admin/lap/jadual', label: 'Jadual & Edaran', perms: ['lap.jadual.cipta'] },
     { key: 'analitik', href: '/admin/lap/analitik', label: 'Analitik & Cadangan', perms: ['lap.analitik.lihat'] },
-    { key: 'insight', href: '/admin/lap/insight', label: 'Executive Insight', perms: ['lap.insight.lihat'] },
+    { key: 'insight', href: '/admin/lap/insight', label: 'Insight Eksekutif', perms: ['lap.insight.lihat'] },
     { key: 'bi', href: '/admin/lap/bi', label: 'Papan BI', perms: ['lap.bi.lihat'] },
     { key: 'log', href: '/admin/lap/log', label: 'Log Penjanaan', perms: ['lap.laporan.lihat'] },
     { key: 'kamus', href: '/admin/lap/kamus', label: 'Kamus Laporan', perms: ['lap.laporan.lihat'] },
@@ -37,7 +37,7 @@ export default function LapLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav aria-label="Navigasi laporan" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Navigasi laporan" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

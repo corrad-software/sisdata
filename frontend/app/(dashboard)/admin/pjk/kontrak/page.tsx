@@ -42,10 +42,10 @@ export default function KontrakListPage() {
                     <label htmlFor="pjk-q" className="sr-only">
                         Kata kunci
                     </label>
-                    <input id="pjk-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari no. perjanjian, penyewa atau premis…" className={`${inputClass} sm:flex-1`} />
-                    {can('pjk.kontrak.cipta') && <LinkButton href="/admin/pjk/kontrak/baharu">Daftar perjanjian</LinkButton>}
+                    <input id="pjk-q" data-panduan="pjk-carian" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari no. perjanjian, penyewa atau premis…" className={`${inputClass} sm:flex-1`} />
+                    {can('pjk.kontrak.cipta') && <LinkButton href="/admin/pjk/kontrak/baharu" data-panduan="pjk-daftar">Daftar perjanjian</LinkButton>}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3" data-panduan="pjk-penapis">
                     <Field label="Status" htmlFor="k-status">
                         <Select id="k-status" value={f.status ?? ''} onChange={(v) => set('status', v)} options={ref?.status_kontrak ?? []} empty="Semua" />
                     </Field>
@@ -72,6 +72,7 @@ export default function KontrakListPage() {
                     {error ? <span className="text-txt-danger">{ralat(error)}</span> : data ? `${data.meta.total} perjanjian` : 'Memuatkan…'}
                 </p>
                 <Table
+                    panduan="pjk-senarai"
                     head={
                         <>
                             <th>Perjanjian</th>

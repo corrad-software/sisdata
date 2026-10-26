@@ -7,9 +7,9 @@ interface TaskListItem {
 }
 
 const STATUS_STYLES: Record<TaskStatus, { bg: string; text: string; label: string }> = {
-    completed: { bg: 'bg-bg-success-50', text: 'text-txt-success', label: 'Completed' },
-    in_progress: { bg: 'bg-bg-warning-50', text: 'text-txt-warning', label: 'In Progress' },
-    not_started: { bg: 'bg-bg-washed', text: 'text-txt-black-500', label: 'Not Started' },
+    completed: { bg: 'bg-bg-success-50', text: 'text-txt-success', label: 'Selesai' },
+    in_progress: { bg: 'bg-bg-warning-50', text: 'text-txt-warning', label: 'Dalam Proses' },
+    not_started: { bg: 'bg-bg-washed', text: 'text-txt-black-500', label: 'Belum Bermula' },
 };
 
 export function TaskList({ items, className }: { items: TaskListItem[]; className?: string }) {

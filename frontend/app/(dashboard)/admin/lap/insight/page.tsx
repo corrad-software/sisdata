@@ -19,7 +19,7 @@ export default function InsightPage() {
     const jana = useMutation({
         mutationFn: () => lapApi.janaInsight(),
         onSuccess: () => {
-            toast.success('Executive insight dijana.');
+            toast.success('Insight eksekutif dijana.');
             qc.invalidateQueries({ queryKey: ['lap', 'insight'] });
         },
         onError: (e) => toast.error(ralat(e)),
@@ -29,7 +29,7 @@ export default function InsightPage() {
     return (
         <PageContainer>
             <LabelCadangan teks={q.data?.label_cadangan} />
-            <Card title="Executive insight summary" actions={<Button onClick={() => jana.mutate()} disabled={jana.isPending}>{jana.isPending ? 'Menjana…' : 'Jana untuk skop saya'}</Button>}>
+            <Card title="Ringkasan insight eksekutif" actions={<Button onClick={() => jana.mutate()} disabled={jana.isPending}>{jana.isPending ? 'Menjana…' : 'Jana untuk skop saya'}</Button>}>
                 {q.isError && <Callout type="danger">{ralat(q.error)}</Callout>}
                 {q.data && !terkini && <Kosong>Belum ada ringkasan. Ringkasan seluruh negeri dijana automatik mengikut kekerapan yang ditetapkan MAIS.</Kosong>}
                 {terkini && <Ringkasan i={terkini} />}

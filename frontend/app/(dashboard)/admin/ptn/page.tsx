@@ -52,7 +52,7 @@ export default function PtnDashboard() {
                         centerLabel="lot"
                     />
                 </Card>
-                <Card title="Trend risiko 12 bulan">
+                <Card title="Tren risiko 12 bulan">
                     <MultiLineChart
                         labels={(data?.trend ?? []).map((t) => t.tempoh.slice(2))}
                         series={[

@@ -92,7 +92,7 @@ export default function UsersPage() {
             <PageContainer>
                 <Card>
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between mb-6">
-                        <div className="grid gap-3 sm:grid-cols-3 lg:flex-1 lg:max-w-3xl">
+                        <div className="grid gap-3 sm:grid-cols-3 lg:flex-1 lg:max-w-3xl" data-panduan="pengguna-penapis">
                             <div>
                                 <label htmlFor="cari" className="block mb-1.5 text-body-sm font-medium text-txt-black-700">
                                     Cari
@@ -124,6 +124,7 @@ export default function UsersPage() {
                             </Select>
                         </div>
                         <Button
+                            data-panduan="pengguna-tambah"
                             onClick={() => {
                                 setForm(emptyForm);
                                 setFormErrors({});
@@ -136,6 +137,7 @@ export default function UsersPage() {
 
                     <ScrollX>
                         <Table
+                            panduan="pengguna-senarai"
                             head={
                                 <>
                                     <th>Nama</th>

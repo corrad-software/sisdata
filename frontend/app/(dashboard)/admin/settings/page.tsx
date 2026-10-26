@@ -38,8 +38,8 @@ export default function SettingsPage() {
     if (isLoading || !settings) {
         return (
             <>
-                <PageHeader title="Settings" breadcrumbs={[{ label: 'Settings' }]} />
-                <PageContainer className="text-body-sm text-txt-black-500">Loading...</PageContainer>
+                <PageHeader title="Tetapan Laman" breadcrumbs={[{ label: 'Tetapan Laman' }]} />
+                <PageContainer className="text-body-sm text-txt-black-500">Memuatkan…</PageContainer>
             </>
         );
     }
@@ -69,13 +69,13 @@ function SettingsForm({ settings }: { settings: Settings }) {
         onSuccess: () => {
             afterMutate();
             setErrors({});
-            toast.success('Settings saved successfully.');
+            toast.success('Tetapan berjaya disimpan.');
         },
         onError: (error) => {
             if (error instanceof ApiError && error.errors) {
                 setErrors(error.errors);
             } else {
-                toast.error('Could not save settings.');
+                toast.error('Tetapan tidak dapat disimpan.');
             }
         },
     });
@@ -84,36 +84,36 @@ function SettingsForm({ settings }: { settings: Settings }) {
         mutationFn: uploadLogo,
         onSuccess: () => {
             afterMutate();
-            toast.success('Logo updated.');
+            toast.success('Logo dikemas kini.');
         },
-        onError: () => toast.error('Could not upload logo.'),
+        onError: () => toast.error('Logo tidak dapat dimuat naik.'),
     });
 
     const logoDeleteMutation = useMutation({
         mutationFn: deleteLogo,
         onSuccess: () => {
             afterMutate();
-            toast.success('Logo removed.');
+            toast.success('Logo dibuang.');
         },
-        onError: () => toast.error('Could not remove logo.'),
+        onError: () => toast.error('Logo tidak dapat dibuang.'),
     });
 
     const faviconUploadMutation = useMutation({
         mutationFn: uploadFavicon,
         onSuccess: () => {
             afterMutate();
-            toast.success('Favicon updated.');
+            toast.success('Ikon laman dikemas kini.');
         },
-        onError: () => toast.error('Could not upload favicon.'),
+        onError: () => toast.error('Ikon laman tidak dapat dimuat naik.'),
     });
 
     const faviconDeleteMutation = useMutation({
         mutationFn: deleteFavicon,
         onSuccess: () => {
             afterMutate();
-            toast.success('Favicon removed.');
+            toast.success('Ikon laman dibuang.');
         },
-        onError: () => toast.error('Could not remove favicon.'),
+        onError: () => toast.error('Ikon laman tidak dapat dibuang.'),
     });
 
     function handleSave() {
@@ -147,29 +147,29 @@ function SettingsForm({ settings }: { settings: Settings }) {
     }
 
     function handleRemoveLogo() {
-        if (window.confirm('Remove the current logo?')) logoDeleteMutation.mutate();
+        if (window.confirm('Buang logo semasa?')) logoDeleteMutation.mutate();
     }
 
     function handleRemoveFavicon() {
-        if (window.confirm('Remove the current favicon?')) faviconDeleteMutation.mutate();
+        if (window.confirm('Buang ikon laman semasa?')) faviconDeleteMutation.mutate();
     }
 
     return (
         <>
-            <PageHeader title="Settings" breadcrumbs={[{ label: 'Settings' }]} />
+            <PageHeader title="Tetapan Laman" breadcrumbs={[{ label: 'Tetapan Laman' }]} />
 
             <PageContainer className="space-y-6">
                     <div className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                         <div>
-                            <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Site Identity</h3>
+                            <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Identiti Laman</h3>
                             <p className="text-body-sm text-txt-black-500">
-                                The site title is shown in the browser tab and page headers.
+                                Tajuk laman dipaparkan pada tab pelayar dan pengepala halaman.
                             </p>
                         </div>
 
                         <div className="max-w-sm">
                             <FieldInput
-                                label="Site Title"
+                                label="Tajuk Laman"
                                 name="siteTitle"
                                 value={siteTitle}
                                 onChange={setSiteTitle}
@@ -181,16 +181,16 @@ function SettingsForm({ settings }: { settings: Settings }) {
 
                     <div className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                         <div>
-                            <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Footer</h3>
+                            <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Pengaki</h3>
                             <p className="text-body-sm text-txt-black-500">
-                                Shown at the bottom of every page. Leave blank to use the default copyright line.
+                                Dipaparkan di bahagian bawah setiap halaman. Biarkan kosong untuk menggunakan baris hak cipta lalai.
                             </p>
                         </div>
 
                         <div className="flex flex-col sm:flex-row sm:items-end gap-4">
                             <div className="max-w-md flex-1">
                                 <FieldInput
-                                    label="Footer Text"
+                                    label="Teks Pengaki"
                                     name="footerText"
                                     value={footerText}
                                     onChange={setFooterText}
@@ -199,23 +199,23 @@ function SettingsForm({ settings }: { settings: Settings }) {
                             </div>
 
                             <Button variant="secondary" type="button" onClick={handleResetFooterText}>
-                                Reset to Default
+                                Tetap Semula ke Lalai
                             </Button>
                         </div>
 
                         {!errors.footer_text?.[0] && (
                             <p className="max-w-md text-body-xs text-txt-black-500">
-                                {`© ${new Date().getFullYear()} ${siteTitle}. All rights reserved.`}
+                                {`© ${new Date().getFullYear()} ${siteTitle}. Hak cipta terpelihara.`}
                             </p>
                         )}
                     </div>
 
                     <div className="bg-bg-white shadow-card sm:rounded-lg border border-otl-gray-200 p-6 space-y-4">
                         <div>
-                            <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Theme Colour</h3>
+                            <h3 className="font-heading font-semibold text-heading-2xs text-txt-black-900">Warna Tema</h3>
                             <p className="text-body-sm text-txt-black-500">
-                                Pick your primary brand colour — the full colour scale (buttons, links, focus rings)
-                                regenerates from it automatically.
+                                Pilih warna utama jenama — skala warna penuh (butang, pautan, gelang fokus) dijana
+                                semula daripadanya secara automatik.
                             </p>
                         </div>
 
@@ -223,14 +223,14 @@ function SettingsForm({ settings }: { settings: Settings }) {
                             <div className="max-w-xs flex-1">
                                 <ColorPicker
                                     id="primaryColor"
-                                    label="Primary Colour"
+                                    label="Warna Utama"
                                     value={primaryColor}
                                     onChange={setPrimaryColor}
                                 />
                             </div>
 
                             <Button variant="secondary" type="button" onClick={handleResetColor}>
-                                Reset to Default
+                                Tetap Semula ke Lalai
                             </Button>
                         </div>
 
@@ -238,28 +238,28 @@ function SettingsForm({ settings }: { settings: Settings }) {
                             <p className="max-w-xs text-body-xs text-danger-600">{errors.primary_color[0]}</p>
                         ) : (
                             <p className="max-w-xs text-body-xs text-txt-black-500">
-                                Used for buttons, links, and focus rings across the app.
+                                Digunakan untuk butang, pautan dan gelang fokus di seluruh aplikasi.
                             </p>
                         )}
 
                         <div className="flex flex-wrap items-center gap-3 rounded-md border border-otl-gray-200 bg-bg-washed p-4">
-                            <span className="text-body-xs font-medium text-txt-black-500">Preview:</span>
+                            <span className="text-body-xs font-medium text-txt-black-500">Pratonton:</span>
                             <Button variant="primary" type="button">
-                                Primary Button
+                                Butang Utama
                             </Button>
-                            <Badge variant="info">Badge</Badge>
+                            <Badge variant="info">Lencana</Badge>
                             <a href="#" className="text-body-sm font-medium text-primary-600 hover:text-primary-700">
-                                A link
+                                Contoh pautan
                             </a>
                         </div>
                     </div>
 
                     <BrandingUpload
-                        title="Site Logo"
-                        description="Shown in the sidebar and public navbar. Falls back to the default MYDS logo mark if not set."
+                        title="Logo Laman"
+                        description="Dipaparkan pada bar sisi dan halaman log masuk. Jika tidak ditetapkan, lambang MAIS digunakan."
                         currentUrl={settings.site_logo_url}
                         previewClassName="h-8 w-auto"
-                        helpText="PNG or SVG recommended, max 1MB."
+                        helpText="Disyorkan PNG atau SVG, maksimum 1MB."
                         uploading={logoUploadMutation.isPending}
                         onChange={handleLogoChange}
                         onRemove={settings.site_logo_url ? handleRemoveLogo : undefined}
@@ -267,11 +267,11 @@ function SettingsForm({ settings }: { settings: Settings }) {
                     />
 
                     <BrandingUpload
-                        title="Favicon"
-                        description="Shown in the browser tab. Square image recommended (e.g. 32×32 or 64×64)."
+                        title="Ikon Laman (Favicon)"
+                        description="Dipaparkan pada tab pelayar. Disyorkan imej segi empat sama (cth. 32×32 atau 64×64)."
                         currentUrl={settings.site_favicon_url}
                         previewClassName="h-6 w-auto"
-                        helpText="PNG or ICO recommended, max 512KB."
+                        helpText="Disyorkan PNG atau ICO, maksimum 512KB."
                         uploading={faviconUploadMutation.isPending}
                         onChange={handleFaviconChange}
                         onRemove={settings.site_favicon_url ? handleRemoveFavicon : undefined}
@@ -280,7 +280,7 @@ function SettingsForm({ settings }: { settings: Settings }) {
 
                     <div className="flex justify-end">
                         <Button variant="primary" type="button" onClick={handleSave} disabled={saveMutation.isPending}>
-                            Save Settings
+                            Simpan Tetapan
                         </Button>
                     </div>
             </PageContainer>
@@ -332,7 +332,7 @@ function BrandingUpload({
                             htmlFor={inputId}
                             className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-otl-gray-300 px-3 py-2 text-body-sm font-medium text-txt-black-900 hover:bg-bg-washed"
                         >
-                            Choose File
+                            Pilih Fail
                             <input
                                 id={inputId}
                                 type="file"
@@ -348,7 +348,7 @@ function BrandingUpload({
                                 onClick={onRemove}
                                 className="text-body-sm font-medium text-danger-600 hover:text-danger-700"
                             >
-                                Remove
+                                Buang
                             </button>
                         )}
                     </div>
@@ -356,7 +356,7 @@ function BrandingUpload({
                     {uploading && (
                         <div className="flex items-center gap-2">
                             <Spinner size="sm" className="text-txt-black-500" />
-                            <span className="text-body-xs text-txt-black-500">Uploading...</span>
+                            <span className="text-body-xs text-txt-black-500">Sedang memuat naik…</span>
                         </div>
                     )}
                 </div>

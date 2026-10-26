@@ -146,7 +146,7 @@ function Pembina() {
                     <Field label="Carta" htmlFor="carta">
                         <select id="carta" className={inputClass} value={def.carta ?? 'bar'} onChange={(e) => setDef({ ...def, carta: e.target.value as Definisi['carta'] })}>
                             <option value="bar">Bar</option>
-                            <option value="garis">Garis (trend)</option>
+                            <option value="garis">Garis (tren)</option>
                             <option value="pai">Pai</option>
                             <option value="jadual">Jadual sahaja</option>
                         </select>

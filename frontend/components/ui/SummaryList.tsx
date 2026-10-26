@@ -17,7 +17,7 @@ export function SummaryList({ items, className }: { items: SummaryListItem[]; cl
                                 href={item.action.url ?? '#'}
                                 className="text-body-sm font-medium text-primary-600 hover:text-primary-700"
                             >
-                                {item.action.label ?? 'Change'}
+                                {item.action.label ?? 'Ubah'}
                             </a>
                         </dd>
                     )}

@@ -1,41 +1,36 @@
 import { test, expect } from '@playwright/test';
-
-const ADMIN_EMAIL = process.env.TEST_ADMIN_EMAIL ?? 'admin@example.com';
-const ADMIN_PASSWORD = process.env.TEST_ADMIN_PASSWORD ?? 'password';
+import { login } from './helpers';
 
 test.beforeEach(async ({ page }) => {
-    await page.goto('/login');
-    await page.getByLabel('Email').fill(ADMIN_EMAIL);
-    await page.getByLabel('Password').fill(ADMIN_PASSWORD);
-    await page.getByRole('button', { name: 'Log in' }).click();
+    await login(page);
     await expect(page).toHaveURL('/admin');
 });
 
 test.describe('site settings', () => {
     test('loads existing values into the form', async ({ page }) => {
         await page.goto('/admin/settings');
-        await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
-        await expect(page.getByLabel('Site Title')).not.toHaveValue('');
+        await expect(page.getByRole('heading', { name: 'Tetapan Laman' })).toBeVisible();
+        await expect(page.getByLabel('Tajuk Laman')).not.toHaveValue('');
     });
 
     test('saving a new site title persists after reload', async ({ page }) => {
         await page.goto('/admin/settings');
 
-        const titleInput = page.getByLabel('Site Title');
+        const titleInput = page.getByLabel('Tajuk Laman');
         const original = await titleInput.inputValue();
         const updated = `MYDS-Laravel Test ${Date.now()}`;
 
         await titleInput.fill(updated);
-        await page.getByRole('button', { name: 'Save Settings' }).click();
-        await expect(page.getByText('Settings saved successfully.')).toBeVisible();
+        await page.getByRole('button', { name: 'Simpan Tetapan' }).click();
+        await expect(page.getByText('Tetapan berjaya disimpan.')).toBeVisible();
 
         await page.reload();
-        await expect(page.getByLabel('Site Title')).toHaveValue(updated);
+        await expect(page.getByLabel('Tajuk Laman')).toHaveValue(updated);
 
         // Restore the original value so the run is idempotent.
-        await page.getByLabel('Site Title').fill(original);
-        await page.getByRole('button', { name: 'Save Settings' }).click();
-        await expect(page.getByText('Settings saved successfully.')).toBeVisible();
+        await page.getByLabel('Tajuk Laman').fill(original);
+        await page.getByRole('button', { name: 'Simpan Tetapan' }).click();
+        await expect(page.getByText('Tetapan berjaya disimpan.')).toBeVisible();
     });
 
     // Regression test: the "Reset to Default" button used to render below the
@@ -45,8 +40,8 @@ test.describe('site settings', () => {
     test('footer Reset to Default button is vertically aligned with its input', async ({ page }) => {
         await page.goto('/admin/settings');
 
-        const footerInput = page.getByLabel('Footer Text');
-        const resetButton = page.getByRole('button', { name: 'Reset to Default' }).first();
+        const footerInput = page.getByLabel('Teks Pengaki');
+        const resetButton = page.getByRole('button', { name: 'Tetap Semula ke Lalai' }).first();
 
         const inputBox = await footerInput.boundingBox();
         const buttonBox = await resetButton.boundingBox();

@@ -33,7 +33,7 @@ export default function TugasanPage() {
 
             <Card
                 actions={
-                    <div className="flex gap-2" role="tablist" aria-label="Penapis tugasan">
+                    <div className="flex gap-2" role="tablist" aria-label="Penapis tugasan" data-panduan="wfe-penapis">
                         <Button size="sm" variant={tab === 'menunggu' ? 'primary' : 'secondary'} onClick={() => setTab('menunggu')}>
                             Menunggu tindakan{tab === 'menunggu' && data ? ` (${data.meta.total})` : ''}
                         </Button>
@@ -45,7 +45,7 @@ export default function TugasanPage() {
                 title={tab === 'menunggu' ? 'Tugasan menunggu tindakan' : 'Tindakan saya'}
             >
                 {/* Mobile: cards */}
-                <ul className="space-y-3 md:hidden">
+                <ul className="space-y-3 md:hidden" data-panduan="wfe-senarai">
                     {isLoading && <li className="text-body-sm text-txt-black-500">Memuatkan…</li>}
                     {!isLoading && tasks.length === 0 && <li className="text-body-sm text-txt-black-500">Tiada tugasan.</li>}
                     {tasks.map((t) => (
@@ -68,7 +68,7 @@ export default function TugasanPage() {
                 </ul>
 
                 {/* Desktop: table */}
-                <div className="hidden md:block">
+                <div className="hidden md:block" data-panduan="wfe-senarai">
                     <Table
                         head={
                             <>
@@ -139,7 +139,7 @@ export default function TugasanPage() {
 
 function QuickActions({ task, onPick }: { task: WfeTask; onPick: (a: Action) => void }) {
     return (
-        <div className="flex flex-wrap gap-2 md:justify-end">
+        <div className="flex flex-wrap gap-2 md:justify-end" data-panduan="wfe-tindakan">
             <Button size="sm" onClick={() => onPick('lulus')} aria-label={`Lulus ${task.tajuk}`}>
                 Lulus
             </Button>

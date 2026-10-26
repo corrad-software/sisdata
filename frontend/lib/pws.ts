@@ -202,7 +202,7 @@ export function tarikhMasa(iso: string | null | undefined): string {
 
 export function ralat(e: unknown): string {
     if (e instanceof ApiError) {
-        if (e.status === 403) return e.message && e.message !== 'Request failed' ? e.message : 'Anda tiada kebenaran untuk fungsi ini.';
+        if (e.status === 403) return e.message && e.message !== 'Permintaan gagal. Sila cuba lagi.' ? e.message : 'Anda tiada kebenaran untuk fungsi ini.';
         if (e.status === 404) return 'Rekod tidak ditemui.';
         const first = e.errors ? Object.values(e.errors)[0]?.[0] : undefined;
         return first ?? e.message;

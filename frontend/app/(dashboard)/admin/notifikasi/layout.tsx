@@ -41,7 +41,7 @@ export default function NotifikasiLayout({ children }: { children: ReactNode }) 
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider">
-                <nav className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto" aria-label="Bahagian notifikasi">
+                <nav data-panduan="modul-nav" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto" aria-label="Bahagian notifikasi">
                     {tabs.map((tab) => {
                         const active = tab.href === current?.href;
 

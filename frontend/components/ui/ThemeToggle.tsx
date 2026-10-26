@@ -22,7 +22,7 @@ export function ThemeToggle() {
             type="button"
             onClick={toggle}
             aria-pressed={dark}
-            aria-label="Toggle dark mode"
+            aria-label="Tukar mod gelap" title={dark ? "Mod terang" : "Mod gelap"}
             className="inline-flex items-center justify-center rounded-md p-2 text-txt-black-500 hover:text-txt-black-900 hover:bg-bg-washed focus:outline-none transition ease-in-out duration-150"
         >
             {!dark ? (

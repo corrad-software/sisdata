@@ -12,7 +12,7 @@ const SECTIONS: Array<{ key: string; label: string; perms: string[] }> = [
     { key: 'import', label: 'Import Data', perms: ['pro.import.cipta'] },
     { key: 'duplikasi', label: 'Duplikasi', perms: ['pro.duplikasi.lihat'] },
     { key: 'kualiti', label: 'Kualiti Data', perms: ['pro.kualiti.lihat', 'pro.stewardship.lihat'] },
-    { key: 'stewardship', label: 'Stewardship', perms: ['pro.stewardship.lihat'] },
+    { key: 'stewardship', label: 'Pengawasan Data', perms: ['pro.stewardship.lihat'] },
     { key: 'kamus', label: 'Kamus Data', perms: ['pro.kamus.lihat'] },
     { key: 'arkib', label: 'Arkib & Retensi', perms: ['pro.arkib.lihat'] },
     { key: 'kunci-api', label: 'Kunci API', perms: ['pro.api.cipta'] },
@@ -57,7 +57,7 @@ export default function ProLayout({ children }: { children: ReactNode }) {
             </div>
 
             <div className="bg-bg-white border-b border-otl-divider print:hidden">
-                <nav aria-label="Navigasi Profil Hartanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
+                <nav data-panduan="modul-nav" aria-label="Navigasi Profil Hartanah" className="flex flex-nowrap gap-6 px-4 sm:px-6 lg:px-8 -mb-px overflow-x-auto">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

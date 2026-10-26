@@ -127,12 +127,13 @@ export function RuangKerjaPeta() {
 
     return (
         <div className="flex flex-col lg:flex-row lg:h-[calc(100vh-11.5rem)] min-h-0">
-            <aside aria-label="Panel peta GIS" className={`order-2 lg:order-1 w-full lg:w-[400px] lg:flex-shrink-0 border-t lg:border-t-0 lg:border-r border-otl-divider bg-bg-white flex flex-col min-h-0 ${panelOpen ? '' : 'lg:w-0 lg:overflow-hidden'}`}>
+            <aside data-panduan="gis-panel" aria-label="Panel peta GIS" className={`order-2 lg:order-1 w-full lg:w-[400px] lg:flex-shrink-0 border-t lg:border-t-0 lg:border-r border-otl-divider bg-bg-white flex flex-col min-h-0 ${panelOpen ? '' : 'lg:w-0 lg:overflow-hidden'}`}>
                 <nav aria-label="Panel peta" className="flex gap-4 overflow-x-auto border-b border-otl-divider px-4 -mb-px">
                     {TABS.map((t) => (
                         <button
                             key={t.key}
                             type="button"
+                            data-panduan={`gis-tab-${t.key}`}
                             onClick={() => setTab(t.key)}
                             aria-current={tab === t.key ? 'page' : undefined}
                             className={`whitespace-nowrap border-b-2 py-3 text-body-sm font-medium ${
@@ -206,7 +207,7 @@ export function RuangKerjaPeta() {
                 </div>
             </aside>
 
-            <section className="order-1 lg:order-2 relative flex-none lg:flex-1 min-w-0 h-[60vh] lg:h-auto lg:min-h-0">
+            <section data-panduan="gis-peta" className="order-1 lg:order-2 relative flex-none lg:flex-1 min-w-0 h-[60vh] lg:h-auto lg:min-h-0">
                 <button
                     type="button"
                     onClick={() => setPanelOpen((o) => !o)}

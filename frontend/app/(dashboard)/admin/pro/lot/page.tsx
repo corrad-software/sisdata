@@ -101,6 +101,7 @@ export default function LotListPage() {
                     </label>
                     <input
                         id="lot-q"
+                        data-panduan="pro-carian"
                         type="search"
                         value={q}
                         onChange={(e) => setQ(e.target.value)}
@@ -108,10 +109,10 @@ export default function LotListPage() {
                         className={`${inputClass} lg:flex-1`}
                     />
                     <div className="flex flex-wrap gap-2">
-                        <Button variant="secondary" onClick={() => setShowFilters((v) => !v)} aria-expanded={showFilters}>
+                        <Button variant="secondary" onClick={() => setShowFilters((v) => !v)} aria-expanded={showFilters} data-panduan="pro-penapis">
                             Penapis{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
                         </Button>
-                        <div className="inline-flex rounded-md shadow-button" role="group" aria-label="Paparan">
+                        <div className="inline-flex rounded-md shadow-button" role="group" aria-label="Paparan" data-panduan="pro-paparan">
                             {(['jadual', 'peta'] as const).map((v, i) => (
                                 <button
                                     key={v}
@@ -127,7 +128,7 @@ export default function LotListPage() {
                             ))}
                         </div>
                         {can('pro.lot.eksport') && <ExportMenu onExport={(format) => proApi.eksportLot(base, format)} />}
-                        {can('pro.lot.cipta') && <LinkButton href="/admin/pro/lot/baru">Tambah lot</LinkButton>}
+                        {can('pro.lot.cipta') && <LinkButton href="/admin/pro/lot/baru" data-panduan="pro-tambah">Tambah lot</LinkButton>}
                     </div>
                 </div>
 
@@ -200,7 +201,7 @@ export default function LotListPage() {
                         <p className="text-body-sm text-txt-black-500" aria-live="polite">
                             {list.data ? `${list.data.meta.total} lot ditemui` : 'Memuatkan…'}
                         </p>
-                        <div className="overflow-x-auto">
+                        <div className="overflow-x-auto" data-panduan="pro-jadual">
                             <Table
                                 head={
                                     <>

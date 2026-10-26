@@ -2,21 +2,21 @@
 
 import { useState } from 'react';
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const WEEKDAYS = ['Ahd', 'Isn', 'Sel', 'Rab', 'Kha', 'Jum', 'Sab'];
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
 const MONTHS_LONG = [
-    'January',
-    'February',
-    'March',
+    'Januari',
+    'Februari',
+    'Mac',
     'April',
-    'May',
-    'June',
-    'July',
-    'August',
+    'Mei',
+    'Jun',
+    'Julai',
+    'Ogos',
     'September',
-    'October',
+    'Oktober',
     'November',
-    'December',
+    'Disember',
 ];
 
 interface Cell {
@@ -150,12 +150,12 @@ export function Calendar({ selected: selectedProp, max: maxProp, range = false, 
             {range && (
                 <div className="mb-3 flex items-center gap-2">
                     <div className="flex-1 rounded-md border border-otl-gray-300 px-2.5 py-1.5 text-body-xs">
-                        <span className="text-txt-black-500">From: </span>
+                        <span className="text-txt-black-500">Dari: </span>
                         <span className="font-medium text-txt-black-900">{rangeStart ? formatDate(rangeStart) : '—'}</span>
                     </div>
                     <span className="text-txt-black-400">-</span>
                     <div className="flex-1 rounded-md border border-otl-gray-300 px-2.5 py-1.5 text-body-xs">
-                        <span className="text-txt-black-500">To: </span>
+                        <span className="text-txt-black-500">Hingga: </span>
                         <span className="font-medium text-txt-black-900">{rangeEnd ? formatDate(rangeEnd) : '—'}</span>
                     </div>
                 </div>

@@ -291,7 +291,8 @@ class AccessControlTest extends TestCase
 
     public function test_SRS_GEN_01_every_rbc_and_user_route_authorises_through_the_gate(): void
     {
-        $open = ['rbc.sesi.status', 'rbc.sesi.lanjut', 'rbc.kata_laluan.tukar'];
+        // Own-record routes any signed-in user may call (session timer, own password, own guide prefs — SRS-GEN-08).
+        $open = ['rbc.sesi.status', 'rbc.sesi.lanjut', 'rbc.kata_laluan.tukar', 'rbc.panduan.show', 'rbc.panduan.update'];
 
         foreach (Route::getRoutes()->getRoutes() as $route) {
             $name = (string) $route->getName();

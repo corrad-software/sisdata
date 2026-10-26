@@ -58,7 +58,7 @@ export default function KamusPage() {
                     <p className="text-body-xs text-txt-black-500 font-mono">
                         {pilihan.paparan} ← {pilihan.jadual_sumber} (MOD-{pilihan.modul.toUpperCase()})
                     </p>
-                    <Table head={<><th>Medan</th><th>Jenis</th><th>Sumber</th><th>Definisi</th><th>Nilai dibenarkan</th><th>Data owner</th><th>Klasifikasi</th></>}>
+                    <Table head={<><th>Medan</th><th>Jenis</th><th>Sumber</th><th>Definisi</th><th>Nilai dibenarkan</th><th>Pemilik data</th><th>Klasifikasi</th></>}>
                         {pilihan.medan.map((m) => (
                             <tr key={m.kunci}>
                                 <td>

@@ -8,7 +8,7 @@ import { useCan } from '@/lib/dsh';
 
 /** MOD-DSH section: page header + full-width section nav. */
 const SECTIONS: Array<{ key: string; href: string; label: string; perms: string[] | null }> = [
-    { key: 'utama', href: '/admin', label: 'Dashboard', perms: ['dsh.dashboard.lihat'] },
+    { key: 'utama', href: '/admin', label: 'Papan Pemuka', perms: ['dsh.dashboard.lihat'] },
     { key: 'tema/cukai', href: '/admin/dsh/tema/cukai', label: 'Cukai', perms: ['cki.laporan.lihat'] },
     { key: 'tema/pajakan', href: '/admin/dsh/tema/pajakan', label: 'Sewaan / Pajakan', perms: ['pjk.laporan.lihat'] },
     { key: 'tema/pemantauan', href: '/admin/dsh/tema/pemantauan', label: 'Pemantauan Tanah', perms: ['dsh.dashboard.lihat'] },
@@ -20,7 +20,7 @@ const SECTIONS: Array<{ key: string; href: string; label: string; perms: string[
 
 const TITLE: Record<string, string> = {
     senarai: 'Senarai Rekod Indikator',
-    snapshot: 'Snapshot KPI',
+    snapshot: 'Syot Kilat KPI',
 };
 
 export default function DshLayout({ children }: { children: ReactNode }) {
@@ -39,7 +39,7 @@ export default function DshLayout({ children }: { children: ReactNode }) {
                 <h2 className="font-heading text-heading-2xs font-semibold leading-tight text-txt-black-900">{label}</h2>
             </div>
             <div className="border-b border-otl-divider bg-bg-white">
-                <nav aria-label="Navigasi dashboard" className="-mb-px flex flex-nowrap gap-6 overflow-x-auto px-4 sm:px-6 lg:px-8">
+                <nav data-panduan="modul-nav" aria-label="Navigasi dashboard" className="-mb-px flex flex-nowrap gap-6 overflow-x-auto px-4 sm:px-6 lg:px-8">
                     {visible.map((s) => (
                         <Link
                             key={s.key}

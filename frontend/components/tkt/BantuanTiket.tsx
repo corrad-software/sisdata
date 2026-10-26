@@ -44,11 +44,11 @@ export function BantuanTiket({ user }: { user: User }) {
     return (
         <>
             {/* Header button from sm up; on phones a floating button, so the crowded header never overflows at 375px. */}
-            <button type="button" onClick={buka} aria-label="Bantuan" className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-md px-2 text-body-sm font-medium text-txt-black-700 hover:bg-bg-washed focus:outline-none focus-visible:ring-2 focus-visible:ring-fr-primary" aria-haspopup="dialog" aria-expanded={open}>
+            <button type="button" onClick={buka} aria-label="Bantuan" title="Bantuan & tiket sokongan" data-panduan="bantuan" className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-md px-2 text-body-sm font-medium text-txt-black-700 hover:bg-bg-washed focus:outline-none focus-visible:ring-2 focus-visible:ring-fr-primary" aria-haspopup="dialog" aria-expanded={open}>
                 <Ikon className="h-5 w-5" />
                 <span className="hidden md:inline">Bantuan</span>
             </button>
-            <button type="button" onClick={buka} aria-label="Bantuan" aria-haspopup="dialog" aria-expanded={open} className="sm:hidden fixed bottom-4 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary-600 text-white shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-fr-primary">
+            <button type="button" onClick={buka} aria-label="Bantuan" data-panduan="bantuan" aria-haspopup="dialog" aria-expanded={open} className="sm:hidden fixed bottom-4 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary-600 text-white shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-fr-primary">
                 <Ikon className="h-6 w-6" />
             </button>
 

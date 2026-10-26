@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Dropdown } from './Dropdown';
 
-const SIZES: Record<string, string> = { normal: 'Default', large: 'Large', xlarge: 'Extra Large' };
+const SIZES: Record<string, string> = { normal: 'Lalai', large: 'Besar', xlarge: 'Sangat Besar' };
 
 export function FontSizeToggle() {
     const [size, setSizeState] = useState('normal');
@@ -29,7 +29,7 @@ export function FontSizeToggle() {
                 <button
                     type="button"
                     className="inline-flex items-center justify-center rounded-md p-2 text-txt-black-500 hover:text-txt-black-900 hover:bg-bg-washed focus:outline-none transition ease-in-out duration-150"
-                    aria-label="Text size"
+                    aria-label="Saiz teks" title="Saiz teks"
                 >
                     <span className="flex h-5 w-5 items-center justify-center text-sm font-bold leading-none">Aa</span>
                 </button>
