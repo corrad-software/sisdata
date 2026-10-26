@@ -28,7 +28,7 @@ jobs:
 
     services:
       postgres:
-        image: postgis/postgis:17-3.5
+        image: postgis/postgis:17-3.6
         env:
           POSTGRES_DB: myds_laravel_test
           POSTGRES_USER: myds
@@ -89,6 +89,9 @@ jobs:
 
       # postgis/postgis ships PostGIS but not pgvector; the extensions
       # migration needs both. The image keeps the PGDG apt repo configured.
+      # Keep the image on a Debian release the PGDG repo still publishes: the old
+      # 17-3.5 tag was Debian bullseye, whose PGDG repo was removed, so this
+      # `apt-get update` failed with "does not have a Release file".
       - name: Add pgvector to the PostGIS service
         run: docker exec ${{ job.services.postgres.id }} sh -c "apt-get update -qq && apt-get install -y -qq postgresql-17-pgvector"
 

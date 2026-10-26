@@ -54,7 +54,7 @@ class LoginService
         $user = User::query()->whereRaw('lower(email) = ?', [Str::lower($email)])->first();
 
         if (! $user) {
-            Hash::check($password, '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG'); // equalise timing
+            Hash::check($password, '$2y$04$usesomesillystringfore7hnbRJHxXVLeakoG8K30oukPsA.ztMG'); // equalise timing; dummy hash, not a secret // nosemgrep: detected-bcrypt-hash
             $this->fail($request, null, $email, 'pengguna_tidak_wujud', trans('auth.failed'));
         }
 

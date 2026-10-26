@@ -2,6 +2,7 @@
 
 namespace Tests\Modules\Ast;
 
+use App\Models\User;
 use App\Modules\Ast\Integrasi\Reminders\PenyelenggaraanBerjadual;
 use App\Modules\Ast\Models\AsetKontraktor;
 use App\Modules\Ast\Models\JadualPenyelenggaraan;
@@ -193,5 +194,20 @@ class PenyelenggaraanTest extends AstTestCase
         $this->assertSame($b->id, DB::table('keperluan_penyelenggaraan')->where('id', $need)->value('id_aset_fizikal'));
         $this->actingAs($u)->postJson('/api/v1/ast/ptn/keperluan/'.$need.'/paut', ['id_aset' => $b->id])->assertStatus(422);
         $this->actingAs($this->user(['ast.penyelenggaraan.lihat']))->postJson('/api/v1/ast/ptn/tarik')->assertForbidden();
+    }
+
+    public function test_contractor_update_keeps_its_own_linked_account_but_cannot_take_another_contractors(): void
+    {
+        $u = $this->unitAset();
+        $akaunA = User::factory()->create();
+        $akaunB = User::factory()->create();
+        $a = AsetKontraktor::query()->create(['nama_syarikat' => 'Kontraktor A', 'status_aktif' => true, 'id_pengguna' => $akaunA->id]);
+        AsetKontraktor::query()->create(['nama_syarikat' => 'Kontraktor B', 'status_aktif' => true, 'id_pengguna' => $akaunB->id]);
+
+        // Saving a contractor again with the account it already owns must pass the unique rule (it ignores itself).
+        $this->actingAs($u)->putJson('/api/v1/ast/kontraktor/'.$a->id, ['nama_syarikat' => 'Kontraktor A (kemas kini)', 'id_pengguna' => $akaunA->id])->assertOk();
+
+        // ...but it must not be able to take an account that belongs to another contractor.
+        $this->actingAs($u)->putJson('/api/v1/ast/kontraktor/'.$a->id, ['id_pengguna' => $akaunB->id])->assertUnprocessable()->assertJsonValidationErrors('id_pengguna');
     }
 }

@@ -23,7 +23,7 @@ if (str_contains($path, '..') || str_contains($path, "\0")) {
     return true;
 }
 $file = $root.$path;
-if (is_file($file)) {
+if (is_file($file)) { // nosemgrep: tainted-filename (traversal rejected above; dev-only router)
     if (str_ends_with($file, '.php')) {
         $_SERVER['SCRIPT_FILENAME'] = $file;
         $_SERVER['SCRIPT_NAME'] = $path;
@@ -36,7 +36,7 @@ if (is_file($file)) {
 
     return false; // static file
 }
-if (is_dir($file) && is_file(rtrim($file, '/').'/index.php')) {
+if (is_dir($file) && is_file(rtrim($file, '/').'/index.php')) { // nosemgrep: tainted-filename (see above)
     $file = rtrim($file, '/');
     $_SERVER['SCRIPT_FILENAME'] = $file.'/index.php';
     chdir($file);
