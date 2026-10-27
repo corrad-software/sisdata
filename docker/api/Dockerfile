@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         tesseract-ocr-msa \
         gdal-bin \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql gd intl bcmath zip opcache \
+    && docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql gd intl bcmath zip opcache pcntl \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /var/log/supervisor /var/lib/nginx/body /var/lib/nginx/fastcgi /run \
     && chown -R www-data:www-data /var/lib/nginx
