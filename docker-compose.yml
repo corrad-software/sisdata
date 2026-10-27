@@ -91,7 +91,8 @@ services:
       retries: 20
 
   minio:
-    image: minio/minio:latest
+    # minio/minio was removed from Docker Hub; Silo is the public drop-in (same server command and MINIO_* env).
+    image: "docker.io/pgsty/silo:RELEASE.2026-10-26T00-00-00Z"
     command: ["server", "/data", "--console-address", ":9001"]
     environment:
       MINIO_ROOT_USER: sisdata
